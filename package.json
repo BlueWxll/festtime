@@ -1,0 +1,18 @@
+{
+  "name": "terra-nova-webcup",
+  "version": "1.0.0",
+  "description": "Plateforme Numérique Centrale de Terra Nova - 24H By Webcup 2026",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "webcup",
+    "terra-nova",
+    "sci-fi",
+    "api"
+  ],
+  "author": "Équipe Terra Nova",
+  "license": "ISC"
+}

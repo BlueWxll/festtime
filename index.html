@@ -1,0 +1,2331 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERA NOVA — Plateforme Numérique Centrale & Réseau Urbain</title>
+    <meta name="description"
+        content="Plateforme officielle de la première mégapole exoplanétaire de l'humanité. Services municipaux, espace citoyen, flux de requêtes en direct et télémesure Aethel-OS.">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#03070E',
+                        cyber: '#00F0FF',
+                        plasma: '#9D00FF',
+                        amber: '#FFB700',
+                        steel: '#4A607A',
+                        lumina: '#E0F4FF'
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts: Orbitron & Share Tech Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --void-black: #03070E;
+            --cyber-blue: #00F0FF;
+            --plasma-violet: #9D00FF;
+            --bio-amber: #FFB700;
+            --text-primary: #E0F4FF;
+            --text-secondary: #4A607A;
+            --panel-bg: rgba(5, 13, 26, 0.88);
+        }
+
+        body {
+            background-color: var(--void-black);
+            color: var(--text-primary);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        h1, h2, h3, h4, .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Scanline Overlay CRT */
+        .scanline-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+            background-size: 100% 4px;
+            z-index: 99;
+            pointer-events: none;
+            opacity: 0.35;
+        }
+
+        /* Ambient Grid */
+        .grid-bg {
+            background-image:
+                linear-gradient(to right, rgba(0, 240, 255, 0.035) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.035) 1px, transparent 1px);
+            background-size: 44px 44px;
+        }
+
+        /* Sci-Fi Angled Button (Clip-path) */
+        .btn-cyber {
+            position: relative;
+            background: transparent;
+            border: 1px solid var(--cyber-blue);
+            color: var(--cyber-blue);
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.25);
+            cursor: pointer;
+        }
+
+        .btn-cyber:hover {
+            background: linear-gradient(45deg, rgba(0, 240, 255, 0.25), rgba(157, 0, 255, 0.25));
+            color: #FFFFFF;
+            box-shadow: 0 0 22px rgba(0, 240, 255, 0.75);
+            border-color: #FFFFFF;
+        }
+
+        .btn-cyber:active, .btn-cyber.active-pulse {
+            border-color: var(--bio-amber);
+            box-shadow: 0 0 16px var(--bio-amber);
+            color: var(--bio-amber);
+        }
+
+        .btn-amber {
+            border-color: var(--bio-amber);
+            color: var(--bio-amber);
+            box-shadow: 0 0 10px rgba(255, 183, 0, 0.2);
+        }
+
+        .btn-amber:hover {
+            background: linear-gradient(45deg, rgba(255, 183, 0, 0.25), rgba(157, 0, 255, 0.2));
+            box-shadow: 0 0 22px rgba(255, 183, 0, 0.75);
+        }
+
+        .btn-violet {
+            border-color: var(--plasma-violet);
+            color: var(--plasma-violet);
+            box-shadow: 0 0 10px rgba(157, 0, 255, 0.2);
+        }
+
+        .btn-violet:hover {
+            background: linear-gradient(45deg, rgba(157, 0, 255, 0.3), rgba(0, 240, 255, 0.2));
+            box-shadow: 0 0 22px rgba(157, 0, 255, 0.75);
+            color: #fff;
+        }
+
+        /* Glassmorphism Holographic Card */
+        .holo-card {
+            background-color: var(--panel-bg);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            position: relative;
+        }
+
+        /* Reticles crosshairs */
+        .holo-card::before, .holo-card::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-color: var(--cyber-blue);
+            border-style: solid;
+            pointer-events: none;
+        }
+
+        .holo-card::before {
+            top: -1px;
+            left: -1px;
+            border-width: 2px 0 0 2px;
+        }
+
+        .holo-card::after {
+            bottom: -1px;
+            right: -1px;
+            border-width: 0 2px 2px 0;
+        }
+
+        .corner-tr, .corner-bl {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-color: var(--cyber-blue);
+            border-style: solid;
+            pointer-events: none;
+        }
+
+        .corner-tr {
+            top: -1px;
+            right: -1px;
+            border-width: 2px 2px 0 0;
+        }
+
+        .corner-bl {
+            bottom: -1px;
+            left: -1px;
+            border-width: 0 0 2px 2px;
+        }
+
+        /* Holographic Underline Input */
+        .cyber-input {
+            background: rgba(3, 7, 14, 0.7);
+            border: none;
+            border-bottom: 2px solid var(--text-secondary);
+            color: var(--text-primary);
+            outline: none;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .cyber-input:focus {
+            border-bottom-color: var(--cyber-blue);
+            box-shadow: 0 4px 14px -2px rgba(0, 240, 255, 0.4);
+            background: rgba(0, 240, 255, 0.05);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--void-black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-secondary);
+            border-radius: 2px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--cyber-blue);
+        }
+
+        /* Glow Animations */
+        @keyframes pulse-amber-glow {
+            0%, 100% { opacity: 1; filter: drop-shadow(0 0 8px rgba(255, 183, 0, 0.8)); }
+            50% { opacity: 0.55; filter: drop-shadow(0 0 2px rgba(255, 183, 0, 0.2)); }
+        }
+
+        .pulse-amber {
+            animation: pulse-amber-glow 2s infinite ease-in-out;
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Badges de difficulté */
+        .diff-badge {
+            font-size: 0.65rem;
+            padding: 0.15rem 0.5rem;
+            text-transform: uppercase;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            border: 1px solid currentColor;
+            letter-spacing: 1px;
+        }
+
+        .diff-1 { color: #00FF66; border-color: #00FF66; background: rgba(0, 255, 102, 0.1); }
+        .diff-2 { color: var(--cyber-blue); border-color: var(--cyber-blue); background: rgba(0, 240, 255, 0.1); }
+        .diff-3 { color: var(--bio-amber); border-color: var(--bio-amber); background: rgba(255, 183, 0, 0.1); }
+        .diff-4 { color: #FF0055; border-color: #FF0055; background: rgba(255, 0, 85, 0.1); }
+    </style>
+</head>
+
+<body class="grid-bg relative min-h-screen text-slate-100 flex flex-col justify-between">
+
+    <!-- Scanline Effect Overlay -->
+    <div class="scanline-overlay"></div>
+
+    <!-- Particle Interactive Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="relative z-10 flex-1">
+
+        <!-- Top Navigation & Role Bar -->
+        <header class="border-b border-cyan-900/50 bg-[#03070E]/90 backdrop-blur-md sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+
+                <!-- Logo & Brand -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 border border-[#00F0FF] flex items-center justify-center relative rotate-45 bg-[#00F0FF]/10 shadow-[0_0_15px_rgba(0,240,255,0.4)]">
+                        <i class="fa-solid fa-atom text-[#00F0FF] -rotate-45 text-lg"></i>
+                    </div>
+                    <div>
+                        <a href="#" class="text-xl sm:text-2xl font-black font-orbitron tracking-widest text-[#00F0FF] hover:text-white transition drop-shadow-[0_0_12px_rgba(0,240,255,0.6)]">
+                            TERRA NOVA
+                        </a>
+                        <div class="text-[9px] tracking-widest text-[#4A607A] font-mono uppercase flex items-center gap-2">
+                            <span>MÉGAPOLE EXOPLANÉTAIRE</span>
+                            <span class="w-1 h-1 bg-[#00F0FF] rounded-full"></span>
+                            <span class="text-[#00F0FF]">AETHEL-OS v2.4</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live API Telemetry Header Metrics -->
+                <div class="hidden lg:flex items-center space-x-5 text-xs border-x border-cyan-900/50 px-5 py-2">
+                    <div class="flex items-center space-x-2">
+                        <span id="header-pulse" class="w-2.5 h-2.5 rounded-full bg-[#00F0FF] animate-ping"></span>
+                        <span class="text-[#4A607A]">SESSION:</span>
+                        <span class="text-[#E0F4FF] font-bold" id="header-sess-status">CONNECTING...</span>
+                    </div>
+                    <div class="h-4 w-px bg-cyan-900/60"></div>
+                    <div>
+                        <span class="text-[#4A607A]">VAGUE:</span>
+                        <span class="text-[#00F0FF] font-bold" id="header-wave-val">0</span>
+                    </div>
+                    <div class="h-4 w-px bg-cyan-900/60"></div>
+                    <div>
+                        <span class="text-[#4A607A]">DEMANDES:</span>
+                        <span class="text-[#FFB700] font-bold" id="header-requests-count">0</span>
+                    </div>
+                    <div class="h-4 w-px bg-cyan-900/60"></div>
+                    <div class="text-[#9D00FF] font-bold flex items-center gap-1">
+                        <i class="fa-regular fa-clock text-[10px]"></i>
+                        <span id="header-next-wave-timer">NEXT: --</span>
+                    </div>
+                </div>
+
+                <!-- User Profile & Navigation -->
+                <div class="flex items-center space-x-3">
+                    <!-- Role Switcher (D08 & D09 Demo) -->
+                    <div class="relative group">
+                        <button id="role-selector-btn" class="flex items-center space-x-2 border border-cyan-800 bg-[#050D1A] px-3 py-1.5 text-xs hover:border-[#00F0FF] transition">
+                            <i id="role-icon" class="fa-solid fa-user text-[#00F0FF]"></i>
+                            <span class="text-[#4A607A] hidden sm:inline">RÔLE:</span>
+                            <span id="current-role-badge" class="font-orbitron font-bold text-[#00F0FF]">CITOYEN</span>
+                            <i class="fa-solid fa-chevron-down text-[10px] text-[#4A607A]"></i>
+                        </button>
+                        <!-- Dropdown Menu -->
+                        <div class="absolute right-0 mt-2 w-48 bg-[#03070E] border border-cyan-800/80 shadow-2xl z-50 hidden group-hover:block holo-card p-1">
+                            <div class="text-[9px] uppercase px-3 py-1 text-[#4A607A] border-b border-cyan-900/40">Changer de Profil</div>
+                            <button onclick="switchRole('citizen')" class="w-full text-left px-3 py-2 text-xs hover:bg-[#00F0FF]/10 hover:text-[#00F0FF] flex items-center justify-between">
+                                <span><i class="fa-solid fa-user text-[11px] mr-2 text-[#00F0FF]"></i>Citoyen</span>
+                                <span class="text-[9px] text-green-400">Public</span>
+                            </button>
+                            <button onclick="switchRole('agent')" class="w-full text-left px-3 py-2 text-xs hover:bg-[#9D00FF]/10 hover:text-[#9D00FF] flex items-center justify-between">
+                                <span><i class="fa-solid fa-id-badge text-[11px] mr-2 text-[#9D00FF]"></i>Agent Municipal</span>
+                                <span class="text-[9px] text-[#9D00FF]">Pro</span>
+                            </button>
+                            <button onclick="switchRole('admin')" class="w-full text-left px-3 py-2 text-xs hover:bg-[#FFB700]/10 hover:text-[#FFB700] flex items-center justify-between">
+                                <span><i class="fa-solid fa-crown text-[11px] mr-2 text-[#FFB700]"></i>Haut Conseil</span>
+                                <span class="text-[9px] text-[#FFB700]">Admin</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Auth Button (Connexion / Mon Espace D01 & D03) -->
+                    <button id="auth-nav-btn" onclick="openAuthModal()"
+                        class="btn-cyber px-4 py-2 text-xs uppercase font-bold flex items-center space-x-2">
+                        <i class="fa-solid fa-fingerprint"></i>
+                        <span id="auth-nav-label">Connexion</span>
+                    </button>
+
+                    <!-- Console Toggle Button -->
+                    <button onclick="toggleModal()" title="Console Directe"
+                        class="border border-cyan-900/80 hover:border-[#00F0FF] text-[#00F0FF] p-2 text-xs transition">
+                        <i class="fa-solid fa-terminal"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Sub-Bar -->
+            <div class="lg:hidden flex justify-between items-center px-4 py-1.5 bg-[#050D1A] border-t border-cyan-900/40 text-[11px]">
+                <div class="flex items-center space-x-2">
+                    <span class="text-[#4A607A]">SESSION:</span>
+                    <span id="mobile-sess-status" class="text-[#00F0FF] font-bold">ACTIF</span>
+                </div>
+                <div>
+                    <span class="text-[#4A607A]">VAGUE:</span>
+                    <span id="mobile-wave-val" class="text-[#E0F4FF] font-bold">0</span>
+                </div>
+                <div>
+                    <span class="text-[#4A607A]">DEMANDES:</span>
+                    <span id="mobile-requests-count" class="text-[#FFB700] font-bold">0</span>
+                </div>
+                <div>
+                    <span id="mobile-timer" class="text-[#9D00FF] font-mono">--</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- SUB-NAVIGATION BAR (Accès rapide aux modules de Terra Nova) -->
+        <nav class="bg-[#050D1A]/95 border-b border-cyan-900/40 sticky top-20 z-40 backdrop-blur-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center space-x-1 sm:space-x-6 overflow-x-auto py-2 text-xs">
+                <a href="#accueil" class="px-3 py-1.5 hover:text-[#00F0FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-globe text-[11px] text-[#00F0FF]"></i>
+                    <span>ACCUEIL CITÉ</span>
+                </a>
+                <a href="#services-municipaux" class="px-3 py-1.5 hover:text-[#00F0FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-building-columns text-[11px] text-[#00F0FF]"></i>
+                    <span>SERVICES MUNICIPAUX</span>
+                    <span class="text-[9px] bg-cyan-950 text-[#00F0FF] px-1.5 py-0.5 rounded border border-cyan-800">D05</span>
+                </a>
+                <a href="#annonces" class="px-3 py-1.5 hover:text-[#00F0FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-bullhorn text-[11px] text-[#00F0FF]"></i>
+                    <span>ACTUALITÉS & DÉCRETS</span>
+                    <span class="text-[9px] bg-cyan-950 text-[#00F0FF] px-1.5 py-0.5 rounded border border-cyan-800">D06</span>
+                </a>
+                <a href="#demarches" class="px-3 py-1.5 hover:text-[#00F0FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-file-pen text-[11px] text-[#FFB700]"></i>
+                    <span>SIGNALEMENT & CONTACT</span>
+                    <span class="text-[9px] bg-amber-950 text-[#FFB700] px-1.5 py-0.5 rounded border border-amber-800">D04</span>
+                </a>
+                <a href="#espace-citoyen" class="px-3 py-1.5 hover:text-[#00F0FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-address-card text-[11px] text-[#00F0FF]"></i>
+                    <span>ESPACE CITOYEN</span>
+                    <span class="text-[9px] bg-cyan-950 text-[#00F0FF] px-1.5 py-0.5 rounded border border-cyan-800">D01/D03</span>
+                </a>
+                <a href="#espace-agent" class="px-3 py-1.5 hover:text-[#9D00FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap border-l border-cyan-900/60 pl-4 text-[#9D00FF]">
+                    <i class="fa-solid fa-shield-halved text-[11px]"></i>
+                    <span>ESPACE AGENTS (BACKOFFICE)</span>
+                    <span class="text-[9px] bg-purple-950 text-[#9D00FF] px-1.5 py-0.5 rounded border border-purple-800">D19/F22</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- SECTION 1 : ACCUEIL IMMERSIF & HIÉRARCHISÉ (D07 - 500 XP) -->
+        <section id="accueil" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16 relative">
+            <!-- Colon Welcome Banner -->
+            <div class="mb-8 p-4 holo-card border-l-4 border-l-[#00F0FF] border-cyan-900/60 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-full bg-[#00F0FF]/20 flex items-center justify-center text-[#00F0FF]">
+                        <i class="fa-solid fa-compass"></i>
+                    </div>
+                    <div>
+                        <div class="font-orbitron font-bold text-sm text-[#00F0FF] uppercase">GUIDE OFFICIEL D'ACCUEIL DES NOUVEAUX HABITANTS</div>
+                        <div class="text-xs text-[#E0F4FF]/80">Bienvenue sur la colonie. Créez votre matricule citoyen, explorez les 6 services municipaux et suivez les décrets en temps réel.</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="openAuthModal('register')" class="btn-cyber px-4 py-1.5 text-xs font-bold uppercase whitespace-nowrap">Créer mon compte (D01)</button>
+                    <a href="#services-municipaux" class="text-xs text-[#4A607A] hover:text-[#00F0FF] uppercase tracking-wider underline">Explorer la ville</a>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                <!-- Left Column : Title, Pitch, Quick Stats -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center space-x-2 border border-[#9D00FF]/50 bg-[#9D00FF]/10 px-3 py-1 text-xs text-[#9D00FF] uppercase tracking-widest">
+                        <i class="fa-solid fa-satellite"></i>
+                        <span>Station Centrale & Dôme d'Exploration</span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-6xl font-black font-orbitron tracking-wider leading-none uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] via-[#E0F4FF] to-[#9D00FF] drop-shadow-[0_0_25px_rgba(0,240,255,0.35)]">
+                        TERRA NOVA
+                    </h1>
+
+                    <p class="text-base sm:text-lg text-[#E0F4FF]/85 max-w-2xl leading-relaxed">
+                        Première métropole orbitale et sanctuaire exoplanétaire de l'humanité. Le système numérique central relie les citoyens, les équipes techniques et le Haut Conseil au cœur d'un réseau vivant et évolutif.
+                    </p>
+
+                    <!-- Navigation Action Cards -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                        <a href="#services-municipaux" class="holo-card p-3 text-center hover:border-[#00F0FF] transition group">
+                            <i class="fa-solid fa-hospital-user text-xl text-[#00F0FF] mb-2 group-hover:scale-110 transition"></i>
+                            <div class="font-orbitron font-bold text-[11px] text-[#E0F4FF]">6 SERVICES</div>
+                            <div class="text-[9px] text-[#4A607A]">Pôles municipaux</div>
+                        </a>
+                        <a href="#annonces" class="holo-card p-3 text-center hover:border-[#00F0FF] transition group">
+                            <i class="fa-solid fa-newspaper text-xl text-[#00F0FF] mb-2 group-hover:scale-110 transition"></i>
+                            <div class="font-orbitron font-bold text-[11px] text-[#E0F4FF]">DÉCRETS</div>
+                            <div class="text-[9px] text-[#4A607A]">Journal officiel</div>
+                        </a>
+                        <a href="#demarches" class="holo-card p-3 text-center hover:border-[#FFB700] transition group">
+                            <i class="fa-solid fa-paper-plane text-xl text-[#FFB700] mb-2 group-hover:scale-110 transition"></i>
+                            <div class="font-orbitron font-bold text-[11px] text-[#FFB700]">SIGNALER</div>
+                            <div class="text-[9px] text-[#4A607A]">Doléance en ligne</div>
+                        </a>
+                        <a href="#espace-citoyen" class="holo-card p-3 text-center hover:border-[#9D00FF] transition group">
+                            <i class="fa-solid fa-id-card-clip text-xl text-[#9D00FF] mb-2 group-hover:scale-110 transition"></i>
+                            <div class="font-orbitron font-bold text-[11px] text-[#9D00FF]">MON PROFIL</div>
+                            <div class="text-[9px] text-[#4A607A]">Espace habitant</div>
+                        </a>
+                    </div>
+
+                    <!-- Telemetry Quick Bar -->
+                    <div class="grid grid-cols-3 gap-4 pt-4 border-t border-cyan-900/40">
+                        <div>
+                            <div class="text-[10px] text-[#4A607A] uppercase">Colons Enregistrés</div>
+                            <div class="text-xl font-orbitron font-bold text-[#00F0FF]" id="telemetry-pop">4 820 412</div>
+                        </div>
+                        <div>
+                            <div class="text-[10px] text-[#4A607A] uppercase">Bouclier Quantique</div>
+                            <div class="text-xl font-orbitron font-bold text-[#E0F4FF]">100% NOMINAL</div>
+                        </div>
+                        <div>
+                            <div class="text-[10px] text-[#4A607A] uppercase">Atmosphère Dômes</div>
+                            <div class="text-xl font-orbitron font-bold text-[#9D00FF]">78% N₂ / 21% O₂</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column : Realtime Tactical Dashboard -->
+                <div class="lg:col-span-5">
+                    <div class="holo-card p-6 rounded-none border border-[#00F0FF]/40 shadow-[0_0_35px_rgba(0,240,255,0.2)] relative">
+                        <div class="corner-tr"></div>
+                        <div class="corner-bl"></div>
+
+                        <!-- Card Header -->
+                        <div class="flex items-center justify-between pb-3 border-b border-cyan-900/60 mb-5">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 bg-[#00F0FF] rounded-full inline-block shadow-[0_0_8px_#00F0FF] animate-pulse"></span>
+                                <span class="font-orbitron text-xs uppercase text-[#E0F4FF] tracking-wider font-bold">MATRICE TÉLÉMÉTRIQUE ORBITALE</span>
+                            </div>
+                            <span class="text-[10px] text-[#4A607A] font-mono">FEED #TN-99</span>
+                        </div>
+
+                        <!-- Graphic Visualization -->
+                        <div class="relative h-64 bg-[#03070E]/95 border border-cyan-900/60 p-4 flex flex-col justify-between overflow-hidden">
+                            <!-- Tactical Radar Circle -->
+                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+                                <div class="w-48 h-48 border border-[#00F0FF] rounded-full border-dashed animate-spin" style="animation-duration: 25s;"></div>
+                                <div class="w-32 h-32 border border-[#9D00FF] rounded-full absolute"></div>
+                            </div>
+
+                            <!-- Realtime Updating Stats -->
+                            <div class="space-y-3 relative z-10 text-xs">
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-[#4A607A]">DISTRIBUTION PLASMA URBAIN</span>
+                                        <span class="text-[#00F0FF]" id="plasma-pct">87.4%</span>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-slate-900 overflow-hidden">
+                                        <div id="plasma-bar" class="h-full bg-gradient-to-r from-[#00F0FF] to-[#9D00FF] w-[87%] transition-all duration-500"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-[#4A607A]">INTÉGRITÉ PRESSION DÔME ALPHA</span>
+                                        <span class="text-[#E0F4FF]">99.8%</span>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-slate-900 overflow-hidden">
+                                        <div class="h-full bg-[#00F0FF] w-[99%]"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-[#4A607A]">FLUX DEMANDES CITOYENNES (24H)</span>
+                                        <span class="text-[#FFB700]" id="flux-requests-val">10 actives</span>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-slate-900 overflow-hidden">
+                                        <div class="h-full bg-[#FFB700] w-[65%]"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Realtime Logs Stream -->
+                            <div class="bg-black/80 p-2 border border-cyan-900/50 text-[10px] text-[#00F0FF]/90 font-mono h-20 overflow-hidden flex flex-col justify-end" id="terminal-logs">
+                                <div>[SYS_OK] Télémétrie orbitale stabilisée sur Terra Nova.</div>
+                                <div>[API_SYNC] Relais central connecté à https://24h.webcup.fr</div>
+                                <div>[SECURITY] Accréditation biolink active.</div>
+                            </div>
+                        </div>
+
+                        <!-- Card Footer Control -->
+                        <div class="mt-4 flex justify-between items-center text-xs">
+                            <span class="text-[#4A607A] text-[11px]">SYS_VER: 2.4.1 — WEBCUP 2026</span>
+                            <button onclick="triggerPurge()" class="text-[#FFB700] hover:underline uppercase tracking-wider text-[11px] flex items-center space-x-1">
+                                <i class="fa-solid fa-arrows-rotate"></i>
+                                <span>Recalibrer Matrice</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2 : SERVICES MUNICIPAUX DE TERRA NOVA (D05 - 250 XP) -->
+        <section id="services-municipaux" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-cyan-900/40">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
+                <div>
+                    <div class="inline-flex items-center space-x-2 text-xs text-[#00F0FF] uppercase tracking-widest mb-1">
+                        <i class="fa-solid fa-sitemap"></i>
+                        <span>CATALOGUE OFFICIEL (EXIGENCE D05 — 250 XP)</span>
+                    </div>
+                    <h2 class="text-3xl font-black font-orbitron text-[#00F0FF] uppercase tracking-wider">
+                        SERVICES MUNICIPAUX DE TERRA NOVA
+                    </h2>
+                    <p class="text-xs text-[#4A607A] mt-1 max-w-2xl">
+                        Consultez les 6 directions centrales de la colonie. Chaque service assure la pérennité, la sécurité et la qualité de vie des colons sur ce nouveau monde.
+                    </p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-[#4A607A]">Filtrer:</span>
+                    <button onclick="filterServices('all')" class="px-2.5 py-1 text-xs border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 service-filter-btn">Tous</button>
+                    <button onclick="filterServices('vital')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] service-filter-btn">Vitaux</button>
+                    <button onclick="filterServices('admin')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] service-filter-btn">Citoyenneté</button>
+                </div>
+            </div>
+
+            <!-- Services Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="services-grid">
+
+                <!-- Service 1 : Atmosphère & Biosphère -->
+                <div class="holo-card p-6 flex flex-col justify-between group hover:border-[#00F0FF] transition duration-300 service-item" data-category="vital">
+                    <div class="corner-tr"></div>
+                    <div class="corner-bl"></div>
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-10 h-10 border border-[#00F0FF]/40 bg-[#00F0FF]/10 flex items-center justify-center text-[#00F0FF] text-lg">
+                                <i class="fa-solid fa-wind"></i>
+                            </div>
+                            <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#00F0FF]/40 text-[#00F0FF] bg-[#00F0FF]/5">Pôle Vital</span>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-lg text-[#E0F4FF] mb-2 group-hover:text-[#00F0FF] transition">Dôme Atmosphère & Biosphère</h3>
+                        <p class="text-xs text-[#E0F4FF]/70 mb-4 leading-relaxed">
+                            Régulation continue du mélange respirable (78% N₂, 21% O₂), filtration des particules météoritiques et recyclage de l'eau lourde pour les 4 anneaux.
+                        </p>
+                        <div class="space-y-1.5 text-xs border-t border-cyan-900/50 pt-3 mb-4">
+                            <div class="flex justify-between text-[#4A607A]"><span>Localisation :</span> <span class="text-[#E0F4FF]">Anneau Zéro - Secteur A</span></div>
+                            <div class="flex justify-between text-[#4A607A]"><span>Permanence :</span> <span class="text-[#00F0FF]">24h/24 Cycles Stellaires</span></div>
+                            <div class="flex justify-between text-[#4A607A]"><span>Démarches :</span> <span class="text-[#FFB700]">Signalement fuite, Analyse O2</span></div>
+                        </div>
+                    </div>
+                    <button onclick="prefillContactForm('Atmosphère & Biosphère', 'Demande de recalibrage de module O2')"
+                        class="w-full btn-cyber py-2 text-xs uppercase font-bold tracking-wider flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        <span>Contacter ce Service</span>
+                    </button>
+                </div>
+
+                <!-- Service 2 : Réseaux & Transports Hyper-Tube -->
+                <div class="holo-card p-6 flex flex-col justify-between group hover:border-[#00F0FF] transition duration-300 service-item" data-category="vital">
+                    <div class="corner-tr"></div>
+                    <div class="corner-bl"></div>
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-10 h-10 border border-[#00F0FF]/40 bg-[#00F0FF]/10 flex items-center justify-center text-[#00F0FF] text-lg">
+                                <i class="fa-solid fa-train-subway"></i>
+                            </div>
+                            <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#00F0FF]/40 text-[#00F0FF] bg-[#00F0FF]/5">Mobilité</span>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-lg text-[#E0F4FF] mb-2 group-hover:text-[#00F0FF] transition">Transports & Hyper-Tubes</h3>
+                        <p class="text-xs text-[#E0F4FF]/70 mb-4 leading-relaxed">
+                            Réseau de capsules magnétiques sous vide à 1 200 km/h reliant les dômes résidentiels au spatioport orbital et aux complexes industriels.
+                        </p>
+                        <div class="space-y-1.5 text-xs border-t border-cyan-900/50 pt-3 mb-4">
+                            <div class="flex justify-between text-[#4A607A]"><span>Lignes actives :</span> <span class="text-[#E0F4FF]">6 Lignes Principales</span></div>
+                            <div class="flex justify-between text-[#4A607A]"><span>Fréquence :</span> <span class="text-[#00F0FF]">Toutes les 90 secondes</span></div>
+                            <div class="flex justify-between text-[#4A607A]"><span>Démarches :</span> <span class="text-[#FFB700]">Titre de transport, Bagages cargo</span></div>
+                        </div>
+                    </div>
+                    <button onclick="prefillContactForm('Transports & Hyper-Tubes', 'Réservation / Réclamation navette orbitale')"
+                        class="w-full btn-cyber py-2 text-xs uppercase font-bold tracking-wider flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        <span>Contacter ce Service</span>
+                    </button>
+                </div>
+
+                <!-- Service 3 : Énergie Plasma & Réacteur Singulier -->
+                <div class="holo-card p-6 flex flex-col justify-between group hover:border-[#9D00FF] transition duration-300 service-item" data-category="vital">
+                    <div class="corner-tr"></div>
+                    <div class="corner-bl"></div>
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-10 h-10 border border-[#9D00FF]/40 bg-[#9D00FF]/10 flex items-center justify-center text-[#9D00FF] text-lg">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                            <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#9D00FF]/40 text-[#9D00FF] bg-[#9D00FF]/5">Énergie</span>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-lg text-[#E0F4FF] mb-2 group-hover:text-[#9D00FF] transition">Énergie Plasma & Réacteur Zéro</h3>
+                        <p class="text-xs text-[#E0F4FF]/70 mb-4 leading-relaxed">
+                            Gestion de la micro-fusion quantique, distribution des mégawatts pour les boucliers extérieurs et allocation des crédits d'énergie aux foyers.
+                        </p>
+                        <div class="space-y-1.5 text-xs border-t border-cyan-900/50 pt-3 mb-4">
+                            <div class="flex justify-between text-[#4A607A]"><span>Rendement :</span> <span class="text-[#9D00FF]">99.98% Constant</span></div>
+                            <div class="flex justify-between text-[#4A607A]"><span>Quota foyer :</span> <span class="text-[#00F0FF]">450 kW/cycle</span></div>
+                            <div class="flex justify-between text-[#4A607A]"><span>Démarches :</span> <span class="text-[#FFB700]">Raccordement, Extension quota</span></div>
+                        </div>
+                    </div>
+                    <button onclick="prefillContactForm('Énergie Plasma & Réacteur Zéro', 'Augmentation de quota énergétique')"
+                        class="w-full btn-cyber btn-violet py-2 text-xs uppercase font-bold tracking-wider flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        <span>Contacter ce Service</span>
+                    </button>
+                </div>
+
+                <!-- Service 4 : Biotech & Cryo-Clinique Municipale -->
+                <div class="holo-card p-6 flex flex-col justify-between group hover:border-[#00F0FF] transition duration-300 service-item" data-category="vital">
+                    <div class="corner-tr"></div>
+                    <div class="corner-bl"></div>
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-10 h-10 border border-[#00F0FF]/40 bg-[#00F0FF]/10 flex items-center justify-center text-[#00F0FF] text-lg">
+                                <i class="fa-solid fa-heart-pulse"></i>
+                            </div>
+                            <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#00F0FF]/40 text-[#00F0FF] bg-[#00F0FF]/5">Santé</span>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-lg text-[#E0F4FF] mb-2 group-hover:text-[#00F0FF] transition">Santé Biotech & Cryo-Soins</h3>
+                        <p class="text-xs text-[#E0F4FF]/70 mb-4 leading-relaxed">
+                            Régénération cellulaire, suivi des implants biolinks, protocoles d'adaptation à la gravité d'exoplanète et traitement des traumatismes cosmiques.
+                        </p>
+                        <div class="space-y-1.5 text-xs border-t border-cyan-900/50 pt-3 mb-4">
+                            <div class="flex justify-between text-[#4A607A]"><span>Centres d'urgence :</span> <span class="text-[#E0F4FF]">4 Unités Cryo</span></div>
+                            <div class="flex justify-between text-[#4A607A]"><span>Télé-diagnostic :</span> <span class="text-[#00F0FF]">Instantané par Biolink</span></div>
+                            <div class="flex justify-between text-[#4A607A]"><span>Démarches :</span> <span class="text-[#FFB700]">Visite médicale, Certificat colon</span></div>
+                        </div>
+                    </div>
+                    <button onclick="prefillContactForm('Santé Biotech & Cryo-Soins', 'Demande de visite médicale colon')"
+                        class="w-full btn-cyber py-2 text-xs uppercase font-bold tracking-wider flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        <span>Contacter ce Service</span>
+                    </button>
+                </div>
+
+                <!-- Service 5 : Sécurité Urbaine & Boucliers -->
+                <div class="holo-card p-6 flex flex-col justify-between group hover:border-[#FFB700] transition duration-300 service-item" data-category="vital">
+                    <div class="corner-tr"></div>
+                    <div class="corner-bl"></div>
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-10 h-10 border border-[#FFB700]/40 bg-[#FFB700]/10 flex items-center justify-center text-[#FFB700] text-lg">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#FFB700]/40 text-[#FFB700] bg-[#FFB700]/5">Protection</span>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-lg text-[#E0F4FF] mb-2 group-hover:text-[#FFB700] transition">Sécurité Civile & Sentinelles</h3>
+                        <p class="text-xs text-[#E0F4FF]/70 mb-4 leading-relaxed">
+                            Surveillance automatisée des sas de décompression, patrouilles de drones sentinelles et maintien de la paix au sein des dômes de vie.
+                        </p>
+                        <div class="space-y-1.5 text-xs border-t border-cyan-900/50 pt-3 mb-4">
+                            <div class="flex justify-between text-[#4A607A]"><span>Intervention drone :</span> <span class="text-[#FFB700]">< 45 secondes</span></div>
+                            <div class="flex justify-between text-[#4A607A]"><span>Niveau alerte :</span> <span class="text-green-400">VERT (Nominal)</span></div>
+                            <div class="flex justify-between text-[#4A607A]"><span>Démarches :</span> <span class="text-[#FFB700]">Signalement incident, Badge sas</span></div>
+                        </div>
+                    </div>
+                    <button onclick="prefillContactForm('Sécurité Civile & Sentinelles', 'Signalement d\'anomalie de périmètre')"
+                        class="w-full btn-cyber btn-amber py-2 text-xs uppercase font-bold tracking-wider flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        <span>Contacter ce Service</span>
+                    </button>
+                </div>
+
+                <!-- Service 6 : État Civil, Enregistrement & Citoyenneté -->
+                <div class="holo-card p-6 flex flex-col justify-between group hover:border-[#00F0FF] transition duration-300 service-item" data-category="admin">
+                    <div class="corner-tr"></div>
+                    <div class="corner-bl"></div>
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-10 h-10 border border-[#00F0FF]/40 bg-[#00F0FF]/10 flex items-center justify-center text-[#00F0FF] text-lg">
+                                <i class="fa-solid fa-id-card"></i>
+                            </div>
+                            <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#00F0FF]/40 text-[#00F0FF] bg-[#00F0FF]/5">Citoyenneté</span>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-lg text-[#E0F4FF] mb-2 group-hover:text-[#00F0FF] transition">Mairie & État Civil Spatial</h3>
+                        <p class="text-xs text-[#E0F4FF]/70 mb-4 leading-relaxed">
+                            Attribution des matricules de citoyenneté spatiale, enregistrement des naissances et mariages sous dôme, et gestion des titres de propriété.
+                        </p>
+                        <div class="space-y-1.5 text-xs border-t border-cyan-900/50 pt-3 mb-4">
+                            <div class="flex justify-between text-[#4A607A]"><span>Délai matricule :</span> <span class="text-[#00F0FF]">Immédiat (Digital)</span></div>
+                            <div class="flex justify-between text-[#4A607A]"><span>Guichet central :</span> <span class="text-[#E0F4FF]">Dôme Administratif</span></div>
+                            <div class="flex justify-between text-[#4A607A]"><span>Démarches :</span> <span class="text-[#FFB700]">Création de compte, Changement dôme</span></div>
+                        </div>
+                    </div>
+                    <button onclick="openAuthModal('register')"
+                        class="w-full btn-cyber py-2 text-xs uppercase font-bold tracking-wider flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-user-plus text-[10px]"></i>
+                        <span>Enregistrer un Nouvel Habitant (D01)</span>
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 3 : ANNONCES & DÉCRETS DE LA MAIRIE (D06 - 250 XP) -->
+        <section id="annonces" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-cyan-900/40">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
+                <div>
+                    <div class="inline-flex items-center space-x-2 text-xs text-[#00F0FF] uppercase tracking-widest mb-1">
+                        <i class="fa-solid fa-scroll"></i>
+                        <span>INFORMATIONS OFFICIELLES (EXIGENCE D06 — 250 XP)</span>
+                    </div>
+                    <h2 class="text-3xl font-black font-orbitron text-[#00F0FF] uppercase tracking-wider">
+                        ANNONCES MUNICIPALES & DÉCRETS DU CONSEIL
+                    </h2>
+                    <p class="text-xs text-[#4A607A] mt-1 max-w-2xl">
+                        Le Haut Conseil et la Mairie publient régulièrement les décrets de gestion urbaine, alertes solaires et annonces de travaux d'infrastructures.
+                    </p>
+                </div>
+                <!-- Category Filter -->
+                <div class="flex flex-wrap gap-2 text-xs">
+                    <button onclick="filterNews('all')" class="px-3 py-1 border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 news-filter-btn">Toutes</button>
+                    <button onclick="filterNews('decret')" class="px-3 py-1 border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] news-filter-btn">Décrets</button>
+                    <button onclick="filterNews('alerte')" class="px-3 py-1 border border-cyan-900 text-[#4A607A] hover:text-[#FFB700] news-filter-btn">Alertes</button>
+                    <button onclick="filterNews('service')" class="px-3 py-1 border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] news-filter-btn">Services</button>
+                </div>
+            </div>
+
+            <!-- News Articles Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="news-grid">
+
+                <!-- Article 1 : Décret -->
+                <div class="holo-card p-6 flex flex-col justify-between hover:border-[#00F0FF] transition news-card" data-category="decret">
+                    <div class="corner-tr"></div>
+                    <div class="corner-bl"></div>
+                    <div>
+                        <div class="flex justify-between items-center mb-3 text-[10px]">
+                            <span class="bg-[#00F0FF]/10 text-[#00F0FF] px-2 py-0.5 border border-[#00F0FF]/30 font-orbitron font-bold">DÉCRET N° 2842-01</span>
+                            <span class="text-[#4A607A] font-mono">CYCLE ST-44</span>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-base text-[#E0F4FF] mb-2 hover:text-[#00F0FF] cursor-pointer" onclick="openNewsDetail(0)">
+                            Ouverture Officielle du Portail Numérique Citoyen
+                        </h3>
+                        <p class="text-xs text-[#E0F4FF]/70 mb-4 leading-relaxed line-clamp-3">
+                            Par décision unanime du Haut Conseil, la plateforme centrale de Terra Nova entre en phase opérationnelle. Chaque colon est invité à enregistrer son matricule d'accès pour utiliser les services municipaux.
+                        </p>
+                    </div>
+                    <div class="border-t border-cyan-900/40 pt-3 flex justify-between items-center text-xs">
+                        <span class="text-[#4A607A] text-[10px]">Mairie de Terra Nova</span>
+                        <button onclick="openNewsDetail(0)" class="text-[#00F0FF] hover:underline font-bold text-xs flex items-center gap-1">
+                            <span>Lire le décret</span>
+                            <i class="fa-solid fa-angle-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Article 2 : Alerte -->
+                <div class="holo-card p-6 flex flex-col justify-between hover:border-[#FFB700] transition news-card" data-category="alerte">
+                    <div class="corner-tr"></div>
+                    <div class="corner-bl"></div>
+                    <div>
+                        <div class="flex justify-between items-center mb-3 text-[10px]">
+                            <span class="bg-[#FFB700]/10 text-[#FFB700] px-2 py-0.5 border border-[#FFB700]/30 font-orbitron font-bold">ALERTE MÉTÉO COSMIQUE</span>
+                            <span class="text-[#4A607A] font-mono">CYCLE ST-43</span>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-base text-[#E0F4FF] mb-2 hover:text-[#FFB700] cursor-pointer" onclick="openNewsDetail(1)">
+                            Passage d'Orage Ionique : Renforcement des Boucliers
+                        </h3>
+                        <p class="text-xs text-[#E0F4FF]/70 mb-4 leading-relaxed line-clamp-3">
+                            Le Service de Défense informe les colons du Dôme Alpha qu'une fluctuation ionique traversera le secteur orbital. Les communications et transports de surface pourront subir de légères perturbations.
+                        </p>
+                    </div>
+                    <div class="border-t border-cyan-900/40 pt-3 flex justify-between items-center text-xs">
+                        <span class="text-[#4A607A] text-[10px]">Sécurité Civile</span>
+                        <button onclick="openNewsDetail(1)" class="text-[#FFB700] hover:underline font-bold text-xs flex items-center gap-1">
+                            <span>Consulter l'alerte</span>
+                            <i class="fa-solid fa-angle-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Article 3 : Service -->
+                <div class="holo-card p-6 flex flex-col justify-between hover:border-[#9D00FF] transition news-card" data-category="service">
+                    <div class="corner-tr"></div>
+                    <div class="corner-bl"></div>
+                    <div>
+                        <div class="flex justify-between items-center mb-3 text-[10px]">
+                            <span class="bg-[#9D00FF]/10 text-[#9D00FF] px-2 py-0.5 border border-[#9D00FF]/30 font-orbitron font-bold">INFO TRAVAUX</span>
+                            <span class="text-[#4A607A] font-mono">CYCLE ST-41</span>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-base text-[#E0F4FF] mb-2 hover:text-[#9D00FF] cursor-pointer" onclick="openNewsDetail(2)">
+                            Nouvelle Ligne d'Hyper-Tube vers les Serres d'Orion
+                        </h3>
+                        <p class="text-xs text-[#E0F4FF]/70 mb-4 leading-relaxed line-clamp-3">
+                            La Direction des Transports annonce la mise en service de la navette magnétique express reliant le secteur résidentiel aux fermes hydroponiques en seulement 3 minutes.
+                        </p>
+                    </div>
+                    <div class="border-t border-cyan-900/40 pt-3 flex justify-between items-center text-xs">
+                        <span class="text-[#4A607A] text-[10px]">Direction Transports</span>
+                        <button onclick="openNewsDetail(2)" class="text-[#9D00FF] hover:underline font-bold text-xs flex items-center gap-1">
+                            <span>Voir les détails</span>
+                            <i class="fa-solid fa-angle-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 4 : FORMULAIRE DE CONTACT & DOLÉANCE CITOYENNE (D04 - 250 XP) -->
+        <section id="demarches" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-cyan-900/40">
+            <div class="holo-card p-8 border border-cyan-900/80 shadow-[0_0_40px_rgba(0,240,255,0.15)] relative">
+                <div class="corner-tr"></div>
+                <div class="corner-bl"></div>
+
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center space-x-2 text-xs text-[#FFB700] uppercase tracking-widest mb-1">
+                        <i class="fa-solid fa-envelope-open-text"></i>
+                        <span>RELATIONS CITOYENNES (EXIGENCE D04 — 250 XP)</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-bold font-orbitron text-[#00F0FF] uppercase tracking-wider mb-2">
+                        TRANSMISSION AUX SERVICES MUNICIPAUX
+                    </h2>
+                    <p class="text-xs text-[#4A607A] max-w-lg mx-auto">
+                        Une question, une difficulté ou un signalement dans votre dôme ? Soumettez votre message directement à l'administration de Terra Nova. Un récépissé horodaté avec ticket de suivi vous est immédiatement attribué.
+                    </p>
+                </div>
+
+                <!-- Formulaire D04 -->
+                <form id="contact-municipal-form" onsubmit="handleContactMunicipal(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Identité Colon -->
+                        <div class="flex flex-col space-y-2">
+                            <label class="text-xs text-[#4A607A] uppercase tracking-wider flex items-center justify-between">
+                                <span>Nom du Citoyen / Matricule</span>
+                                <span class="text-[10px] text-[#00F0FF]" id="contact-user-hint">Anonyme ou Colon</span>
+                            </label>
+                            <input type="text" id="contact-name" required placeholder="ex: Kaelen Vance (TN-2842-8812)" class="cyber-input py-2 px-2 text-xs">
+                        </div>
+
+                        <!-- Service Ciblé -->
+                        <div class="flex flex-col space-y-2">
+                            <label class="text-xs text-[#4A607A] uppercase tracking-wider">Service Municipal Destinataire</label>
+                            <select id="contact-service" required class="cyber-input py-2 px-2 text-xs bg-[#03070E] text-[#E0F4FF] cursor-pointer">
+                                <option value="Atmosphère & Biosphère">Atmosphère & Biosphère (Qualité d'air, fluides)</option>
+                                <option value="Transports & Hyper-Tubes">Transports & Hyper-Tubes (Navettes, voirie)</option>
+                                <option value="Énergie Plasma & Réacteur Zéro">Énergie Plasma (Alimentation, quotas)</option>
+                                <option value="Santé Biotech & Cryo-Soins">Santé Biotech & Cryo-Soins (Clinique, biolinks)</option>
+                                <option value="Sécurité Civile & Sentinelles">Sécurité Civile (Drones, incidents)</option>
+                                <option value="Mairie & État Civil Spatial">Mairie & État Civil (Administratif, matricules)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Catégorie / Priorité -->
+                        <div class="flex flex-col space-y-2">
+                            <label class="text-xs text-[#4A607A] uppercase tracking-wider">Type de Démarche</label>
+                            <select id="contact-category" class="cyber-input py-2 px-2 text-xs bg-[#03070E] text-[#E0F4FF] cursor-pointer">
+                                <option value="Question">Demande d'information générale</option>
+                                <option value="Signalement Incident">Signalement d'anomalie ou dysfonctionnement</option>
+                                <option value="Doléance Urbaine">Doléance d'aménagement de quartier</option>
+                                <option value="Urgence Non Vitale">Assistance technique prioritaire</option>
+                            </select>
+                        </div>
+
+                        <!-- Urgence -->
+                        <div class="flex flex-col space-y-2">
+                            <label class="text-xs text-[#4A607A] uppercase tracking-wider">Niveau d'Urgence Déclaré</label>
+                            <select id="contact-priority" class="cyber-input py-2 px-2 text-xs bg-[#03070E] text-[#E0F4FF] cursor-pointer">
+                                <option value="Normal">🟢 Normal (Traitement standard sous 24h)</option>
+                                <option value="Élevé">🟡 Élevé (Priorité technique sous 6h)</option>
+                                <option value="Critique">🔴 Critique (Alerte d'intervention immédiate)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Objet & Message -->
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-xs text-[#4A607A] uppercase tracking-wider">Objet de la Demande</label>
+                        <input type="text" id="contact-subject" required placeholder="ex: Baisse de pression dans le conduit secondaire du Dôme B" class="cyber-input py-2 px-2 text-xs">
+                    </div>
+
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-xs text-[#4A607A] uppercase tracking-wider">Description Détaillée du Besoin</label>
+                        <textarea id="contact-message" rows="4" required placeholder="Expliquez clairement votre problème ou votre requête aux agents municipaux..." class="cyber-input py-2 px-2 text-xs resize-none"></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-2 flex flex-col sm:flex-row justify-between items-center gap-4">
+                        <span class="text-[10px] text-[#4A607A]">
+                            <i class="fa-solid fa-lock text-[#00F0FF] mr-1"></i> Transmission chiffrée selon le protocole Aethel-Quantum.
+                        </span>
+                        <button type="submit" class="btn-cyber btn-amber px-8 py-3 text-xs font-bold tracking-widest uppercase flex items-center space-x-2 w-full sm:w-auto justify-center">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Transmettre à la Mairie</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Receipt Modal / Box (Generated upon submission) -->
+                <div id="contact-receipt" class="mt-6 p-4 bg-[#00F0FF]/10 border border-[#00F0FF] text-xs hidden">
+                    <div class="flex items-center space-x-2 text-[#00F0FF] font-orbitron font-bold mb-2">
+                        <i class="fa-solid fa-circle-check text-base"></i>
+                        <span>TRANSMISSION CONFIRMÉE — RÉCÉPISSÉ MUNICIPAL OFFICIEL</span>
+                    </div>
+                    <div class="text-[#E0F4FF] mb-2 leading-relaxed" id="receipt-text">
+                        Votre démarche a été enregistrée avec succès auprès du service municipal concerné.
+                    </div>
+                    <div class="p-2 bg-[#03070E] border border-cyan-900/60 font-mono text-[11px] flex justify-between items-center">
+                        <span class="text-[#4A607A]">NUMÉRO DE SUIVI :</span>
+                        <span class="text-[#FFB700] font-bold" id="receipt-ticket-id">TK-TN-8492</span>
+                    </div>
+                    <div class="mt-3 text-[10px] text-[#4A607A] flex justify-between">
+                        <span>Ce ticket est désormais consultable dans votre Espace Citoyen et a été transmis aux Agents.</span>
+                        <a href="#espace-citoyen" class="text-[#00F0FF] hover:underline font-bold">Voir mon espace &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5 : ESPACE PERSONNEL CITOYEN (D01 & D03 - 500 XP) -->
+        <section id="espace-citoyen" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-cyan-900/40">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
+                <div>
+                    <div class="inline-flex items-center space-x-2 text-xs text-[#00F0FF] uppercase tracking-widest mb-1">
+                        <i class="fa-solid fa-user-astronaut"></i>
+                        <span>ESPACE PERSONNEL SÉCURISÉ (EXIGENCES D01 & D03 — 500 XP)</span>
+                    </div>
+                    <h2 class="text-3xl font-black font-orbitron text-[#00F0FF] uppercase tracking-wider">
+                        PORTAIL CITOYEN DE TERRA NOVA
+                    </h2>
+                    <p class="text-xs text-[#4A607A] mt-1 max-w-xl">
+                        Retrouvez votre matricule de colon, votre dôme de rattachement, l'historique de vos démarches et le suivi en temps réel de vos requêtes administratives.
+                    </p>
+                </div>
+                <div class="flex items-center gap-3" id="citizen-auth-actions">
+                    <button onclick="openAuthModal('login')" class="btn-cyber px-4 py-2 text-xs font-bold uppercase">Se Connecter</button>
+                    <button onclick="openAuthModal('register')" class="btn-cyber btn-amber px-4 py-2 text-xs font-bold uppercase">Créer un Compte</button>
+                </div>
+            </div>
+
+            <!-- Citizen Dashboard (shown if logged in or default demo colon) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+                <!-- Left Column : Citizen Identity Card -->
+                <div class="lg:col-span-4">
+                    <div class="holo-card p-6 border border-[#00F0FF]/40 relative">
+                        <div class="corner-tr"></div>
+                        <div class="corner-bl"></div>
+
+                        <!-- Card Header & Badge -->
+                        <div class="flex items-center justify-between pb-4 border-b border-cyan-900/60 mb-5">
+                            <span class="text-[10px] uppercase font-orbitron text-[#00F0FF] tracking-wider">PASSEPORT COLONIAL OFFICIEL</span>
+                            <span class="text-[9px] bg-green-500/20 text-green-400 border border-green-500/40 px-2 py-0.5 rounded font-mono">VALIDE</span>
+                        </div>
+
+                        <!-- Holographic Avatar & Info -->
+                        <div class="flex items-center space-x-4 mb-6">
+                            <div class="w-16 h-16 border-2 border-[#00F0FF] bg-[#00F0FF]/10 flex items-center justify-center text-2xl text-[#00F0FF] shadow-[0_0_20px_rgba(0,240,255,0.4)] relative">
+                                <i class="fa-solid fa-user-astronaut"></i>
+                                <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border border-black"></span>
+                            </div>
+                            <div>
+                                <div class="font-orbitron font-bold text-lg text-[#E0F4FF]" id="citizen-display-name">Kaelen Vance</div>
+                                <div class="text-xs text-[#00F0FF] font-mono" id="citizen-display-id">TN-2842-8812</div>
+                                <div class="text-[10px] text-[#4A607A] uppercase mt-0.5" id="citizen-display-role">Spécialiste Biolink & Végétation</div>
+                            </div>
+                        </div>
+
+                        <!-- Details List -->
+                        <div class="space-y-2 text-xs border-t border-cyan-900/40 pt-4 mb-6">
+                            <div class="flex justify-between">
+                                <span class="text-[#4A607A]">Secteur Domicile :</span>
+                                <span class="text-[#E0F4FF]" id="citizen-display-dome">Dôme Alpha - Bloc 4</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-[#4A607A]">Date d'Arrimage :</span>
+                                <span class="text-[#E0F4FF]">Cycle 2842.10.01</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-[#4A607A]">Statut Juridique :</span>
+                                <span class="text-[#00F0FF]">Colon de Plein Droit</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-[#4A607A]">Allocation Plasma :</span>
+                                <span class="text-[#9D00FF]">450/450 kW (Nominal)</span>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex flex-col gap-2">
+                            <button onclick="openAuthModal('switch')" class="btn-cyber py-2 text-xs uppercase font-bold tracking-wider text-center">
+                                Changer de Compte
+                            </button>
+                            <button onclick="logoutCitizen()" class="text-xs text-[#4A607A] hover:text-red-400 text-center py-1 transition">
+                                <i class="fa-solid fa-power-off mr-1"></i> Déconnexion
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column : Citizen Active Demarches & Tickets -->
+                <div class="lg:col-span-8">
+                    <div class="holo-card p-6 border border-cyan-900/60 relative">
+                        <div class="corner-tr"></div>
+                        <div class="corner-bl"></div>
+
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-cyan-900/60 mb-6 gap-2">
+                            <div>
+                                <h3 class="font-orbitron font-bold text-base text-[#00F0FF] uppercase">
+                                    MES DÉMARCHES & REQUÊTES EN COURS
+                                </h3>
+                                <p class="text-[11px] text-[#4A607A]">Suivi en direct des tickets envoyés aux services municipaux.</p>
+                            </div>
+                            <a href="#demarches" class="btn-cyber btn-amber px-3 py-1.5 text-xs font-bold uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-plus text-[10px]"></i>
+                                <span>Nouvelle Démarche (D04)</span>
+                            </a>
+                        </div>
+
+                        <!-- Ticket List Table / Cards -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead>
+                                    <tr class="border-b border-cyan-900/50 text-[#4A607A] uppercase text-[10px]">
+                                        <th class="py-2 px-3">N° Ticket</th>
+                                        <th class="py-2 px-3">Service</th>
+                                        <th class="py-2 px-3">Objet</th>
+                                        <th class="py-2 px-3">Urgence</th>
+                                        <th class="py-2 px-3">Statut</th>
+                                        <th class="py-2 px-3 text-right">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="citizen-tickets-tbody" class="divide-y divide-cyan-950/60">
+                                    <!-- Injected via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Empty state if no tickets -->
+                        <div id="no-tickets-msg" class="py-8 text-center text-xs text-[#4A607A] hidden">
+                            <i class="fa-regular fa-folder-open text-2xl text-[#4A607A] mb-2 block"></i>
+                            Aucune démarche active pour le moment. Utilisez le formulaire de signalement pour transmettre votre premier besoin.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 6 : ESPACE DE TRAVAIL DES SERVICES MUNICIPAUX / AGENTS (D19 & F22 - 1000 XP) -->
+        <section id="espace-agent" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-cyan-900/40">
+            <!-- Access Guard Notice (D08 & D09 RBAC) -->
+            <div id="agent-restricted-banner" class="hidden holo-card p-6 border-red-500/80 mb-8 bg-red-950/20 text-center">
+                <div class="text-red-400 font-orbitron font-bold text-base mb-2 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+                    <span>ACCÈS RESTREINT — ZONE RÉSERVÉE AUX AGENTS MUNICIPAUX (D09 RBAC)</span>
+                </div>
+                <p class="text-xs text-[#E0F4FF]/80 max-w-xl mx-auto mb-4">
+                    Votre profil actuel est configuré en mode <strong>Citoyen</strong>. Selon les protocoles de sécurité de Terra Nova (D09), les citoyens ne peuvent pas accéder aux outils techniques internes ni aux fonctions sensibles de gestion des demandes.
+                </p>
+                <button onclick="switchRole('agent')" class="btn-cyber btn-violet px-6 py-2 text-xs font-bold uppercase">
+                    Basculer sur le Profil Agent Municipal pour Tester
+                </button>
+            </div>
+
+            <!-- Full Agent Workspace (Visible when Role is Agent or Admin) -->
+            <div id="agent-workspace-content" class="space-y-12">
+
+                <!-- Header Workspace -->
+                <div class="holo-card p-6 border border-[#9D00FF]/50 relative">
+                    <div class="corner-tr"></div>
+                    <div class="corner-bl"></div>
+
+                    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 pb-6 border-b border-cyan-900/50">
+                        <div>
+                            <div class="inline-flex items-center space-x-2 text-xs text-[#9D00FF] uppercase tracking-widest mb-1">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <span>ESPACE DE TRAVAIL DES AGENTS (EXIGENCES D19 & F22 — 1000 XP)</span>
+                            </div>
+                            <h2 class="text-2xl sm:text-3xl font-black font-orbitron text-[#E0F4FF] uppercase tracking-wider flex items-center gap-3">
+                                <span>BACKOFFICE DE SUPERVISION MUNICIPALE</span>
+                                <span class="text-xs bg-[#9D00FF]/20 text-[#9D00FF] border border-[#9D00FF]/50 px-2 py-0.5 rounded font-mono">D19 DIFFICILES (750 XP)</span>
+                            </h2>
+                            <p class="text-xs text-[#4A607A] mt-1">
+                                Supervision en temps réel des flux API de Terra Nova, suivi des vagues du concours Webcup et traitement opérationnel des demandes citoyennes.
+                            </p>
+                        </div>
+
+                        <!-- Live Controls & Refresh -->
+                        <div class="flex flex-wrap items-center gap-3">
+                            <div class="text-xs font-mono text-[#00F0FF] bg-[#03070E] px-3 py-2 border border-cyan-900 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-[#00F0FF] animate-ping"></span>
+                                <span id="agent-poll-timer">Auto-refresh: 30s</span>
+                            </div>
+                            <button onclick="fetchRequests(true)" class="btn-cyber px-4 py-2 text-xs font-bold uppercase flex items-center gap-2">
+                                <i class="fa-solid fa-arrows-rotate"></i>
+                                <span>Actualiser l'API</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Metrics Grid (Session API State) -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+                        <div class="bg-[#03070E]/90 border border-cyan-900/60 p-4">
+                            <div class="text-[10px] text-[#4A607A] uppercase font-orbitron">Statut Session API</div>
+                            <div id="sessStatus" class="text-xl font-bold font-orbitron text-[#00F0FF]">ACTIF</div>
+                            <div class="text-[9px] text-green-400 mt-0.5 font-mono">En cours d'exécution</div>
+                        </div>
+                        <div class="bg-[#03070E]/90 border border-cyan-900/60 p-4">
+                            <div class="text-[10px] text-[#4A607A] uppercase font-orbitron">Vague Actuelle</div>
+                            <div id="sessWave" class="text-xl font-bold font-orbitron text-[#E0F4FF]">0</div>
+                            <div class="text-[9px] text-[#4A607A] mt-0.5 font-mono" id="sessElapsed">Écoulé: 0 min</div>
+                        </div>
+                        <div class="bg-[#03070E]/90 border border-cyan-900/60 p-4">
+                            <div class="text-[10px] text-[#4A607A] uppercase font-orbitron">Demandes Accessibles</div>
+                            <div id="sessCount" class="text-xl font-bold font-orbitron text-[#FFB700]">10</div>
+                            <div class="text-[9px] text-[#4A607A] mt-0.5 font-mono" id="sessInitialCount">10 initiales</div>
+                        </div>
+                        <div class="bg-[#03070E]/90 border border-cyan-900/60 p-4">
+                            <div class="text-[10px] text-[#4A607A] uppercase font-orbitron">Prochaine Vague</div>
+                            <div id="sessNextWave" class="text-xl font-bold font-orbitron text-[#9D00FF]">Vague 1</div>
+                            <div class="text-[9px] text-[#9D00FF] mt-0.5 font-mono" id="sessNextWaveMinutes">Dans ~75 min</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUB-PART A : MODULE F22 — GESTIONNAIRE DES DEMANDES DES HABITANTS (250 XP) -->
+                <div class="holo-card p-6 border border-[#FFB700]/40 relative">
+                    <div class="corner-tr"></div>
+                    <div class="corner-bl"></div>
+
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-cyan-900/60 mb-6 gap-2">
+                        <div>
+                            <div class="inline-flex items-center space-x-2 text-xs text-[#FFB700] uppercase tracking-widest mb-0.5">
+                                <i class="fa-solid fa-list-check"></i>
+                                <span>TRAITEMENT DES REQUÊTES HABITANTS (EXIGENCE F22 — 250 XP)</span>
+                            </div>
+                            <h3 class="font-orbitron font-bold text-lg text-[#E0F4FF] uppercase">
+                                GESTIONNAIRE TECHNIQUE DES DEMANDES CITOYENNES
+                            </h3>
+                            <p class="text-xs text-[#4A607A]">
+                                Traitez les sollicitations reçues des habitants de Terra Nova. Mettez à jour leur état pour informer les citoyens en temps réel.
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="filterAgentTickets('all')" class="px-2.5 py-1 text-xs border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 agent-ticket-filter">Toutes (<span id="count-agent-all">0</span>)</button>
+                            <button onclick="filterAgentTickets('pending')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#FFB700] agent-ticket-filter">En attente (<span id="count-agent-pending">0</span>)</button>
+                            <button onclick="filterAgentTickets('progress')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] agent-ticket-filter">En cours (<span id="count-agent-progress">0</span>)</button>
+                            <button onclick="filterAgentTickets('resolved')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-green-400 agent-ticket-filter">Résolues (<span id="count-agent-resolved">0</span>)</button>
+                        </div>
+                    </div>
+
+                    <!-- Tickets Table for Agents -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="border-b border-cyan-900/60 text-[#4A607A] uppercase text-[10px]">
+                                    <th class="py-2.5 px-3">Ticket</th>
+                                    <th class="py-2.5 px-3">Citoyen</th>
+                                    <th class="py-2.5 px-3">Service Concerne</th>
+                                    <th class="py-2.5 px-3">Objet & Message</th>
+                                    <th class="py-2.5 px-3">Urgence</th>
+                                    <th class="py-2.5 px-3">Statut Actuel</th>
+                                    <th class="py-2.5 px-3 text-right">Action Agent</th>
+                                </tr>
+                            </thead>
+                            <tbody id="agent-tickets-tbody" class="divide-y divide-cyan-950/60">
+                                <!-- Injected via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- SUB-PART B : MODULE D19 — FLUX EN DIRECT DES DEMANDES DE L'API WEBCUP (750 XP) -->
+                <div>
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4">
+                        <div>
+                            <div class="inline-flex items-center space-x-2 text-xs text-[#00F0FF] uppercase tracking-widest mb-1">
+                                <i class="fa-solid fa-code-pull-request"></i>
+                                <span>FLUX D'INFRASTRUCTURE (EXIGENCE D19 — 750 XP)</span>
+                            </div>
+                            <h3 class="text-xl sm:text-2xl font-black font-orbitron text-[#00F0FF] uppercase tracking-wider">
+                                DEMANDES TRANSMISES PAR L'API WEBCUP (NOVA TERRA)
+                            </h3>
+                            <p class="text-xs text-[#4A607A] mt-1">
+                                Flux dynamique consommé via l'API officielle. Utilisez les filtres ci-dessous pour analyser chaque demande, son barème en XP et son niveau de difficulté.
+                            </p>
+                        </div>
+
+                        <!-- Filter buttons for API requests -->
+                        <div class="flex flex-wrap items-center gap-2 text-xs">
+                            <span class="text-[#4A607A] text-[11px]">Difficulté:</span>
+                            <button onclick="filterApiRequests('all')" class="px-2.5 py-1 text-xs border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 api-filter-btn">Toutes</button>
+                            <button onclick="filterApiRequests('Facile')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-green-400 api-filter-btn">Facile (250 XP)</button>
+                            <button onclick="filterApiRequests('Moyenne')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] api-filter-btn">Moyenne (500 XP)</button>
+                            <button onclick="filterApiRequests('Difficile')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#FFB700] api-filter-btn">Difficile (750 XP)</button>
+                        </div>
+                    </div>
+
+                    <!-- Requests Grid (Dynamically rendered cards) -->
+                    <div id="requestsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Les cartes API sont injectées dynamiquement via JavaScript -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+    <!-- FOOTER OFFICIEL -->
+    <footer class="border-t border-cyan-900/50 bg-[#03070E] py-8 relative z-10 text-xs text-[#4A607A]">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div>
+                © 2026-2842 DIRECTION DU HAUT CONSEIL DE TERRA NOVA — 24H BY WEBCUP.
+            </div>
+            <div class="flex space-x-6 text-[#00F0FF]/60 font-mono text-[11px]">
+                <a href="#services-municipaux" class="hover:text-[#00F0FF] transition">SERVICES URBAINS</a>
+                <a href="#annonces" class="hover:text-[#00F0FF] transition">JOURNAL OFFICIEL</a>
+                <a href="#espace-citoyen" class="hover:text-[#00F0FF] transition">PORTAIL HABITANT</a>
+                <a href="#espace-agent" class="hover:text-[#00F0FF] transition">SUPERVISION TECHNIQUE</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODALE 1 : AUTHENTIFICATION CITOYENNE (D01 & D03) -->
+    <div id="auth-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="holo-card max-w-md w-full p-6 border border-[#00F0FF] shadow-[0_0_50px_rgba(0,240,255,0.35)] relative">
+            <div class="corner-tr"></div>
+            <div class="corner-bl"></div>
+
+            <div class="flex justify-between items-center pb-3 border-b border-cyan-900/60 mb-5">
+                <span class="font-orbitron text-sm font-bold text-[#00F0FF] flex items-center space-x-2">
+                    <i class="fa-solid fa-fingerprint"></i>
+                    <span id="auth-modal-title">ACCÈS CITOYEN TERRA NOVA</span>
+                </span>
+                <button onclick="closeAuthModal()" class="text-[#4A607A] hover:text-[#00F0FF] text-lg font-bold">✕</button>
+            </div>
+
+            <!-- Tabs : Inscription / Connexion -->
+            <div class="flex border-b border-cyan-900/60 mb-6 text-xs">
+                <button id="tab-login" onclick="setAuthTab('login')" class="flex-1 py-2 font-orbitron font-bold text-[#00F0FF] border-b-2 border-[#00F0FF] text-center">
+                    CONNEXION (D03)
+                </button>
+                <button id="tab-register" onclick="setAuthTab('register')" class="flex-1 py-2 font-orbitron font-bold text-[#4A607A] border-b-2 border-transparent text-center hover:text-[#00F0FF]">
+                    INSCRIPTION NOUVEAU COLON (D01)
+                </button>
+            </div>
+
+            <!-- Form Connexion -->
+            <form id="form-login" onsubmit="handleLoginSubmit(event)" class="space-y-4">
+                <div class="flex flex-col space-y-1.5">
+                    <label class="text-xs text-[#4A607A] uppercase">Matricule Citoyen ou Nom</label>
+                    <input type="text" id="login-matricule" required placeholder="ex: TN-2842-8812 ou Kaelen Vance" class="cyber-input py-2 px-2 text-xs">
+                </div>
+                <div class="flex flex-col space-y-1.5">
+                    <label class="text-xs text-[#4A607A] uppercase">Empreinte Cryptographique / Code</label>
+                    <input type="password" id="login-pwd" required placeholder="••••••••••••" class="cyber-input py-2 px-2 text-xs">
+                </div>
+                <div class="pt-2">
+                    <button type="submit" class="w-full btn-cyber py-2.5 text-xs font-bold uppercase tracking-wider">
+                        S'authentifier sur le Portail
+                    </button>
+                </div>
+                <div class="text-[11px] text-[#4A607A] text-center pt-2">
+                    Pas encore de matricule ? <a href="javascript:setAuthTab('register')" class="text-[#00F0FF] hover:underline">Créer un compte colon</a>
+                </div>
+            </form>
+
+            <!-- Form Inscription (D01) -->
+            <form id="form-register" onsubmit="handleRegisterSubmit(event)" class="space-y-4 hidden">
+                <div class="flex flex-col space-y-1.5">
+                    <label class="text-xs text-[#4A607A] uppercase">Nom & Prénom du Colon</label>
+                    <input type="text" id="reg-name" required placeholder="ex: Thalia Kren" class="cyber-input py-2 px-2 text-xs">
+                </div>
+                <div class="flex flex-col space-y-1.5">
+                    <label class="text-xs text-[#4A607A] uppercase">Spécialisation / Profession</label>
+                    <select id="reg-role" class="cyber-input py-2 px-2 text-xs bg-[#03070E] text-[#E0F4FF]">
+                        <option value="Ingénieur Systèmes Plasma">Ingénieur Systèmes Plasma</option>
+                        <option value="Biologiste / Dôme Atmosphère">Biologiste / Dôme Atmosphère</option>
+                        <option value="Pilote Navette Orbitale">Pilote Navette Orbitale</option>
+                        <option value="Médecin Biotech & Cryo">Médecin Biotech & Cryo</option>
+                        <option value="Sentinelle Sécurité Urbaine">Sentinelle Sécurité Urbaine</option>
+                        <option value="Citoyen Colon">Citoyen Colon</option>
+                    </select>
+                </div>
+                <div class="flex flex-col space-y-1.5">
+                    <label class="text-xs text-[#4A607A] uppercase">Dôme de Résidence Assigné</label>
+                    <select id="reg-dome" class="cyber-input py-2 px-2 text-xs bg-[#03070E] text-[#E0F4FF]">
+                        <option value="Dôme Alpha - Anneau 1">Dôme Alpha - Anneau 1 (Bio-Résidence)</option>
+                        <option value="Dôme Bêta - Anneau 2">Dôme Bêta - Anneau 2 (Technocité)</option>
+                        <option value="Anneau Orbital Zéro">Anneau Orbital Zéro (Spatioport)</option>
+                        <option value="Secteur Sud Extérieur">Secteur Sud Extérieur (Fermes Hydro)</option>
+                    </select>
+                </div>
+                <div class="flex flex-col space-y-1.5">
+                    <label class="text-xs text-[#4A607A] uppercase">Code de Sécurité d'Accès</label>
+                    <input type="password" id="reg-pwd" required placeholder="••••••••••••" class="cyber-input py-2 px-2 text-xs">
+                </div>
+                <div class="pt-2">
+                    <button type="submit" class="w-full btn-cyber btn-amber py-2.5 text-xs font-bold uppercase tracking-wider">
+                        Générer mon Matricule et Enregistrer (D01)
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODALE 2 : LECTURE DÉTAILLÉE D'UNE ANNONCE / DÉCRET (D06) -->
+    <div id="news-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="holo-card max-w-lg w-full p-6 border border-[#00F0FF] shadow-[0_0_50px_rgba(0,240,255,0.35)] relative">
+            <div class="corner-tr"></div>
+            <div class="corner-bl"></div>
+
+            <div class="flex justify-between items-center pb-3 border-b border-cyan-900/60 mb-4">
+                <span class="font-orbitron text-xs font-bold text-[#00F0FF] uppercase flex items-center space-x-2">
+                    <i class="fa-solid fa-scroll"></i>
+                    <span id="news-modal-badge">DÉCRET OFFICIEL</span>
+                </span>
+                <button onclick="closeNewsModal()" class="text-[#4A607A] hover:text-[#00F0FF] text-lg font-bold">✕</button>
+            </div>
+
+            <h3 class="font-orbitron font-bold text-xl text-[#E0F4FF] mb-3" id="news-modal-title">Titre de l'annonce</h3>
+            <div class="text-[11px] text-[#4A607A] font-mono mb-4 flex justify-between border-b border-cyan-900/40 pb-2">
+                <span id="news-modal-author">Émetteur : Mairie de Terra Nova</span>
+                <span id="news-modal-date">Date : Cycle ST-44</span>
+            </div>
+            <div class="text-xs text-[#E0F4FF]/90 space-y-3 leading-relaxed mb-6" id="news-modal-content">
+                <!-- Injected text -->
+            </div>
+            <div class="flex justify-end">
+                <button onclick="closeNewsModal()" class="btn-cyber px-5 py-2 text-xs uppercase font-bold">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALE 3 : CONSOLE TERMINAL DIRECT AETHEL-OS -->
+    <div id="modal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="holo-card max-w-lg w-full p-6 border border-[#00F0FF] shadow-[0_0_50px_rgba(0,240,255,0.35)]">
+            <div class="corner-tr"></div>
+            <div class="corner-bl"></div>
+
+            <div class="flex justify-between items-center pb-3 border-b border-cyan-900/60 mb-4">
+                <span class="font-orbitron text-sm font-bold text-[#00F0FF] flex items-center space-x-2">
+                    <i class="fa-solid fa-terminal"></i>
+                    <span>CONSOLE DIRECTE AETHEL-OS v2.4</span>
+                </span>
+                <button onclick="toggleModal()" class="text-[#4A607A] hover:text-[#00F0FF] text-lg font-bold">✕</button>
+            </div>
+
+            <div class="bg-[#03070E] border border-cyan-900/80 p-4 font-mono text-xs space-y-2 h-52 overflow-y-auto mb-4 text-[#E0F4FF]"
+                id="modal-console">
+                <div class="text-[#4A607A]">> Initialisation de la liaison directe Aethel...</div>
+                <div class="text-[#00F0FF]">> Connexion établie avec le noyau central de Terra Nova.</div>
+                <div>> Tapez 'help' pour afficher les commandes d'administration.</div>
+            </div>
+
+            <div class="flex space-x-2">
+                <input type="text" id="cmd-input" placeholder="Tapez 'status', 'requests', 'role agent' ou 'help'..."
+                    class="cyber-input flex-1 text-xs py-2 px-3" onkeypress="handleCmdKeyPress(event)">
+                <button onclick="execCmd()" class="btn-cyber px-5 py-2 text-xs font-bold uppercase">EXEC</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT DE LOGIQUE APPLICATIVE (API, RBAC, LOCALSTORAGE, RENDERING) -->
+    <script>
+        // ==========================================
+        // 1. CONFIGURATION & ÉTAT GLOBAL DE L'APPLICATION
+        // ==========================================
+        const PROXY_API_URL = "/api/requests";
+        const DIRECT_API_URL = "https://24h.webcup.fr/wp-json/webcup/v1/requests";
+        const DEFAULT_API_KEY = "s45f4ds5fgrtr4hytutyt45y4t54yty";
+
+        let currentRole = localStorage.getItem('tn_role') || 'citizen'; // 'citizen', 'agent', 'admin'
+        let cachedRequests = [];
+        let pollingTimer = null;
+        let countdownSec = 30;
+
+        // Base locale des citoyens enregistrés (D01 & D03)
+        let registeredCitizens = JSON.parse(localStorage.getItem('tn_citizens')) || [
+            {
+                name: "Kaelen Vance",
+                matricule: "TN-2842-8812",
+                role: "Spécialiste Biolink & Végétation",
+                dome: "Dôme Alpha - Bloc 4",
+                joined: "2842.10.01"
+            }
+        ];
+
+        let activeCitizen = JSON.parse(localStorage.getItem('tn_active_citizen')) || registeredCitizens[0];
+
+        // Base locale des tickets / démarches citoyennes (D04 & F22)
+        let citizenTickets = JSON.parse(localStorage.getItem('tn_tickets')) || [
+            {
+                id: "TK-TN-8492",
+                citizenName: "Kaelen Vance",
+                service: "Atmosphère & Biosphère",
+                subject: "Baisse de pression dans le conduit secondaire",
+                message: "Légère baisse de pression détectée au niveau du filtre ionique du secteur A.",
+                priority: "Normal",
+                status: "En cours",
+                date: "2026-10-03 10:14"
+            },
+            {
+                id: "TK-TN-8491",
+                citizenName: "Kaelen Vance",
+                service: "Transports & Hyper-Tubes",
+                subject: "Demande d'accès nocturne Anneau Zéro",
+                message: "Besoin de transiter par la navette de fret pour transport d'équipements botaniques.",
+                priority: "Normal",
+                status: "Résolu",
+                date: "2026-10-03 08:30"
+            }
+        ];
+
+        // ==========================================
+        // 2. GESTION DES RÔLES (D08 & D09 - RBAC)
+        // ==========================================
+        function switchRole(newRole) {
+            currentRole = newRole;
+            localStorage.setItem('tn_role', newRole);
+            applyRolePermissions();
+            consoleLog(`[RBAC] Profil basculé sur : ${newRole.toUpperCase()}`);
+        }
+
+        function applyRolePermissions() {
+            const badge = document.getElementById('current-role-badge');
+            const icon = document.getElementById('role-icon');
+            const restrictedBanner = document.getElementById('agent-restricted-banner');
+            const agentWorkspace = document.getElementById('agent-workspace-content');
+
+            if (currentRole === 'citizen') {
+                badge.innerText = 'CITOYEN';
+                badge.className = 'font-orbitron font-bold text-[#00F0FF]';
+                icon.className = 'fa-solid fa-user text-[#00F0FF]';
+                
+                // D09 : Le citoyen ne peut pas accéder aux outils municipaux confidentiels
+                if (restrictedBanner) restrictedBanner.classList.remove('hidden');
+                if (agentWorkspace) agentWorkspace.classList.add('opacity-40', 'pointer-events-none', 'select-none');
+            } else if (currentRole === 'agent') {
+                badge.innerText = 'AGENT';
+                badge.className = 'font-orbitron font-bold text-[#9D00FF]';
+                icon.className = 'fa-solid fa-id-badge text-[#9D00FF]';
+
+                if (restrictedBanner) restrictedBanner.classList.add('hidden');
+                if (agentWorkspace) agentWorkspace.classList.remove('opacity-40', 'pointer-events-none', 'select-none');
+            } else if (currentRole === 'admin') {
+                badge.innerText = 'ADMIN';
+                badge.className = 'font-orbitron font-bold text-[#FFB700]';
+                icon.className = 'fa-solid fa-crown text-[#FFB700]';
+
+                if (restrictedBanner) restrictedBanner.classList.add('hidden');
+                if (agentWorkspace) agentWorkspace.classList.remove('opacity-40', 'pointer-events-none', 'select-none');
+            }
+
+            renderAgentTicketsTable();
+        }
+
+        // ==========================================
+        // 3. RÉCUPÉRATION DU FLUX API WEBCUP (D19, .ENV & POLLING)
+        // ==========================================
+        async function fetchRequests(isManual = false) {
+            const sessStatus = document.getElementById('sessStatus');
+            const headerStatus = document.getElementById('header-sess-status');
+            const mobileStatus = document.getElementById('mobile-sess-status');
+
+            if (sessStatus) sessStatus.innerText = "CONNEXION...";
+            if (headerStatus) headerStatus.innerText = "POLLING...";
+
+            let data = null;
+
+            // 1. Essai prioritaire via le proxy local (charge la clé du .env sans exposition client)
+            try {
+                const res = await fetch(PROXY_API_URL, {
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (res.ok) {
+                    data = await res.json();
+                    console.log("[API] Données récupérées via le serveur proxy local (.env)");
+                }
+            } catch (err) {
+                console.log("[API] Serveur proxy local non joint, bascule sur requête directe.");
+            }
+
+            // 2. Si le proxy n'est pas actif (ex: page ouverte en file:// statique), appel direct
+            if (!data) {
+                try {
+                    const directRes = await fetch(DIRECT_API_URL, {
+                        headers: {
+                            'X-Webcup-Api-Key': DEFAULT_API_KEY,
+                            'Accept': 'application/json'
+                        }
+                    });
+                    if (directRes.ok) {
+                        data = await directRes.json();
+                        console.log("[API] Données récupérées directement depuis l'API Webcup");
+                    }
+                } catch (e) {
+                    console.error("[API] Échec de l'appel direct :", e.message);
+                }
+            }
+
+            // 3. Traitement des données reçues
+            if (data && data.requests) {
+                cachedRequests = data.requests;
+                updateSessionUI(data.session, cachedRequests.length);
+                renderRequestsGrid(cachedRequests);
+                consoleLog(`[API_OK] ${cachedRequests.length} demandes synchronisées.`);
+            } else {
+                if (sessStatus) sessStatus.innerText = "HORS LIGNE";
+                if (headerStatus) headerStatus.innerText = "OFFLINE";
+                if (mobileStatus) mobileStatus.innerText = "OFFLINE";
+                consoleLog(`[API_WARN] Impossible de contacter le flux central.`);
+            }
+
+            // Reset du décompte
+            countdownSec = 30;
+        }
+
+        function updateSessionUI(session, totalRequests) {
+            if (!session) return;
+
+            const sessStatus = document.getElementById('sessStatus');
+            const headerStatus = document.getElementById('header-sess-status');
+            const mobileStatus = document.getElementById('mobile-sess-status');
+
+            const sessWave = document.getElementById('sessWave');
+            const headerWave = document.getElementById('header-wave-val');
+            const mobileWave = document.getElementById('mobile-wave-val');
+
+            const sessCount = document.getElementById('sessCount');
+            const headerCount = document.getElementById('header-requests-count');
+            const mobileCount = document.getElementById('mobile-requests-count');
+
+            const sessNextWave = document.getElementById('sessNextWave');
+            const headerTimer = document.getElementById('header-next-wave-timer');
+            const mobileTimer = document.getElementById('mobile-timer');
+
+            const sessElapsed = document.getElementById('sessElapsed');
+            const sessInitialCount = document.getElementById('sessInitialCount');
+            const sessNextWaveMinutes = document.getElementById('sessNextWaveMinutes');
+            const fluxRequestsVal = document.getElementById('flux-requests-val');
+
+            const statusText = session.status === 'active' ? 'ACTIF' : session.status.toUpperCase();
+
+            if (sessStatus) sessStatus.innerText = statusText;
+            if (headerStatus) headerStatus.innerText = statusText;
+            if (mobileStatus) mobileStatus.innerText = statusText;
+
+            if (sessWave) sessWave.innerText = session.current_wave ?? 0;
+            if (headerWave) headerWave.innerText = session.current_wave ?? 0;
+            if (mobileWave) mobileWave.innerText = session.current_wave ?? 0;
+
+            if (sessCount) sessCount.innerText = totalRequests;
+            if (headerCount) headerCount.innerText = totalRequests;
+            if (mobileCount) mobileCount.innerText = totalRequests;
+            if (fluxRequestsVal) fluxRequestsVal.innerText = `${totalRequests} actives`;
+
+            if (sessElapsed) sessElapsed.innerText = `Écoulé: ${session.elapsed_minutes || 0} min`;
+            if (sessInitialCount) sessInitialCount.innerText = `${session.initial_requests_count || totalRequests} initiales`;
+
+            if (session.next_wave_number > 0) {
+                const nextStr = `Vague ${session.next_wave_number}`;
+                const timerStr = `~${session.minutes_until_next_wave || 0} min`;
+                if (sessNextWave) sessNextWave.innerText = nextStr;
+                if (sessNextWaveMinutes) sessNextWaveMinutes.innerText = `Dans ${timerStr}`;
+                if (headerTimer) headerTimer.innerText = `NEXT: ${timerStr}`;
+                if (mobileTimer) mobileTimer.innerText = timerStr;
+            } else {
+                if (sessNextWave) sessNextWave.innerText = "Fin des vagues";
+                if (sessNextWaveMinutes) sessNextWaveMinutes.innerText = "Toutes diffusées";
+                if (headerTimer) headerTimer.innerText = "VAGUES FINIES";
+                if (mobileTimer) mobileTimer.innerText = "FIN";
+            }
+        }
+
+        // ==========================================
+        // 4. RENDU DES DEMANDES DE L'API (D19)
+        // ==========================================
+        function renderRequestsGrid(requests) {
+            const grid = document.getElementById('requestsGrid');
+            if (!grid) return;
+
+            if (!requests || requests.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full holo-card p-8 text-center text-xs text-[#4A607A]">
+                        <i class="fa-solid fa-satellite-dish text-2xl text-[#4A607A] mb-3 block"></i>
+                        Aucune demande actuellement accessible dans le flux de la cité.
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = requests.map(req => {
+                const diffLevel = req.difficulty_level || (req.difficulty === 'Facile' ? 1 : req.difficulty === 'Moyenne' ? 2 : req.difficulty === 'Difficile' ? 3 : 4);
+                const arrivalLabel = req.is_initial ? "Vague Initiale (H+0)" : `Vague ${req.wave_number || req.visible_since_wave} (${req.arrival_time || 'Diffusée'})`;
+
+                return `
+                    <div class="holo-card p-6 flex flex-col justify-between hover:border-[#00F0FF] transition duration-300 group relative">
+                        <div class="corner-tr"></div>
+                        <div class="corner-bl"></div>
+
+                        <div>
+                            <!-- Header de la demande -->
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex items-center space-x-2">
+                                    <span class="font-orbitron font-black text-lg text-[#00F0FF] group-hover:text-white transition">
+                                        ${req.request_code}
+                                    </span>
+                                    <span class="diff-badge diff-${diffLevel}">${req.difficulty || 'Normal'}</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="font-orbitron font-bold text-sm text-[#FFB700]">${req.xp_total || req.xp_base} XP</span>
+                                    ${req.xp_time_bonus > 0 ? `<div class="text-[9px] text-[#9D00FF] font-mono">+${req.xp_time_bonus} bonus</div>` : ''}
+                                </div>
+                            </div>
+
+                            <!-- Demandeur -->
+                            <div class="text-[11px] text-[#4A607A] font-mono mb-3 flex items-center gap-1.5">
+                                <i class="fa-regular fa-building text-[10px] text-[#00F0FF]"></i>
+                                <span class="text-[#E0F4FF] font-semibold">${req.requester_name || 'Haut Conseil'}</span>
+                                ${req.requester_type ? `<span class="opacity-60">(${req.requester_type})</span>` : ''}
+                            </div>
+
+                            <!-- Message Public / Besoin fonctionnel -->
+                            <p class="text-xs text-[#E0F4FF]/90 leading-relaxed mb-4 bg-[#03070E]/70 p-3 border border-cyan-900/40">
+                                "${req.message_public}"
+                            </p>
+                        </div>
+
+                        <!-- Footer de la carte -->
+                        <div class="border-t border-cyan-900/40 pt-3 flex justify-between items-center text-[10px] text-[#4A607A] font-mono">
+                            <span><i class="fa-solid fa-clock-rotate-left mr-1"></i>${arrivalLabel}</span>
+                            <span class="text-[#00F0FF] font-bold">DISPONIBLE</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterApiRequests(diff) {
+            // Mise à jour visuelle des boutons
+            document.querySelectorAll('.api-filter-btn').forEach(btn => {
+                btn.className = "px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] api-filter-btn";
+            });
+            event.target.className = "px-2.5 py-1 text-xs border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 api-filter-btn";
+
+            if (diff === 'all') {
+                renderRequestsGrid(cachedRequests);
+            } else {
+                const filtered = cachedRequests.filter(r => r.difficulty === diff);
+                renderRequestsGrid(filtered);
+            }
+        }
+
+        // ==========================================
+        // 5. GESTION DES TICKETS CITOYENS & AGENTS (D04 & F22)
+        // ==========================================
+        function handleContactMunicipal(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('contact-name').value;
+            const service = document.getElementById('contact-service').value;
+            const category = document.getElementById('contact-category').value;
+            const priority = document.getElementById('contact-priority').value;
+            const subject = document.getElementById('contact-subject').value;
+            const message = document.getElementById('contact-message').value;
+
+            const ticketId = "TK-TN-" + Math.floor(1000 + Math.random() * 9000);
+            const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
+
+            const newTicket = {
+                id: ticketId,
+                citizenName: name,
+                service: service,
+                subject: subject,
+                message: message,
+                priority: priority,
+                status: "En attente",
+                date: dateStr
+            };
+
+            citizenTickets.unshift(newTicket);
+            localStorage.setItem('tn_tickets', JSON.stringify(citizenTickets));
+
+            // Affichage du récépissé
+            const receipt = document.getElementById('contact-receipt');
+            const receiptText = document.getElementById('receipt-text');
+            const receiptTicketId = document.getElementById('receipt-ticket-id');
+
+            receiptTicketId.innerText = ticketId;
+            receiptText.innerText = `Votre démarche concernant "${subject}" a été transmise à la direction "${service}". Un agent municipal a été notifié.`;
+            receipt.classList.remove('hidden');
+
+            // Reset form
+            document.getElementById('contact-subject').value = '';
+            document.getElementById('contact-message').value = '';
+
+            // Rendu
+            renderCitizenTicketsTable();
+            renderAgentTicketsTable();
+
+            consoleLog(`[D04] Ticket généré : ${ticketId} (${service})`);
+            playSciFiSound(600, 0.1);
+        }
+
+        function renderCitizenTicketsTable() {
+            const tbody = document.getElementById('citizen-tickets-tbody');
+            const emptyMsg = document.getElementById('no-tickets-msg');
+            if (!tbody) return;
+
+            // Filtre par le citoyen connecté ou tous si pas de compte
+            const activeMatricule = activeCitizen ? activeCitizen.name : "";
+            const userTickets = citizenTickets.filter(t => !activeMatricule || t.citizenName.includes(activeCitizen.name) || t.citizenName.includes(activeCitizen.matricule));
+
+            if (userTickets.length === 0) {
+                tbody.innerHTML = '';
+                if (emptyMsg) emptyMsg.classList.remove('hidden');
+                return;
+            }
+
+            if (emptyMsg) emptyMsg.classList.add('hidden');
+
+            tbody.innerHTML = userTickets.map(t => {
+                const statusBadge = t.status === 'Résolu' 
+                    ? `<span class="text-green-400 border border-green-500/40 bg-green-500/10 px-2 py-0.5 rounded text-[10px]">Résolu</span>`
+                    : t.status === 'En cours'
+                    ? `<span class="text-[#00F0FF] border border-[#00F0FF]/40 bg-[#00F0FF]/10 px-2 py-0.5 rounded text-[10px]">En cours</span>`
+                    : `<span class="text-[#FFB700] border border-[#FFB700]/40 bg-[#FFB700]/10 px-2 py-0.5 rounded text-[10px]">En attente</span>`;
+
+                return `
+                    <tr class="hover:bg-cyan-950/20 transition">
+                        <td class="py-2.5 px-3 font-mono font-bold text-[#FFB700]">${t.id}</td>
+                        <td class="py-2.5 px-3 text-[#E0F4FF]">${t.service}</td>
+                        <td class="py-2.5 px-3 text-[#E0F4FF]/90 font-medium">${t.subject}</td>
+                        <td class="py-2.5 px-3 text-[#4A607A]">${t.priority}</td>
+                        <td class="py-2.5 px-3">${statusBadge}</td>
+                        <td class="py-2.5 px-3 text-right font-mono text-[#4A607A] text-[10px]">${t.date}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderAgentTicketsTable(filter = 'all') {
+            const tbody = document.getElementById('agent-tickets-tbody');
+            if (!tbody) return;
+
+            // Compteurs
+            const countAll = citizenTickets.length;
+            const countPending = citizenTickets.filter(t => t.status === 'En attente').length;
+            const countProgress = citizenTickets.filter(t => t.status === 'En cours').length;
+            const countResolved = citizenTickets.filter(t => t.status === 'Résolu').length;
+
+            const elAll = document.getElementById('count-agent-all');
+            const elPending = document.getElementById('count-agent-pending');
+            const elProgress = document.getElementById('count-agent-progress');
+            const elResolved = document.getElementById('count-agent-resolved');
+
+            if (elAll) elAll.innerText = countAll;
+            if (elPending) elPending.innerText = countPending;
+            if (elProgress) elProgress.innerText = countProgress;
+            if (elResolved) elResolved.innerText = countResolved;
+
+            let displayedTickets = citizenTickets;
+            if (filter === 'pending') displayedTickets = citizenTickets.filter(t => t.status === 'En attente');
+            if (filter === 'progress') displayedTickets = citizenTickets.filter(t => t.status === 'En cours');
+            if (filter === 'resolved') displayedTickets = citizenTickets.filter(t => t.status === 'Résolu');
+
+            if (displayedTickets.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="py-6 text-center text-xs text-[#4A607A]">
+                            Aucune demande citoyenne dans cette catégorie.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = displayedTickets.map(t => {
+                const statusBadge = t.status === 'Résolu' 
+                    ? `<span class="text-green-400 border border-green-500/40 bg-green-500/10 px-2 py-0.5 rounded text-[10px]">Résolu</span>`
+                    : t.status === 'En cours'
+                    ? `<span class="text-[#00F0FF] border border-[#00F0FF]/40 bg-[#00F0FF]/10 px-2 py-0.5 rounded text-[10px]">En cours</span>`
+                    : `<span class="text-[#FFB700] border border-[#FFB700]/40 bg-[#FFB700]/10 px-2 py-0.5 rounded text-[10px]">En attente</span>`;
+
+                return `
+                    <tr class="hover:bg-cyan-950/30 transition">
+                        <td class="py-3 px-3 font-mono font-bold text-[#FFB700]">${t.id}</td>
+                        <td class="py-3 px-3 text-[#E0F4FF] font-semibold">${t.citizenName}</td>
+                        <td class="py-3 px-3 text-[#00F0FF]">${t.service}</td>
+                        <td class="py-3 px-3">
+                            <div class="text-[#E0F4FF] font-bold">${t.subject}</div>
+                            <div class="text-[11px] text-[#4A607A] line-clamp-1">${t.message}</div>
+                        </td>
+                        <td class="py-3 px-3 text-[11px]">${t.priority}</td>
+                        <td class="py-3 px-3">${statusBadge}</td>
+                        <td class="py-3 px-3 text-right space-x-1 whitespace-nowrap">
+                            ${t.status !== 'En cours' && t.status !== 'Résolu' ? `
+                                <button onclick="updateTicketStatus('${t.id}', 'En cours')" class="px-2 py-1 bg-cyan-950 border border-[#00F0FF] text-[#00F0FF] text-[10px] hover:bg-[#00F0FF] hover:text-black transition">
+                                    Prendre en charge
+                                </button>
+                            ` : ''}
+                            ${t.status !== 'Résolu' ? `
+                                <button onclick="updateTicketStatus('${t.id}', 'Résolu')" class="px-2 py-1 bg-green-950 border border-green-500 text-green-400 text-[10px] hover:bg-green-500 hover:text-black transition">
+                                    Clôturer
+                                </button>
+                            ` : `
+                                <button onclick="updateTicketStatus('${t.id}', 'En attente')" class="px-2 py-1 border border-cyan-900 text-[#4A607A] text-[10px] hover:text-[#FFB700] transition">
+                                    Rouvrir
+                                </button>
+                            `}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateTicketStatus(ticketId, newStatus) {
+            const ticket = citizenTickets.find(t => t.id === ticketId);
+            if (ticket) {
+                ticket.status = newStatus;
+                localStorage.setItem('tn_tickets', JSON.stringify(citizenTickets));
+                renderAgentTicketsTable();
+                renderCitizenTicketsTable();
+                consoleLog(`[F22] Ticket ${ticketId} passé en état : ${newStatus}`);
+                playSciFiSound(750, 0.1);
+            }
+        }
+
+        function filterAgentTickets(status) {
+            document.querySelectorAll('.agent-ticket-filter').forEach(btn => {
+                btn.className = "px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] agent-ticket-filter";
+            });
+            event.target.className = "px-2.5 py-1 text-xs border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 agent-ticket-filter";
+            renderAgentTicketsTable(status);
+        }
+
+        function prefillContactForm(service, subject) {
+            const servSelect = document.getElementById('contact-service');
+            const subjInput = document.getElementById('contact-subject');
+            if (servSelect) servSelect.value = service;
+            if (subjInput) subjInput.value = subject;
+            window.location.hash = "#demarches";
+            playSciFiSound(500, 0.08);
+        }
+
+        // ==========================================
+        // 6. GESTION DES HABITANTS (D01 & D03)
+        // ==========================================
+        function updateCitizenProfileUI() {
+            if (!activeCitizen) return;
+
+            const nameEl = document.getElementById('citizen-display-name');
+            const idEl = document.getElementById('citizen-display-id');
+            const roleEl = document.getElementById('citizen-display-role');
+            const domeEl = document.getElementById('citizen-display-dome');
+            const navLabel = document.getElementById('auth-nav-label');
+            const hint = document.getElementById('contact-user-hint');
+
+            if (nameEl) nameEl.innerText = activeCitizen.name;
+            if (idEl) idEl.innerText = activeCitizen.matricule;
+            if (roleEl) roleEl.innerText = activeCitizen.role;
+            if (domeEl) domeEl.innerText = activeCitizen.dome;
+            if (navLabel) navLabel.innerText = activeCitizen.name.split(' ')[0];
+            if (hint) hint.innerText = `${activeCitizen.name} (${activeCitizen.matricule})`;
+
+            const contactName = document.getElementById('contact-name');
+            if (contactName) contactName.value = `${activeCitizen.name} (${activeCitizen.matricule})`;
+
+            renderCitizenTicketsTable();
+        }
+
+        function handleRegisterSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const role = document.getElementById('reg-role').value;
+            const dome = document.getElementById('reg-dome').value;
+
+            // Génération d'un matricule colonial unique (ex: TN-2842-4912)
+            const randomCode = Math.floor(1000 + Math.random() * 9000);
+            const matricule = `TN-2842-${randomCode}`;
+
+            const newCitizen = {
+                name: name,
+                matricule: matricule,
+                role: role,
+                dome: dome,
+                joined: "2842.10.03"
+            };
+
+            registeredCitizens.push(newCitizen);
+            localStorage.setItem('tn_citizens', JSON.stringify(registeredCitizens));
+
+            activeCitizen = newCitizen;
+            localStorage.setItem('tn_active_citizen', JSON.stringify(activeCitizen));
+
+            updateCitizenProfileUI();
+            closeAuthModal();
+
+            alert(`BIENVENUE SUR TERRA NOVA !\nVotre compte colon a été créé avec succès.\nVotre matricule officiel est : ${matricule}\nConservez-le précieusement.`);
+            consoleLog(`[D01] Nouveau citoyen enregistré : ${name} (${matricule})`);
+            playSciFiSound(880, 0.15);
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const query = document.getElementById('login-matricule').value.trim().toLowerCase();
+
+            const found = registeredCitizens.find(c => 
+                c.matricule.toLowerCase() === query || 
+                c.name.toLowerCase().includes(query)
+            );
+
+            if (found) {
+                activeCitizen = found;
+                localStorage.setItem('tn_active_citizen', JSON.stringify(activeCitizen));
+                updateCitizenProfileUI();
+                closeAuthModal();
+                alert(`Connexion réussie. Bienvenue, ${activeCitizen.name}.`);
+                consoleLog(`[D03] Citoyen authentifié : ${activeCitizen.name}`);
+                playSciFiSound(800, 0.1);
+            } else {
+                alert(`Matricule ou identifiant non reconnu sur la colonie. Vérifiez votre saisie ou enregistrez-vous.`);
+            }
+        }
+
+        function logoutCitizen() {
+            if (confirm("Confirmer la déconnexion de l'espace citoyen ?")) {
+                activeCitizen = null;
+                localStorage.removeItem('tn_active_citizen');
+                document.getElementById('auth-nav-label').innerText = "Connexion";
+                document.getElementById('contact-name').value = "";
+                document.getElementById('citizen-display-name').innerText = "Non Connecté";
+                document.getElementById('citizen-display-id').innerText = "—";
+                document.getElementById('citizen-display-role').innerText = "Visiteur spatial";
+                document.getElementById('citizen-display-dome').innerText = "Transit";
+                renderCitizenTicketsTable();
+                consoleLog(`[AUTH] Déconnexion citoyenne effectuée.`);
+            }
+        }
+
+        function openAuthModal(tab = 'login') {
+            const modal = document.getElementById('auth-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setAuthTab(tab);
+            playSciFiSound(400, 0.05);
+        }
+
+        function closeAuthModal() {
+            const modal = document.getElementById('auth-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function setAuthTab(tab) {
+            const formLogin = document.getElementById('form-login');
+            const formReg = document.getElementById('form-register');
+            const tabLogin = document.getElementById('tab-login');
+            const tabReg = document.getElementById('tab-register');
+            const title = document.getElementById('auth-modal-title');
+
+            if (tab === 'login') {
+                formLogin.classList.remove('hidden');
+                formReg.classList.add('hidden');
+                tabLogin.className = "flex-1 py-2 font-orbitron font-bold text-[#00F0FF] border-b-2 border-[#00F0FF] text-center";
+                tabReg.className = "flex-1 py-2 font-orbitron font-bold text-[#4A607A] border-b-2 border-transparent text-center hover:text-[#00F0FF]";
+                title.innerText = "ACCÈS CITOYEN TERRA NOVA (D03)";
+            } else {
+                formLogin.classList.add('hidden');
+                formReg.classList.remove('hidden');
+                tabLogin.className = "flex-1 py-2 font-orbitron font-bold text-[#4A607A] border-b-2 border-transparent text-center hover:text-[#00F0FF]";
+                tabReg.className = "flex-1 py-2 font-orbitron font-bold text-[#FFB700] border-b-2 border-[#FFB700] text-center";
+                title.innerText = "CRÉATION COMPTE COLON (D01)";
+            }
+        }
+
+        // ==========================================
+        // 7. ARTICLES & ANNONCES DE LA MAIRIE (D06)
+        // ==========================================
+        const newsData = [
+            {
+                badge: "DÉCRET DU HAUT CONSEIL N° 2842-01",
+                category: "decret",
+                date: "Cycle ST-44",
+                author: "Haut Conseil de Terra Nova",
+                title: "Ouverture Officielle du Portail Numérique Citoyen",
+                content: `
+                    <p>Le Haut Conseil de Terra Nova annonce l'activation globale de la plateforme numérique municipale pour l'ensemble des colons de la métropole.</p>
+                    <p>Ce portail centralisé répond aux exigences du plan de développement 2842 :</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Création immédiate de compte et obtention d'un matricule spatial unique.</li>
+                        <li>Accès aux 6 directions municipales (Atmosphère, Transports, Énergie, Santé, Sécurité, Mairie).</li>
+                        <li>Soumission de requêtes et doléances avec accusé de réception instantané.</li>
+                    </ul>
+                    <p>Chaque résident est invité à vérifier son accréditation biolink sans délai.</p>
+                `
+            },
+            {
+                badge: "ALERTE MÉTÉO COSMIQUE",
+                category: "alerte",
+                date: "Cycle ST-43",
+                author: "Sécurité Civile & Sentinelles",
+                title: "Passage d'Orage Ionique : Renforcement des Boucliers",
+                content: `
+                    <p>Une tempête solaire de classe X traverse actuellement le secteur d'Orion. Les générateurs de micro-fission de l'Anneau Zéro ont été basculés en mode confinement d'urgence.</p>
+                    <p>Consignes aux colons :</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Limiter les déplacements en surface extérieure sans combinaison pressurisée blindée.</li>
+                        <li>Les navettes Hyper-Tube fonctionnent normalement sous protection des dômes.</li>
+                        <li>Aucun risque de brèche atmosphérique ; intégrité des dômes maintenue à 99.8%.</li>
+                    </ul>
+                `
+            },
+            {
+                badge: "INFO TRAVAUX & MOBILITÉ",
+                category: "service",
+                date: "Cycle ST-41",
+                author: "Direction des Transports Urbains",
+                title: "Nouvelle Ligne d'Hyper-Tube vers les Serres d'Orion",
+                content: `
+                    <p>La Direction des Transports informe les usagers de l'inauguration de la ligne 6 de l'Hyper-Tube express.</p>
+                    <p>Cette nouvelle desserte permet de relier le centre résidentiel du Dôme Bêta aux zones agricoles hydroponiques en moins de 3 minutes, facilitant le transit quotidien des botanistes et techniciens de surface.</p>
+                `
+            }
+        ];
+
+        function openNewsDetail(index) {
+            const article = newsData[index];
+            if (!article) return;
+
+            document.getElementById('news-modal-badge').innerText = article.badge;
+            document.getElementById('news-modal-title').innerText = article.title;
+            document.getElementById('news-modal-author').innerText = `Émetteur : ${article.author}`;
+            document.getElementById('news-modal-date').innerText = `Date : ${article.date}`;
+            document.getElementById('news-modal-content').innerHTML = article.content;
+
+            const modal = document.getElementById('news-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            playSciFiSound(500, 0.05);
+        }
+
+        function closeNewsModal() {
+            const modal = document.getElementById('news-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function filterNews(cat) {
+            document.querySelectorAll('.news-filter-btn').forEach(btn => {
+                btn.className = "px-3 py-1 border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] news-filter-btn";
+            });
+            event.target.className = "px-3 py-1 border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 news-filter-btn";
+
+            document.querySelectorAll('.news-card').forEach(card => {
+                if (cat === 'all' || card.getAttribute('data-category') === cat) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        function filterServices(cat) {
+            document.querySelectorAll('.service-filter-btn').forEach(btn => {
+                btn.className = "px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] service-filter-btn";
+            });
+            event.target.className = "px-2.5 py-1 text-xs border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 service-filter-btn";
+
+            document.querySelectorAll('.service-item').forEach(card => {
+                if (cat === 'all' || card.getAttribute('data-category') === cat) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // ==========================================
+        // 8. CONSOLE DE COMMANDE DIRECTE (AETHEL-OS)
+        // ==========================================
+        function toggleModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.toggle('hidden');
+            modal.classList.toggle('flex');
+            if (!modal.classList.contains('hidden')) {
+                document.getElementById('cmd-input').focus();
+            }
+            playSciFiSound(700, 0.05);
+        }
+
+        function execCmd() {
+            const input = document.getElementById('cmd-input');
+            const val = input.value.trim();
+            if (!val) return;
+
+            const consoleBox = document.getElementById('modal-console');
+
+            const userCmdLine = document.createElement('div');
+            userCmdLine.className = 'text-[#FFB700]';
+            userCmdLine.innerText = '> ' + val;
+            consoleBox.appendChild(userCmdLine);
+
+            const resLine = document.createElement('div');
+            const lower = val.toLowerCase();
+
+            if (lower === 'status') {
+                resLine.innerText = `[OK] Sous-systèmes nominaux. Rôle actif: ${currentRole.toUpperCase()}. API: ${cachedRequests.length} demandes chargées.`;
+                resLine.className = 'text-[#00F0FF]';
+            } else if (lower === 'shield') {
+                resLine.innerText = '[SHIELD] Boucliers plasma actifs à 100%. Aucune brèche ionique.';
+                resLine.className = 'text-[#00F0FF]';
+            } else if (lower === 'plasma') {
+                resLine.innerText = '[PLASMA] Réacteur Zéro stable à 87.4% de charge utile. Quota colonial opérationnel.';
+                resLine.className = 'text-[#9D00FF]';
+            } else if (lower.startsWith('role ')) {
+                const r = lower.split(' ')[1];
+                if (['citizen', 'agent', 'admin'].includes(r)) {
+                    switchRole(r);
+                    resLine.innerText = `[RBAC] Accréditation modifiée avec succès : ${r.toUpperCase()}`;
+                    resLine.className = 'text-green-400';
+                } else {
+                    resLine.innerText = `[ERREUR] Rôle inconnu. Utilisez: 'role citizen', 'role agent' ou 'role admin'.`;
+                    resLine.className = 'text-red-400';
+                }
+            } else if (lower === 'requests') {
+                resLine.innerText = `[API] Demandes en cache (${cachedRequests.length}): ${cachedRequests.map(r => r.request_code).join(', ')}`;
+                resLine.className = 'text-[#E0F4FF]';
+            } else if (lower === 'whoami') {
+                resLine.innerText = activeCitizen ? `[CITOYEN] ${activeCitizen.name} (${activeCitizen.matricule}) - ${activeCitizen.role}` : `[VISITEUR] Aucun colon connecté.`;
+                resLine.className = 'text-[#E0F4FF]';
+            } else if (lower === 'clear') {
+                consoleBox.innerHTML = '';
+                input.value = '';
+                return;
+            } else if (lower === 'help') {
+                resLine.innerText = 'Commandes : status, shield, plasma, requests, role [citizen|agent|admin], whoami, clear, help';
+                resLine.className = 'text-[#E0F4FF]';
+            } else {
+                resLine.innerText = `[ERREUR] Commande inconnue: '${val}'. Tapez 'help'.`;
+                resLine.className = 'text-red-400';
+            }
+
+            consoleBox.appendChild(resLine);
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+            input.value = '';
+            playSciFiSound(520, 0.05);
+        }
+
+        function handleCmdKeyPress(e) {
+            if (e.key === 'Enter') execCmd();
+        }
+
+        function consoleLog(msg) {
+            const logs = document.getElementById('terminal-logs');
+            if (logs) {
+                const item = document.createElement('div');
+                item.innerText = msg;
+                logs.appendChild(item);
+                if (logs.children.length > 5) logs.removeChild(logs.children[0]);
+            }
+        }
+
+        function triggerPurge() {
+            playSciFiSound(900, 0.15);
+            alert("RECALIBRAGE : Alignement des miroirs quantiques et des harmoniques de plasma effectué avec succès.");
+        }
+
+        // ==========================================
+        // 9. EFFETS SONORES SCI-FI (Web Audio API)
+        // ==========================================
+        let audioCtx = null;
+        function playSciFiSound(freq = 600, duration = 0.08) {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(freq * 1.5, audioCtx.currentTime + duration);
+                gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                // Audio désactivé silencieusement
+            }
+        }
+
+        // ==========================================
+        // 10. ANIMATION CANVAS PARTICULES QUANTIK
+        // ==========================================
+        function initCanvas() {
+            const canvas = document.getElementById('bg-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            const particles = [];
+            for (let i = 0; i < 40; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    size: Math.random() * 2 + 0.5,
+                    color: Math.random() > 0.5 ? 'rgba(0, 240, 255, ' : 'rgba(157, 0, 255, ',
+                    alpha: Math.random() * 0.4 + 0.1
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let p of particles) {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if (p.x < 0) p.x = canvas.width;
+                    if (p.x > canvas.width) p.x = 0;
+                    if (p.y < 0) p.y = canvas.height;
+                    if (p.y > canvas.height) p.y = 0;
+
+                    ctx.fillStyle = p.color + p.alpha + ')';
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // ==========================================
+        // 11. INITIALISATION AU CHARGEMENT DU DOM
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            initCanvas();
+            applyRolePermissions();
+            updateCitizenProfileUI();
+            fetchRequests();
+
+            // Boucle de polling (toutes les 30 secondes selon les consignes)
+            setInterval(() => {
+                countdownSec--;
+                const timerEl = document.getElementById('agent-poll-timer');
+                if (timerEl) timerEl.innerText = `Auto-refresh: ${countdownSec}s`;
+
+                if (countdownSec <= 0) {
+                    fetchRequests();
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>
