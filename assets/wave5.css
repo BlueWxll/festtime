@@ -1,0 +1,75 @@
+/* ==========================================================
+   VAGUE 5 — F37 protection des connexions, F38 disponibilité des services,
+   F39 rendez-vous, F40 rappels. Même charte que features.css / wave4.css.
+   ========================================================== */
+
+/* --- F37 : message de protection dans la fenêtre de connexion --- */
+.tn-guard { padding: 0.75rem 0.875rem; border: 1px solid var(--line-strong); border-left: 3px solid var(--amber); background: var(--void-900); }
+.tn-guard[hidden] { display: none; }
+.tn-guard--lock { border-color: var(--amber); }
+.tn-guard-title { display: flex; align-items: baseline; gap: 0.5rem; margin: 0; font-size: 0.8125rem; font-weight: 600; color: var(--text-100); }
+.tn-guard-title i { color: var(--amber); }
+.tn-guard-wait { margin: 0.375rem 0 0; font-size: 0.8125rem; color: var(--text-100); }
+.tn-guard-wait strong { font: 500 1rem/1 'JetBrains Mono', monospace; color: var(--amber); font-variant-numeric: tabular-nums; }
+.tn-guard .tn-hint { margin: 0.375rem 0 0; }
+#form-login button[type="submit"]:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.tn-security-state { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; margin: 0.75rem 0; padding: 0.625rem 0.75rem; border: 1px solid var(--line-subtle); font-size: 0.8125rem; color: var(--text-100); }
+.tn-security-state--surge { border-color: var(--amber); }
+
+/* --- F38 : état des services --- */
+.tn-svc-slot:empty { display: none; }
+.tn-svc-down { border-color: var(--amber); }
+.tn-svc-status { margin: 0.5rem 0 0.75rem; padding: 0.625rem 0.75rem; border: 1px solid var(--amber); border-left-width: 3px; background: rgba(255, 179, 71, 0.06); }
+.tn-svc-status-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.375rem 0.75rem; margin: 0; font-size: 0.8125rem; color: var(--text-100); }
+.tn-svc-status .tn-hint { margin: 0.375rem 0 0; }
+#service-status-banner[hidden] { display: none; }
+.tn-svc-banner { margin: 0 0 1.5rem; padding: 0.875rem 1rem; border: 1px solid var(--amber); border-left-width: 3px; background: var(--void-800); }
+.tn-svc-banner .tn-eyebrow { color: var(--amber); }
+.tn-svc-banner-list { margin: 0.5rem 0 0; padding: 0; list-style: none; font-size: 0.8125rem; color: var(--text-100); }
+.tn-svc-banner-list li { padding: 0.25rem 0; }
+#contact-service-status:empty { display: none; }
+#contact-service-status { grid-column: 1 / -1; }
+
+/* --- F39 : rendez-vous --- */
+.tn-slots { margin: 0; padding: 0; border: 0; min-width: 0; }
+.tn-slots:disabled { opacity: 0.45; }
+.tn-slot-group + .tn-slot-group { margin-top: 0.5rem; }
+.tn-slot-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.25rem; }
+.tn-slot { position: relative; display: inline-flex; }
+.tn-slot input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.tn-slot span { display: inline-flex; align-items: center; min-height: 2.25rem; padding: 0.375rem 0.75rem; border: 1px solid var(--line-strong); color: var(--text-100); font: 500 0.75rem/1 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+.tn-slot:hover span { border-color: var(--cyber-500); }
+.tn-slot input:checked + span { border-color: var(--cyber-500); background: var(--cyber-900); color: var(--cyber-300); box-shadow: inset 0 0 0 1px var(--cyber-500); }
+.tn-slot input:focus-visible + span { outline: 2px solid var(--cyber-300); outline-offset: 2px; }
+.tn-slot--taken span { color: var(--text-500); text-decoration: line-through; border-style: dashed; }
+.tn-slot--taken input { cursor: not-allowed; }
+
+.tn-appt-summary { padding: 0.75rem; border: 1px solid var(--line-subtle); background: var(--void-900); }
+.tn-appt-dl { display: grid; gap: 0.25rem; margin: 0.5rem 0; font-size: 0.8125rem; }
+.tn-appt-dl > div { display: grid; grid-template-columns: 5rem 1fr; gap: 0.5rem; }
+.tn-appt-dl dt { color: var(--text-500); font: 400 0.6875rem/1.6 'JetBrains Mono', monospace; letter-spacing: 0.08em; text-transform: uppercase; }
+.tn-appt-dl dd { margin: 0; color: var(--text-100); }
+.tn-appt-prep { margin: 0.25rem 0 0.5rem; padding-left: 1.125rem; font-size: 0.8125rem; color: var(--text-100); list-style: square; }
+.tn-appt-done { padding: 0.25rem 0; }
+.tn-appt-done:focus { outline: none; }
+.tn-appt-list { margin: 0.5rem 0 0; padding: 0; list-style: none; }
+.tn-appt-item { padding: 0.875rem 0; border-top: 1px solid var(--line-subtle); }
+.tn-appt-item--past { opacity: 0.6; }
+.tn-appt-head { display: flex; align-items: center; gap: 0.625rem; margin: 0; color: var(--text-100); font-size: 0.8125rem; }
+
+/* --- Focus clavier --- */
+#rendez-vous :focus-visible, #security-alert :focus-visible, #service-status-admin :focus-visible, #login-guard :focus-visible, #service-status-banner :focus-visible, .tn-svc-slot :focus-visible {
+    outline: 2px solid var(--cyber-300);
+    outline-offset: 2px;
+}
+
+/* --- Contraste renforcé (F23) --- */
+html.hc .tn-guard, html.hc .tn-svc-status, html.hc .tn-svc-banner, html.hc .tn-appt-summary, html.hc .tn-security-state { background: #000000; border-color: #FFFFFF; }
+html.hc .tn-guard-title, html.hc .tn-guard-wait strong, html.hc .tn-guard-title i, html.hc .tn-svc-banner .tn-eyebrow, html.hc .tn-appt-dl dt, html.hc .tn-appt-dl dd { color: #FFFFFF; }
+html.hc .tn-slot span { color: #FFFFFF; border-color: #FFFFFF; }
+html.hc .tn-slot input:checked + span { background: #FFFFFF; color: #000000; box-shadow: none; }
+html.hc .tn-slot--taken span { color: #FFFFFF; }
+html.hc .tn-appt-item, html.hc .tn-appt-head { border-color: #FFFFFF; color: #FFFFFF; }
+
+@media (max-width: 539px) { .tn-appt-dl > div { grid-template-columns: 1fr; gap: 0; } }
