@@ -99,3 +99,8 @@ Les messages diffusés et les recommandations déjà générées sont enregistr�
 - **F46 Urgences** : bouton « Urgences » toujours visible (raccourci `u`), le lieu d'urgence le plus proche en un écran, numéro 112, note quand un service est interrompu.
 - **F47 Journal d'activité** : espace agents, journal chaîné (empreinte SHA-256), filtres qui/quoi/quand, vérification d'intégrité, export CSV. Stocké dans le navigateur (localStorage).
 - **F48 Qui a modifié quoi** : valeurs avant/après, dernière modification sur chaque compte et service, historique par élément.
+
+- **F49 Être prévenu quand une demande change d'état** : bandeau visible dans toutes les sections, encart « Du nouveau dans vos démarches », message à l'écran, notification (cloche) avec le sens de l'état, ce qu'il faut faire et le message libre de l'agent.
+- **F50 Tableau de bord des agents** : en tête de l'espace agents, indicateurs (à prendre en charge, en cours, résolues, délais), demandes à traiter en premier, points d'attention, charge par service, activité sur 7 jours.
+- **F51 Mes données et mes inquiétudes** : section « Participation » (quelles données, pourquoi, qui, combien de temps, ce que la plateforme ne fait pas), export JSON, suppression du compte, formulaire d'inquiétude avec numéro de suivi, état et réponse des agents.
+- **F52 Soutenir une demande** : liste des demandes autorisées au soutien, un soutien par habitant, retrait possible, trace « Mes soutiens », notification des changements d'état, soutien visible des agents (prioritaire dès 5).
