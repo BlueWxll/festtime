@@ -1433,6 +1433,7 @@
         // 1. CONFIGURATION & ÉTAT GLOBAL DE L'APPLICATION
         // ==========================================
         const PROXY_API_URL = "/api/requests";
+        const PHP_PROXY_API_URL = "/api/requests.php";
         const DIRECT_API_URL = "https://24h.webcup.fr/wp-json/webcup/v1/requests";
         const DEFAULT_API_KEY = "s45f4ds5fgrtr4hytutyt45y4t54yty";
 
@@ -1534,17 +1535,20 @@
 
             let data = null;
 
-            // 1. Essai prioritaire via le proxy local (charge la clé du .env sans exposition client)
-            try {
-                const res = await fetch(PROXY_API_URL, {
-                    headers: { 'Accept': 'application/json' }
-                });
-                if (res.ok) {
-                    data = await res.json();
-                    console.log("[API] Données récupérées via le serveur proxy local (.env)");
+            // 1. Essai prioritaire via le proxy (Node en local, PHP sur l'hébergement statique)
+            for (const proxyUrl of [PROXY_API_URL, PHP_PROXY_API_URL]) {
+                try {
+                    const res = await fetch(proxyUrl, {
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    if (res.ok) {
+                        data = await res.json();
+                        console.log(`[API] Données récupérées via le proxy ${proxyUrl}`);
+                        break;
+                    }
+                } catch (err) {
+                    console.log(`[API] Proxy ${proxyUrl} non joint.`);
                 }
-            } catch (err) {
-                console.log("[API] Serveur proxy local non joint, bascule sur requête directe.");
             }
 
             // 2. Si le proxy n'est pas actif (ex: page ouverte en file:// statique), appel direct
