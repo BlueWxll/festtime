@@ -1642,9 +1642,19 @@
         // 1. CONFIGURATION & ÉTAT GLOBAL DE L'APPLICATION
         // ==========================================
         const PROXY_API_URL = "/api/requests";
-        const PHP_PROXY_API_URL = "/api/requests.php";
+        const SNAPSHOT_API_URL = "/api/requests.json";
         const DIRECT_API_URL = "https://24h.webcup.fr/wp-json/webcup/v1/requests";
         const DEFAULT_API_KEY = "s45f4ds5fgrtr4hytutyt45y4t54yty";
+
+        // Sources du flux par ordre de priorité : proxy Node (local), instantané généré au
+        // déploiement par build.sh (hébergement statique), puis appel direct
+        const API_SOURCES = [
+            { name: 'proxy', url: PROXY_API_URL },
+            { name: 'snapshot', url: SNAPSHOT_API_URL },
+            { name: 'direct', url: DIRECT_API_URL, headers: { 'X-Webcup-Api-Key': DEFAULT_API_KEY } }
+        ];
+        let activeApiSource = null;
+        let apiSnapshotDate = null;
 
         let currentRole = localStorage.getItem('tn_role') || 'citizen'; // 'citizen', 'agent', 'admin'
         let cachedRequests = [];
@@ -1746,38 +1756,35 @@
 
             let data = null;
 
-            // 1. Essai prioritaire via le proxy (Node en local, PHP sur l'hébergement statique)
-            for (const proxyUrl of [PROXY_API_URL, PHP_PROXY_API_URL]) {
+            // 1. On réutilise la source qui a répondu la dernière fois, sinon on les essaie dans l'ordre
+            for (const source of (activeApiSource ? [activeApiSource] : API_SOURCES)) {
                 try {
-                    const res = await fetch(proxyUrl, {
-                        headers: { 'Accept': 'application/json' }
+                    const res = await fetch(source.url, {
+                        headers: { 'Accept': 'application/json', ...source.headers },
+                        cache: 'no-store'
                     });
-                    if (res.ok) {
-                        data = await res.json();
-                        console.log(`[API] Données récupérées via le proxy ${proxyUrl}`);
-                        break;
-                    }
+                    if (!res.ok) continue;
+
+                    const json = await res.json();
+                    if (!json || !json.requests) continue;
+
+                    data = json;
+                    activeApiSource = source;
+                    apiSnapshotDate = source.name === 'snapshot' ? new Date(res.headers.get('Last-Modified') || Date.now()) : null;
+                    console.log(`[API] Données récupérées via la source "${source.name}"`);
+                    break;
                 } catch (err) {
-                    console.log(`[API] Proxy ${proxyUrl} non joint.`);
+                    console.log(`[API] Source "${source.name}" non jointe.`);
                 }
             }
 
-            // 2. Si le proxy n'est pas actif (ex: page ouverte en file:// statique), appel direct
-            if (!data) {
-                try {
-                    const directRes = await fetch(DIRECT_API_URL, {
-                        headers: {
-                            'X-Webcup-Api-Key': DEFAULT_API_KEY,
-                            'Accept': 'application/json'
-                        }
-                    });
-                    if (directRes.ok) {
-                        data = await directRes.json();
-                        console.log("[API] Données récupérées directement depuis l'API Webcup");
-                    }
-                } catch (e) {
-                    console.error("[API] Échec de l'appel direct :", e.message);
-                }
+            if (!data) activeApiSource = null;
+
+            // 2. Un instantané date du déploiement : on recale les durées de session sur son âge
+            if (data && apiSnapshotDate && data.session) {
+                const ageMin = Math.max(0, Math.floor((Date.now() - apiSnapshotDate.getTime()) / 60000));
+                data.session.elapsed_minutes = (data.session.elapsed_minutes || 0) + ageMin;
+                data.session.minutes_until_next_wave = Math.max(0, (data.session.minutes_until_next_wave || 0) - ageMin);
             }
 
             // 3. Traitement des données reçues
@@ -2685,7 +2692,11 @@
             setInterval(() => {
                 countdownSec--;
                 const timerEl = document.getElementById('agent-poll-timer');
-                if (timerEl) timerEl.innerText = `Auto-refresh: ${countdownSec}s`;
+                if (timerEl) {
+                    timerEl.innerText = apiSnapshotDate
+                        ? `Instantané API du ${apiSnapshotDate.toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}`
+                        : `Auto-refresh: ${countdownSec}s`;
+                }
 
                 if (countdownSec <= 0) {
                     fetchRequests();

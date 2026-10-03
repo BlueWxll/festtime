@@ -44,6 +44,9 @@ npm start
 ```
 L'application est accessible sur [http://localhost:3000](http://localhost:3000).
 
+### 4. Déploiement sur hébergement statique (Hodifly)
+L'hébergeur ne fait tourner ni Node ni PHP : `server.js` n'y est pas exécuté. Définissez la variable d'environnement `API_KEY` et la commande de build `sh build.sh`. Le script enregistre un instantané de l'API Webcup dans `api/requests.json`, affiché par le backoffice agents. L'instantané est rafraîchi à chaque déploiement.
+
 ---
 
 ## 🎨 Charte Graphique

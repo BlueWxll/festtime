@@ -1,4 +1,5 @@
 info dev/
 .env
 api/key.php
+api/requests.json
 .claude/
