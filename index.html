@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERA NOVA — Plateforme Numérique Centrale & Réseau Urbain</title>
+    <title>TERRA NOVA — Plateforme Numérique Centrale & Réseau Urbain</title>
     <meta name="description"
         content="Plateforme officielle de la première mégapole exoplanétaire de l'humanité. Services municipaux, espace citoyen, flux de requêtes en direct et télémesure Aethel-OS.">
 
@@ -258,27 +258,231 @@
         .diff-2 { color: var(--cyber-blue); border-color: var(--cyber-blue); background: rgba(0, 240, 255, 0.1); }
         .diff-3 { color: var(--bio-amber); border-color: var(--bio-amber); background: rgba(255, 183, 0, 0.1); }
         .diff-4 { color: #FF0055; border-color: #FF0055; background: rgba(255, 0, 85, 0.1); }
+
+        /* ==========================================
+           ACCESSIBILITÉ (F21 lecteur d'écran, F23 contraste, F24 taille du texte)
+           ========================================== */
+
+        /* F24 : toute la mise en page est en rem, la taille racine pilote l'ensemble */
+        html {
+            font-size: calc(100% * var(--tn-font-scale, 1));
+        }
+
+        /* F24 : les micro-textes en px deviennent des rem (plancher relevé) pour suivre l'échelle */
+        html .text-\[9px\] { font-size: 0.6875rem; }
+        html .text-\[10px\] { font-size: 0.71875rem; }
+        html .text-\[11px\] { font-size: 0.75rem; }
+        html .diff-badge { font-size: 0.7rem; }
+
+        /* F24 : en grand texte, les barres passent à la ligne au lieu de se chevaucher */
+        html.tn-text-lg body { overflow-wrap: break-word; }
+        html.tn-text-lg #site-header > div:first-child > div:last-child { flex-wrap: wrap; gap: 0.5rem; }
+        html.tn-text-lg #site-header > div:first-child > div:last-child > * { margin-left: 0; }
+        html.tn-text-lg #site-header > div:first-child { height: auto; min-height: 5rem; flex-wrap: wrap; row-gap: 0.5rem; padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        html.tn-text-lg #site-header > div:last-child { flex-wrap: wrap; gap: 0.25rem 1rem; }
+        html.tn-text-lg #site-header, html.tn-text-lg #site-nav { position: static; }
+        html.tn-text-lg #site-nav > div { flex-wrap: wrap; overflow: visible; row-gap: 0.25rem; }
+        html.tn-text-lg .whitespace-nowrap { white-space: normal; }
+        html.tn-text-lg .truncate { white-space: normal; overflow: visible; text-overflow: clip; }
+        html.tn-text-lg h1 { font-size: min(3.75rem, 11vw); line-height: 1.1; }
+
+        /* F23 : le gris secondaire d'origine (#4A607A) est trop peu contrasté sur fond sombre */
+        html [class~="text-[#4A607A]"] { color: #8CA3BF; }
+        .cyber-input::placeholder { color: #7C93AE; opacity: 1; }
+
+        /* F21 : focus clavier toujours visible */
+        :focus-visible {
+            outline: 3px solid var(--bio-amber) !important;
+            outline-offset: 2px;
+        }
+
+        .btn-cyber:focus-visible { clip-path: none; }
+
+        .skip-link {
+            position: absolute;
+            left: 0.5rem;
+            top: -6rem;
+            z-index: 200;
+            background: var(--bio-amber);
+            color: #000;
+            padding: 0.6rem 1rem;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .skip-link:focus { top: 0.5rem; }
+
+        /* Panneau d'accessibilité */
+        #a11y-toggle {
+            position: fixed;
+            left: 1rem;
+            bottom: 1rem;
+            z-index: 110;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background: #03070E;
+            border: 2px solid var(--cyber-blue);
+            color: var(--cyber-blue);
+            font-size: 1.35rem;
+            cursor: pointer;
+        }
+
+        #a11y-panel {
+            position: fixed;
+            left: 1rem;
+            bottom: 4.75rem;
+            z-index: 110;
+            width: min(20rem, calc(100vw - 2rem));
+            max-height: calc(100vh - 6rem);
+            overflow-y: auto;
+            background: #03070E;
+            border: 2px solid var(--cyber-blue);
+            padding: 1rem;
+            font-size: 0.875rem;
+            color: #FFFFFF;
+        }
+
+        #a11y-panel-title { font-size: 0.95rem; font-weight: 700; color: var(--cyber-blue); margin-bottom: 0.75rem; }
+        #a11y-panel fieldset { border: 0; padding: 0; margin: 0 0 0.9rem 0; }
+        #a11y-panel legend { font-weight: 700; margin-bottom: 0.4rem; }
+        #a11y-panel .a11y-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+
+        .a11y-btn {
+            min-width: 2.75rem;
+            min-height: 2.75rem;
+            padding: 0.35rem 0.75rem;
+            border: 2px solid #FFFFFF;
+            background: #000000;
+            color: #FFFFFF;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .a11y-btn:hover { background: #1B2A3D; }
+        .a11y-btn[aria-pressed="true"] { background: var(--bio-amber); border-color: var(--bio-amber); color: #000000; }
+        .a11y-btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+
+        /* Animations réduites (réglage du panneau ou préférence système) */
+        html.tn-reduce-motion *, html.tn-reduce-motion *::before, html.tn-reduce-motion *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+
+        html.tn-reduce-motion #bg-canvas, html.tn-reduce-motion .scanline-overlay { display: none; }
+
+        /* F23 : MODE CONTRASTE RENFORCÉ */
+        html.hc body { background: #000000; color: #FFFFFF; letter-spacing: 0.3px; }
+        html.hc .grid-bg { background-image: none; }
+        html.hc .scanline-overlay, html.hc #bg-canvas { display: none; }
+        html.hc * { text-shadow: none !important; }
+        html.hc [class*="drop-shadow"] { filter: none; }
+        html.hc [class*="shadow-["] { box-shadow: none; }
+        html.hc [class*="backdrop-blur"] { -webkit-backdrop-filter: none; backdrop-filter: none; }
+        html.hc #site-header, html.hc #site-nav, html.hc #site-header > div:last-child, html.hc footer { background: #000000; }
+
+        html.hc .holo-card { background: #000000; -webkit-backdrop-filter: none; backdrop-filter: none; border-color: #FFFFFF; }
+        html.hc [class*="border-cyan-9"], html.hc [class*="border-cyan-8"] { border-color: #9FEFFF; }
+
+        html.hc [class~="text-[#4A607A]"] { color: #E6EEF7; }
+        html.hc [class~="text-[#E0F4FF]"], html.hc [class*=" text-[#E0F4FF]/"], html.hc [class^="text-[#E0F4FF]/"] { color: #FFFFFF; }
+        html.hc [class~="text-[#00F0FF]"], html.hc [class*=" text-[#00F0FF]/"], html.hc [class^="text-[#00F0FF]/"] { color: #5FF5FF; }
+        html.hc [class~="text-[#9D00FF]"] { color: #DDB0FF; }
+        html.hc [class~="text-[#FFB700]"] { color: #FFD24D; }
+        html.hc [class*="text-slate-"], html.hc [class*="text-gray-"] { color: #FFFFFF; }
+        html.hc [class*="text-red-"] { color: #FFA3A3; }
+        html.hc [class*="text-green-"] { color: #7CFFB0; }
+        html.hc .text-transparent { color: #FFFFFF; background-image: none; -webkit-text-fill-color: #FFFFFF; }
+        html.hc .diff-4 { color: #FF8FB3; border-color: #FF8FB3; }
+        html.hc [class*="opacity-40"] { opacity: 0.75; }
+
+        html.hc a { text-decoration: underline; }
+        html.hc .btn-cyber { background: #000000; border-width: 2px; box-shadow: none; clip-path: none; }
+        html.hc .btn-cyber:hover { background: #FFFFFF; color: #000000; border-color: #FFFFFF; }
+        html.hc .btn-violet { border-color: #DDB0FF; color: #DDB0FF; }
+        html.hc .btn-amber { border-color: #FFD24D; color: #FFD24D; }
+        html.hc .cyber-input { background: #000000; border: 2px solid #FFFFFF; color: #FFFFFF; }
+        html.hc .cyber-input::placeholder { color: #C9D6E3; }
+        html.hc .cyber-input:focus { background: #000000; box-shadow: none; border-color: #FFD24D; }
+        html.hc .pulse-amber, html.hc .animate-ping, html.hc .animate-pulse { animation: none; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+
+            #bg-canvas { display: none; }
+        }
     </style>
+
+    <!-- Préférences d'accessibilité appliquées avant le premier rendu (évite le flash) -->
+    <script>
+        (function () {
+            try {
+                var root = document.documentElement;
+                var scale = parseFloat(localStorage.getItem('tn_a11y_font')) || 1;
+                var contrast = localStorage.getItem('tn_a11y_contrast');
+                if (contrast === null && window.matchMedia && window.matchMedia('(prefers-contrast: more)').matches) contrast = '1';
+                root.style.setProperty('--tn-font-scale', scale);
+                if (scale > 1) root.classList.add('tn-text-lg');
+                if (contrast === '1') root.classList.add('hc');
+                if (localStorage.getItem('tn_a11y_motion') === '1') root.classList.add('tn-reduce-motion');
+            } catch (e) { }
+        })();
+    </script>
 </head>
 
 <body class="grid-bg relative min-h-screen text-slate-100 flex flex-col justify-between">
 
+    <!-- Liens d'évitement (F21) -->
+    <a href="#contenu-principal" class="skip-link">Aller au contenu principal</a>
+
+    <!-- Panneau d'accessibilité (F21, F23, F24) -->
+    <button type="button" id="a11y-toggle" aria-expanded="false" aria-controls="a11y-panel" aria-label="Réglages d'accessibilité" onclick="toggleA11yPanel()">
+        <i aria-hidden="true" class="fa-solid fa-universal-access"></i>
+    </button>
+    <section id="a11y-panel" aria-labelledby="a11y-panel-title" hidden>
+        <p id="a11y-panel-title">Accessibilité</p>
+        <fieldset>
+            <legend>Taille du texte : <span id="a11y-font-value">100 %</span></legend>
+            <div class="a11y-row">
+                <button type="button" class="a11y-btn" id="a11y-font-down" onclick="changeFontScale(-1)" aria-label="Réduire la taille du texte">A−</button>
+                <button type="button" class="a11y-btn" id="a11y-font-up" onclick="changeFontScale(1)" aria-label="Augmenter la taille du texte">A+</button>
+                <button type="button" class="a11y-btn" onclick="changeFontScale(0)">Taille normale</button>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Affichage</legend>
+            <div class="a11y-row">
+                <button type="button" class="a11y-btn" id="a11y-contrast-btn" aria-pressed="false" onclick="toggleContrast()">Contraste renforcé</button>
+                <button type="button" class="a11y-btn" id="a11y-motion-btn" aria-pressed="false" onclick="toggleReducedMotion()">Réduire les animations</button>
+            </div>
+        </fieldset>
+        <button type="button" class="a11y-btn" onclick="toggleA11yPanel(false)">Fermer</button>
+    </section>
+    <div id="a11y-live" class="sr-only" role="status" aria-live="polite"></div>
+
     <!-- Scanline Effect Overlay -->
-    <div class="scanline-overlay"></div>
+    <div class="scanline-overlay" aria-hidden="true"></div>
 
     <!-- Particle Interactive Canvas -->
-    <canvas id="bg-canvas"></canvas>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
 
     <div class="relative z-10 flex-1">
 
         <!-- Top Navigation & Role Bar -->
-        <header class="border-b border-cyan-900/50 bg-[#03070E]/90 backdrop-blur-md sticky top-0 z-50">
+        <header id="site-header" class="border-b border-cyan-900/50 bg-[#03070E]/90 backdrop-blur-md sticky top-0 z-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
 
                 <!-- Logo & Brand -->
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 border border-[#00F0FF] flex items-center justify-center relative rotate-45 bg-[#00F0FF]/10 shadow-[0_0_15px_rgba(0,240,255,0.4)]">
-                        <i class="fa-solid fa-atom text-[#00F0FF] -rotate-45 text-lg"></i>
+                        <i aria-hidden="true" class="fa-solid fa-atom text-[#00F0FF] -rotate-45 text-lg"></i>
                     </div>
                     <div>
                         <a href="#" class="text-xl sm:text-2xl font-black font-orbitron tracking-widest text-[#00F0FF] hover:text-white transition drop-shadow-[0_0_12px_rgba(0,240,255,0.6)]">
@@ -295,7 +499,7 @@
                 <!-- Live API Telemetry Header Metrics -->
                 <div class="hidden lg:flex items-center space-x-5 text-xs border-x border-cyan-900/50 px-5 py-2">
                     <div class="flex items-center space-x-2">
-                        <span id="header-pulse" class="w-2.5 h-2.5 rounded-full bg-[#00F0FF] animate-ping"></span>
+                        <span id="header-pulse" aria-hidden="true" class="w-2.5 h-2.5 rounded-full bg-[#00F0FF] animate-ping"></span>
                         <span class="text-[#4A607A]">SESSION:</span>
                         <span class="text-[#E0F4FF] font-bold" id="header-sess-status">CONNECTING...</span>
                     </div>
@@ -311,7 +515,7 @@
                     </div>
                     <div class="h-4 w-px bg-cyan-900/60"></div>
                     <div class="text-[#9D00FF] font-bold flex items-center gap-1">
-                        <i class="fa-regular fa-clock text-[10px]"></i>
+                        <i aria-hidden="true" class="fa-regular fa-clock text-[10px]"></i>
                         <span id="header-next-wave-timer">NEXT: --</span>
                     </div>
                 </div>
@@ -320,25 +524,26 @@
                 <div class="flex items-center space-x-3">
                     <!-- Role Switcher (D08 & D09 Demo) -->
                     <div class="relative group">
-                        <button id="role-selector-btn" class="flex items-center space-x-2 border border-cyan-800 bg-[#050D1A] px-3 py-1.5 text-xs hover:border-[#00F0FF] transition">
-                            <i id="role-icon" class="fa-solid fa-user text-[#00F0FF]"></i>
-                            <span class="text-[#4A607A] hidden sm:inline">RÔLE:</span>
+                        <button type="button" id="role-selector-btn" aria-haspopup="true" class="flex items-center space-x-2 border border-cyan-800 bg-[#050D1A] px-3 py-1.5 text-xs hover:border-[#00F0FF] transition">
+                            <i aria-hidden="true" id="role-icon" class="fa-solid fa-user text-[#00F0FF]"></i>
+                            <span class="sr-only">Changer de profil. Profil actuel :</span>
+                            <span aria-hidden="true" class="text-[#4A607A] hidden sm:inline">RÔLE:</span>
                             <span id="current-role-badge" class="font-orbitron font-bold text-[#00F0FF]">CITOYEN</span>
-                            <i class="fa-solid fa-chevron-down text-[10px] text-[#4A607A]"></i>
+                            <i aria-hidden="true" class="fa-solid fa-chevron-down text-[10px] text-[#4A607A]"></i>
                         </button>
                         <!-- Dropdown Menu -->
-                        <div class="absolute right-0 mt-2 w-48 bg-[#03070E] border border-cyan-800/80 shadow-2xl z-50 hidden group-hover:block holo-card p-1">
+                        <div class="absolute right-0 mt-2 w-48 bg-[#03070E] border border-cyan-800/80 shadow-2xl z-50 hidden group-hover:block group-focus-within:block holo-card p-1">
                             <div class="text-[9px] uppercase px-3 py-1 text-[#4A607A] border-b border-cyan-900/40">Changer de Profil</div>
                             <button onclick="switchRole('citizen')" class="w-full text-left px-3 py-2 text-xs hover:bg-[#00F0FF]/10 hover:text-[#00F0FF] flex items-center justify-between">
-                                <span><i class="fa-solid fa-user text-[11px] mr-2 text-[#00F0FF]"></i>Citoyen</span>
+                                <span><i aria-hidden="true" class="fa-solid fa-user text-[11px] mr-2 text-[#00F0FF]"></i>Citoyen</span>
                                 <span class="text-[9px] text-green-400">Public</span>
                             </button>
                             <button onclick="switchRole('agent')" class="w-full text-left px-3 py-2 text-xs hover:bg-[#9D00FF]/10 hover:text-[#9D00FF] flex items-center justify-between">
-                                <span><i class="fa-solid fa-id-badge text-[11px] mr-2 text-[#9D00FF]"></i>Agent Municipal</span>
+                                <span><i aria-hidden="true" class="fa-solid fa-id-badge text-[11px] mr-2 text-[#9D00FF]"></i>Agent Municipal</span>
                                 <span class="text-[9px] text-[#9D00FF]">Pro</span>
                             </button>
                             <button onclick="switchRole('admin')" class="w-full text-left px-3 py-2 text-xs hover:bg-[#FFB700]/10 hover:text-[#FFB700] flex items-center justify-between">
-                                <span><i class="fa-solid fa-crown text-[11px] mr-2 text-[#FFB700]"></i>Haut Conseil</span>
+                                <span><i aria-hidden="true" class="fa-solid fa-crown text-[11px] mr-2 text-[#FFB700]"></i>Haut Conseil</span>
                                 <span class="text-[9px] text-[#FFB700]">Admin</span>
                             </button>
                         </div>
@@ -347,14 +552,14 @@
                     <!-- Auth Button (Connexion / Mon Espace D01 & D03) -->
                     <button id="auth-nav-btn" onclick="openAuthModal()"
                         class="btn-cyber px-4 py-2 text-xs uppercase font-bold flex items-center space-x-2">
-                        <i class="fa-solid fa-fingerprint"></i>
+                        <i aria-hidden="true" class="fa-solid fa-fingerprint"></i>
                         <span id="auth-nav-label">Connexion</span>
                     </button>
 
                     <!-- Console Toggle Button -->
-                    <button onclick="toggleModal()" title="Console Directe"
+                    <button type="button" onclick="toggleModal()" title="Console Directe" aria-label="Ouvrir la console directe Aethel-OS"
                         class="border border-cyan-900/80 hover:border-[#00F0FF] text-[#00F0FF] p-2 text-xs transition">
-                        <i class="fa-solid fa-terminal"></i>
+                        <i aria-hidden="true" class="fa-solid fa-terminal"></i>
                     </button>
                 </div>
             </div>
@@ -380,39 +585,41 @@
         </header>
 
         <!-- SUB-NAVIGATION BAR (Accès rapide aux modules de Terra Nova) -->
-        <nav class="bg-[#050D1A]/95 border-b border-cyan-900/40 sticky top-20 z-40 backdrop-blur-md">
+        <nav id="site-nav" aria-label="Navigation principale" class="bg-[#050D1A]/95 border-b border-cyan-900/40 sticky top-20 z-40 backdrop-blur-md">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center space-x-1 sm:space-x-6 overflow-x-auto py-2 text-xs">
                 <a href="#accueil" class="px-3 py-1.5 hover:text-[#00F0FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
-                    <i class="fa-solid fa-globe text-[11px] text-[#00F0FF]"></i>
+                    <i aria-hidden="true" class="fa-solid fa-globe text-[11px] text-[#00F0FF]"></i>
                     <span>ACCUEIL CITÉ</span>
                 </a>
                 <a href="#services-municipaux" class="px-3 py-1.5 hover:text-[#00F0FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
-                    <i class="fa-solid fa-building-columns text-[11px] text-[#00F0FF]"></i>
+                    <i aria-hidden="true" class="fa-solid fa-building-columns text-[11px] text-[#00F0FF]"></i>
                     <span>SERVICES MUNICIPAUX</span>
                     <span class="text-[9px] bg-cyan-950 text-[#00F0FF] px-1.5 py-0.5 rounded border border-cyan-800">D05</span>
                 </a>
                 <a href="#annonces" class="px-3 py-1.5 hover:text-[#00F0FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
-                    <i class="fa-solid fa-bullhorn text-[11px] text-[#00F0FF]"></i>
+                    <i aria-hidden="true" class="fa-solid fa-bullhorn text-[11px] text-[#00F0FF]"></i>
                     <span>ACTUALITÉS & DÉCRETS</span>
                     <span class="text-[9px] bg-cyan-950 text-[#00F0FF] px-1.5 py-0.5 rounded border border-cyan-800">D06</span>
                 </a>
                 <a href="#demarches" class="px-3 py-1.5 hover:text-[#00F0FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
-                    <i class="fa-solid fa-file-pen text-[11px] text-[#FFB700]"></i>
+                    <i aria-hidden="true" class="fa-solid fa-file-pen text-[11px] text-[#FFB700]"></i>
                     <span>SIGNALEMENT & CONTACT</span>
                     <span class="text-[9px] bg-amber-950 text-[#FFB700] px-1.5 py-0.5 rounded border border-amber-800">D04</span>
                 </a>
                 <a href="#espace-citoyen" class="px-3 py-1.5 hover:text-[#00F0FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
-                    <i class="fa-solid fa-address-card text-[11px] text-[#00F0FF]"></i>
+                    <i aria-hidden="true" class="fa-solid fa-address-card text-[11px] text-[#00F0FF]"></i>
                     <span>ESPACE CITOYEN</span>
                     <span class="text-[9px] bg-cyan-950 text-[#00F0FF] px-1.5 py-0.5 rounded border border-cyan-800">D01/D03</span>
                 </a>
                 <a href="#espace-agent" class="px-3 py-1.5 hover:text-[#9D00FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap border-l border-cyan-900/60 pl-4 text-[#9D00FF]">
-                    <i class="fa-solid fa-shield-halved text-[11px]"></i>
+                    <i aria-hidden="true" class="fa-solid fa-shield-halved text-[11px]"></i>
                     <span>ESPACE AGENTS (BACKOFFICE)</span>
                     <span class="text-[9px] bg-purple-950 text-[#9D00FF] px-1.5 py-0.5 rounded border border-purple-800">D19/F22</span>
                 </a>
             </div>
         </nav>
+
+        <main id="contenu-principal" tabindex="-1">
 
         <!-- SECTION 1 : ACCUEIL IMMERSIF & HIÉRARCHISÉ (D07 - 500 XP) -->
         <section id="accueil" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16 relative">
@@ -420,7 +627,7 @@
             <div class="mb-8 p-4 holo-card border-l-4 border-l-[#00F0FF] border-cyan-900/60 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div class="flex items-center space-x-3">
                     <div class="w-8 h-8 rounded-full bg-[#00F0FF]/20 flex items-center justify-center text-[#00F0FF]">
-                        <i class="fa-solid fa-compass"></i>
+                        <i aria-hidden="true" class="fa-solid fa-compass"></i>
                     </div>
                     <div>
                         <div class="font-orbitron font-bold text-sm text-[#00F0FF] uppercase">GUIDE OFFICIEL D'ACCUEIL DES NOUVEAUX HABITANTS</div>
@@ -437,7 +644,7 @@
                 <!-- Left Column : Title, Pitch, Quick Stats -->
                 <div class="lg:col-span-7 space-y-6">
                     <div class="inline-flex items-center space-x-2 border border-[#9D00FF]/50 bg-[#9D00FF]/10 px-3 py-1 text-xs text-[#9D00FF] uppercase tracking-widest">
-                        <i class="fa-solid fa-satellite"></i>
+                        <i aria-hidden="true" class="fa-solid fa-satellite"></i>
                         <span>Station Centrale & Dôme d'Exploration</span>
                     </div>
 
@@ -452,22 +659,22 @@
                     <!-- Navigation Action Cards -->
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
                         <a href="#services-municipaux" class="holo-card p-3 text-center hover:border-[#00F0FF] transition group">
-                            <i class="fa-solid fa-hospital-user text-xl text-[#00F0FF] mb-2 group-hover:scale-110 transition"></i>
+                            <i aria-hidden="true" class="fa-solid fa-hospital-user text-xl text-[#00F0FF] mb-2 group-hover:scale-110 transition"></i>
                             <div class="font-orbitron font-bold text-[11px] text-[#E0F4FF]">6 SERVICES</div>
                             <div class="text-[9px] text-[#4A607A]">Pôles municipaux</div>
                         </a>
                         <a href="#annonces" class="holo-card p-3 text-center hover:border-[#00F0FF] transition group">
-                            <i class="fa-solid fa-newspaper text-xl text-[#00F0FF] mb-2 group-hover:scale-110 transition"></i>
+                            <i aria-hidden="true" class="fa-solid fa-newspaper text-xl text-[#00F0FF] mb-2 group-hover:scale-110 transition"></i>
                             <div class="font-orbitron font-bold text-[11px] text-[#E0F4FF]">DÉCRETS</div>
                             <div class="text-[9px] text-[#4A607A]">Journal officiel</div>
                         </a>
                         <a href="#demarches" class="holo-card p-3 text-center hover:border-[#FFB700] transition group">
-                            <i class="fa-solid fa-paper-plane text-xl text-[#FFB700] mb-2 group-hover:scale-110 transition"></i>
+                            <i aria-hidden="true" class="fa-solid fa-paper-plane text-xl text-[#FFB700] mb-2 group-hover:scale-110 transition"></i>
                             <div class="font-orbitron font-bold text-[11px] text-[#FFB700]">SIGNALER</div>
                             <div class="text-[9px] text-[#4A607A]">Doléance en ligne</div>
                         </a>
                         <a href="#espace-citoyen" class="holo-card p-3 text-center hover:border-[#9D00FF] transition group">
-                            <i class="fa-solid fa-id-card-clip text-xl text-[#9D00FF] mb-2 group-hover:scale-110 transition"></i>
+                            <i aria-hidden="true" class="fa-solid fa-id-card-clip text-xl text-[#9D00FF] mb-2 group-hover:scale-110 transition"></i>
                             <div class="font-orbitron font-bold text-[11px] text-[#9D00FF]">MON PROFIL</div>
                             <div class="text-[9px] text-[#4A607A]">Espace habitant</div>
                         </a>
@@ -558,7 +765,7 @@
                         <div class="mt-4 flex justify-between items-center text-xs">
                             <span class="text-[#4A607A] text-[11px]">SYS_VER: 2.4.1 — WEBCUP 2026</span>
                             <button onclick="triggerPurge()" class="text-[#FFB700] hover:underline uppercase tracking-wider text-[11px] flex items-center space-x-1">
-                                <i class="fa-solid fa-arrows-rotate"></i>
+                                <i aria-hidden="true" class="fa-solid fa-arrows-rotate"></i>
                                 <span>Recalibrer Matrice</span>
                             </button>
                         </div>
@@ -572,7 +779,7 @@
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
                 <div>
                     <div class="inline-flex items-center space-x-2 text-xs text-[#00F0FF] uppercase tracking-widest mb-1">
-                        <i class="fa-solid fa-sitemap"></i>
+                        <i aria-hidden="true" class="fa-solid fa-sitemap"></i>
                         <span>CATALOGUE OFFICIEL (EXIGENCE D05 — 250 XP)</span>
                     </div>
                     <h2 class="text-3xl font-black font-orbitron text-[#00F0FF] uppercase tracking-wider">
@@ -600,7 +807,7 @@
                     <div>
                         <div class="flex justify-between items-start mb-4">
                             <div class="w-10 h-10 border border-[#00F0FF]/40 bg-[#00F0FF]/10 flex items-center justify-center text-[#00F0FF] text-lg">
-                                <i class="fa-solid fa-wind"></i>
+                                <i aria-hidden="true" class="fa-solid fa-wind"></i>
                             </div>
                             <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#00F0FF]/40 text-[#00F0FF] bg-[#00F0FF]/5">Pôle Vital</span>
                         </div>
@@ -616,7 +823,7 @@
                     </div>
                     <button onclick="prefillContactForm('Atmosphère & Biosphère', 'Demande de recalibrage de module O2')"
                         class="w-full btn-cyber py-2 text-xs uppercase font-bold tracking-wider flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        <i aria-hidden="true" class="fa-solid fa-arrow-right text-[10px]"></i>
                         <span>Contacter ce Service</span>
                     </button>
                 </div>
@@ -628,7 +835,7 @@
                     <div>
                         <div class="flex justify-between items-start mb-4">
                             <div class="w-10 h-10 border border-[#00F0FF]/40 bg-[#00F0FF]/10 flex items-center justify-center text-[#00F0FF] text-lg">
-                                <i class="fa-solid fa-train-subway"></i>
+                                <i aria-hidden="true" class="fa-solid fa-train-subway"></i>
                             </div>
                             <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#00F0FF]/40 text-[#00F0FF] bg-[#00F0FF]/5">Mobilité</span>
                         </div>
@@ -644,7 +851,7 @@
                     </div>
                     <button onclick="prefillContactForm('Transports & Hyper-Tubes', 'Réservation / Réclamation navette orbitale')"
                         class="w-full btn-cyber py-2 text-xs uppercase font-bold tracking-wider flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        <i aria-hidden="true" class="fa-solid fa-arrow-right text-[10px]"></i>
                         <span>Contacter ce Service</span>
                     </button>
                 </div>
@@ -656,7 +863,7 @@
                     <div>
                         <div class="flex justify-between items-start mb-4">
                             <div class="w-10 h-10 border border-[#9D00FF]/40 bg-[#9D00FF]/10 flex items-center justify-center text-[#9D00FF] text-lg">
-                                <i class="fa-solid fa-bolt"></i>
+                                <i aria-hidden="true" class="fa-solid fa-bolt"></i>
                             </div>
                             <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#9D00FF]/40 text-[#9D00FF] bg-[#9D00FF]/5">Énergie</span>
                         </div>
@@ -672,7 +879,7 @@
                     </div>
                     <button onclick="prefillContactForm('Énergie Plasma & Réacteur Zéro', 'Augmentation de quota énergétique')"
                         class="w-full btn-cyber btn-violet py-2 text-xs uppercase font-bold tracking-wider flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        <i aria-hidden="true" class="fa-solid fa-arrow-right text-[10px]"></i>
                         <span>Contacter ce Service</span>
                     </button>
                 </div>
@@ -684,7 +891,7 @@
                     <div>
                         <div class="flex justify-between items-start mb-4">
                             <div class="w-10 h-10 border border-[#00F0FF]/40 bg-[#00F0FF]/10 flex items-center justify-center text-[#00F0FF] text-lg">
-                                <i class="fa-solid fa-heart-pulse"></i>
+                                <i aria-hidden="true" class="fa-solid fa-heart-pulse"></i>
                             </div>
                             <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#00F0FF]/40 text-[#00F0FF] bg-[#00F0FF]/5">Santé</span>
                         </div>
@@ -700,7 +907,7 @@
                     </div>
                     <button onclick="prefillContactForm('Santé Biotech & Cryo-Soins', 'Demande de visite médicale colon')"
                         class="w-full btn-cyber py-2 text-xs uppercase font-bold tracking-wider flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        <i aria-hidden="true" class="fa-solid fa-arrow-right text-[10px]"></i>
                         <span>Contacter ce Service</span>
                     </button>
                 </div>
@@ -712,7 +919,7 @@
                     <div>
                         <div class="flex justify-between items-start mb-4">
                             <div class="w-10 h-10 border border-[#FFB700]/40 bg-[#FFB700]/10 flex items-center justify-center text-[#FFB700] text-lg">
-                                <i class="fa-solid fa-shield-halved"></i>
+                                <i aria-hidden="true" class="fa-solid fa-shield-halved"></i>
                             </div>
                             <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#FFB700]/40 text-[#FFB700] bg-[#FFB700]/5">Protection</span>
                         </div>
@@ -728,7 +935,7 @@
                     </div>
                     <button onclick="prefillContactForm('Sécurité Civile & Sentinelles', 'Signalement d\'anomalie de périmètre')"
                         class="w-full btn-cyber btn-amber py-2 text-xs uppercase font-bold tracking-wider flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        <i aria-hidden="true" class="fa-solid fa-arrow-right text-[10px]"></i>
                         <span>Contacter ce Service</span>
                     </button>
                 </div>
@@ -740,7 +947,7 @@
                     <div>
                         <div class="flex justify-between items-start mb-4">
                             <div class="w-10 h-10 border border-[#00F0FF]/40 bg-[#00F0FF]/10 flex items-center justify-center text-[#00F0FF] text-lg">
-                                <i class="fa-solid fa-id-card"></i>
+                                <i aria-hidden="true" class="fa-solid fa-id-card"></i>
                             </div>
                             <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#00F0FF]/40 text-[#00F0FF] bg-[#00F0FF]/5">Citoyenneté</span>
                         </div>
@@ -756,7 +963,7 @@
                     </div>
                     <button onclick="openAuthModal('register')"
                         class="w-full btn-cyber py-2 text-xs uppercase font-bold tracking-wider flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-user-plus text-[10px]"></i>
+                        <i aria-hidden="true" class="fa-solid fa-user-plus text-[10px]"></i>
                         <span>Enregistrer un Nouvel Habitant (D01)</span>
                     </button>
                 </div>
@@ -769,7 +976,7 @@
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
                 <div>
                     <div class="inline-flex items-center space-x-2 text-xs text-[#00F0FF] uppercase tracking-widest mb-1">
-                        <i class="fa-solid fa-scroll"></i>
+                        <i aria-hidden="true" class="fa-solid fa-scroll"></i>
                         <span>INFORMATIONS OFFICIELLES (EXIGENCE D06 — 250 XP)</span>
                     </div>
                     <h2 class="text-3xl font-black font-orbitron text-[#00F0FF] uppercase tracking-wider">
@@ -811,7 +1018,7 @@
                         <span class="text-[#4A607A] text-[10px]">Mairie de Terra Nova</span>
                         <button onclick="openNewsDetail(0)" class="text-[#00F0FF] hover:underline font-bold text-xs flex items-center gap-1">
                             <span>Lire le décret</span>
-                            <i class="fa-solid fa-angle-right text-[10px]"></i>
+                            <i aria-hidden="true" class="fa-solid fa-angle-right text-[10px]"></i>
                         </button>
                     </div>
                 </div>
@@ -836,7 +1043,7 @@
                         <span class="text-[#4A607A] text-[10px]">Sécurité Civile</span>
                         <button onclick="openNewsDetail(1)" class="text-[#FFB700] hover:underline font-bold text-xs flex items-center gap-1">
                             <span>Consulter l'alerte</span>
-                            <i class="fa-solid fa-angle-right text-[10px]"></i>
+                            <i aria-hidden="true" class="fa-solid fa-angle-right text-[10px]"></i>
                         </button>
                     </div>
                 </div>
@@ -861,7 +1068,7 @@
                         <span class="text-[#4A607A] text-[10px]">Direction Transports</span>
                         <button onclick="openNewsDetail(2)" class="text-[#9D00FF] hover:underline font-bold text-xs flex items-center gap-1">
                             <span>Voir les détails</span>
-                            <i class="fa-solid fa-angle-right text-[10px]"></i>
+                            <i aria-hidden="true" class="fa-solid fa-angle-right text-[10px]"></i>
                         </button>
                     </div>
                 </div>
@@ -877,7 +1084,7 @@
 
                 <div class="text-center mb-8">
                     <div class="inline-flex items-center space-x-2 text-xs text-[#FFB700] uppercase tracking-widest mb-1">
-                        <i class="fa-solid fa-envelope-open-text"></i>
+                        <i aria-hidden="true" class="fa-solid fa-envelope-open-text"></i>
                         <span>RELATIONS CITOYENNES (EXIGENCE D04 — 250 XP)</span>
                     </div>
                     <h2 class="text-2xl sm:text-3xl font-bold font-orbitron text-[#00F0FF] uppercase tracking-wider mb-2">
@@ -893,7 +1100,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Identité Colon -->
                         <div class="flex flex-col space-y-2">
-                            <label class="text-xs text-[#4A607A] uppercase tracking-wider flex items-center justify-between">
+                            <label for="contact-name" class="text-xs text-[#4A607A] uppercase tracking-wider flex items-center justify-between">
                                 <span>Nom du Citoyen / Matricule</span>
                                 <span class="text-[10px] text-[#00F0FF]" id="contact-user-hint">Anonyme ou Colon</span>
                             </label>
@@ -902,7 +1109,7 @@
 
                         <!-- Service Ciblé -->
                         <div class="flex flex-col space-y-2">
-                            <label class="text-xs text-[#4A607A] uppercase tracking-wider">Service Municipal Destinataire</label>
+                            <label for="contact-service" class="text-xs text-[#4A607A] uppercase tracking-wider">Service Municipal Destinataire</label>
                             <select id="contact-service" required class="cyber-input py-2 px-2 text-xs bg-[#03070E] text-[#E0F4FF] cursor-pointer">
                                 <option value="Atmosphère & Biosphère">Atmosphère & Biosphère (Qualité d'air, fluides)</option>
                                 <option value="Transports & Hyper-Tubes">Transports & Hyper-Tubes (Navettes, voirie)</option>
@@ -917,7 +1124,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Catégorie / Priorité -->
                         <div class="flex flex-col space-y-2">
-                            <label class="text-xs text-[#4A607A] uppercase tracking-wider">Type de Démarche</label>
+                            <label for="contact-category" class="text-xs text-[#4A607A] uppercase tracking-wider">Type de Démarche</label>
                             <select id="contact-category" class="cyber-input py-2 px-2 text-xs bg-[#03070E] text-[#E0F4FF] cursor-pointer">
                                 <option value="Question">Demande d'information générale</option>
                                 <option value="Signalement Incident">Signalement d'anomalie ou dysfonctionnement</option>
@@ -928,7 +1135,7 @@
 
                         <!-- Urgence -->
                         <div class="flex flex-col space-y-2">
-                            <label class="text-xs text-[#4A607A] uppercase tracking-wider">Niveau d'Urgence Déclaré</label>
+                            <label for="contact-priority" class="text-xs text-[#4A607A] uppercase tracking-wider">Niveau d'Urgence Déclaré</label>
                             <select id="contact-priority" class="cyber-input py-2 px-2 text-xs bg-[#03070E] text-[#E0F4FF] cursor-pointer">
                                 <option value="Normal">🟢 Normal (Traitement standard sous 24h)</option>
                                 <option value="Élevé">🟡 Élevé (Priorité technique sous 6h)</option>
@@ -939,31 +1146,31 @@
 
                     <!-- Objet & Message -->
                     <div class="flex flex-col space-y-2">
-                        <label class="text-xs text-[#4A607A] uppercase tracking-wider">Objet de la Demande</label>
+                        <label for="contact-subject" class="text-xs text-[#4A607A] uppercase tracking-wider">Objet de la Demande</label>
                         <input type="text" id="contact-subject" required placeholder="ex: Baisse de pression dans le conduit secondaire du Dôme B" class="cyber-input py-2 px-2 text-xs">
                     </div>
 
                     <div class="flex flex-col space-y-2">
-                        <label class="text-xs text-[#4A607A] uppercase tracking-wider">Description Détaillée du Besoin</label>
+                        <label for="contact-message" class="text-xs text-[#4A607A] uppercase tracking-wider">Description Détaillée du Besoin</label>
                         <textarea id="contact-message" rows="4" required placeholder="Expliquez clairement votre problème ou votre requête aux agents municipaux..." class="cyber-input py-2 px-2 text-xs resize-none"></textarea>
                     </div>
 
                     <!-- Submit Button -->
                     <div class="pt-2 flex flex-col sm:flex-row justify-between items-center gap-4">
                         <span class="text-[10px] text-[#4A607A]">
-                            <i class="fa-solid fa-lock text-[#00F0FF] mr-1"></i> Transmission chiffrée selon le protocole Aethel-Quantum.
+                            <i aria-hidden="true" class="fa-solid fa-lock text-[#00F0FF] mr-1"></i> Transmission chiffrée selon le protocole Aethel-Quantum.
                         </span>
                         <button type="submit" class="btn-cyber btn-amber px-8 py-3 text-xs font-bold tracking-widest uppercase flex items-center space-x-2 w-full sm:w-auto justify-center">
-                            <i class="fa-solid fa-paper-plane"></i>
+                            <i aria-hidden="true" class="fa-solid fa-paper-plane"></i>
                             <span>Transmettre à la Mairie</span>
                         </button>
                     </div>
                 </form>
 
                 <!-- Receipt Modal / Box (Generated upon submission) -->
-                <div id="contact-receipt" class="mt-6 p-4 bg-[#00F0FF]/10 border border-[#00F0FF] text-xs hidden">
+                <div id="contact-receipt" role="status" tabindex="-1" class="mt-6 p-4 bg-[#00F0FF]/10 border border-[#00F0FF] text-xs hidden">
                     <div class="flex items-center space-x-2 text-[#00F0FF] font-orbitron font-bold mb-2">
-                        <i class="fa-solid fa-circle-check text-base"></i>
+                        <i aria-hidden="true" class="fa-solid fa-circle-check text-base"></i>
                         <span>TRANSMISSION CONFIRMÉE — RÉCÉPISSÉ MUNICIPAL OFFICIEL</span>
                     </div>
                     <div class="text-[#E0F4FF] mb-2 leading-relaxed" id="receipt-text">
@@ -986,7 +1193,7 @@
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
                 <div>
                     <div class="inline-flex items-center space-x-2 text-xs text-[#00F0FF] uppercase tracking-widest mb-1">
-                        <i class="fa-solid fa-user-astronaut"></i>
+                        <i aria-hidden="true" class="fa-solid fa-user-astronaut"></i>
                         <span>ESPACE PERSONNEL SÉCURISÉ (EXIGENCES D01 & D03 — 500 XP)</span>
                     </div>
                     <h2 class="text-3xl font-black font-orbitron text-[#00F0FF] uppercase tracking-wider">
@@ -1020,7 +1227,7 @@
                         <!-- Holographic Avatar & Info -->
                         <div class="flex items-center space-x-4 mb-6">
                             <div class="w-16 h-16 border-2 border-[#00F0FF] bg-[#00F0FF]/10 flex items-center justify-center text-2xl text-[#00F0FF] shadow-[0_0_20px_rgba(0,240,255,0.4)] relative">
-                                <i class="fa-solid fa-user-astronaut"></i>
+                                <i aria-hidden="true" class="fa-solid fa-user-astronaut"></i>
                                 <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border border-black"></span>
                             </div>
                             <div>
@@ -1056,7 +1263,7 @@
                                 Changer de Compte
                             </button>
                             <button onclick="logoutCitizen()" class="text-xs text-[#4A607A] hover:text-red-400 text-center py-1 transition">
-                                <i class="fa-solid fa-power-off mr-1"></i> Déconnexion
+                                <i aria-hidden="true" class="fa-solid fa-power-off mr-1"></i> Déconnexion
                             </button>
                         </div>
                     </div>
@@ -1076,7 +1283,7 @@
                                 <p class="text-[11px] text-[#4A607A]">Suivi en direct des tickets envoyés aux services municipaux.</p>
                             </div>
                             <a href="#demarches" class="btn-cyber btn-amber px-3 py-1.5 text-xs font-bold uppercase flex items-center gap-1.5">
-                                <i class="fa-solid fa-plus text-[10px]"></i>
+                                <i aria-hidden="true" class="fa-solid fa-plus text-[10px]"></i>
                                 <span>Nouvelle Démarche (D04)</span>
                             </a>
                         </div>
@@ -1086,12 +1293,12 @@
                             <table class="w-full text-left text-xs">
                                 <thead>
                                     <tr class="border-b border-cyan-900/50 text-[#4A607A] uppercase text-[10px]">
-                                        <th class="py-2 px-3">N° Ticket</th>
-                                        <th class="py-2 px-3">Service</th>
-                                        <th class="py-2 px-3">Objet</th>
-                                        <th class="py-2 px-3">Urgence</th>
-                                        <th class="py-2 px-3">Statut</th>
-                                        <th class="py-2 px-3 text-right">Date</th>
+                                        <th scope="col" class="py-2 px-3">N° Ticket</th>
+                                        <th scope="col" class="py-2 px-3">Service</th>
+                                        <th scope="col" class="py-2 px-3">Objet</th>
+                                        <th scope="col" class="py-2 px-3">Urgence</th>
+                                        <th scope="col" class="py-2 px-3">Statut</th>
+                                        <th scope="col" class="py-2 px-3 text-right">Date</th>
                                     </tr>
                                 </thead>
                                 <tbody id="citizen-tickets-tbody" class="divide-y divide-cyan-950/60">
@@ -1102,7 +1309,7 @@
 
                         <!-- Empty state if no tickets -->
                         <div id="no-tickets-msg" class="py-8 text-center text-xs text-[#4A607A] hidden">
-                            <i class="fa-regular fa-folder-open text-2xl text-[#4A607A] mb-2 block"></i>
+                            <i aria-hidden="true" class="fa-regular fa-folder-open text-2xl text-[#4A607A] mb-2 block"></i>
                             Aucune démarche active pour le moment. Utilisez le formulaire de signalement pour transmettre votre premier besoin.
                         </div>
                     </div>
@@ -1116,7 +1323,7 @@
             <!-- Access Guard Notice (D08 & D09 RBAC) -->
             <div id="agent-restricted-banner" class="hidden holo-card p-6 border-red-500/80 mb-8 bg-red-950/20 text-center">
                 <div class="text-red-400 font-orbitron font-bold text-base mb-2 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+                    <i aria-hidden="true" class="fa-solid fa-triangle-exclamation text-xl"></i>
                     <span>ACCÈS RESTREINT — ZONE RÉSERVÉE AUX AGENTS MUNICIPAUX (D09 RBAC)</span>
                 </div>
                 <p class="text-xs text-[#E0F4FF]/80 max-w-xl mx-auto mb-4">
@@ -1138,7 +1345,7 @@
                     <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 pb-6 border-b border-cyan-900/50">
                         <div>
                             <div class="inline-flex items-center space-x-2 text-xs text-[#9D00FF] uppercase tracking-widest mb-1">
-                                <i class="fa-solid fa-shield-halved"></i>
+                                <i aria-hidden="true" class="fa-solid fa-shield-halved"></i>
                                 <span>ESPACE DE TRAVAIL DES AGENTS (EXIGENCES D19 & F22 — 1000 XP)</span>
                             </div>
                             <h2 class="text-2xl sm:text-3xl font-black font-orbitron text-[#E0F4FF] uppercase tracking-wider flex items-center gap-3">
@@ -1157,7 +1364,7 @@
                                 <span id="agent-poll-timer">Auto-refresh: 30s</span>
                             </div>
                             <button onclick="fetchRequests(true)" class="btn-cyber px-4 py-2 text-xs font-bold uppercase flex items-center gap-2">
-                                <i class="fa-solid fa-arrows-rotate"></i>
+                                <i aria-hidden="true" class="fa-solid fa-arrows-rotate"></i>
                                 <span>Actualiser l'API</span>
                             </button>
                         </div>
@@ -1196,7 +1403,7 @@
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-cyan-900/60 mb-6 gap-2">
                         <div>
                             <div class="inline-flex items-center space-x-2 text-xs text-[#FFB700] uppercase tracking-widest mb-0.5">
-                                <i class="fa-solid fa-list-check"></i>
+                                <i aria-hidden="true" class="fa-solid fa-list-check"></i>
                                 <span>TRAITEMENT DES REQUÊTES HABITANTS (EXIGENCE F22 — 250 XP)</span>
                             </div>
                             <h3 class="font-orbitron font-bold text-lg text-[#E0F4FF] uppercase">
@@ -1219,13 +1426,13 @@
                         <table class="w-full text-left text-xs">
                             <thead>
                                 <tr class="border-b border-cyan-900/60 text-[#4A607A] uppercase text-[10px]">
-                                    <th class="py-2.5 px-3">Ticket</th>
-                                    <th class="py-2.5 px-3">Citoyen</th>
-                                    <th class="py-2.5 px-3">Service Concerne</th>
-                                    <th class="py-2.5 px-3">Objet & Message</th>
-                                    <th class="py-2.5 px-3">Urgence</th>
-                                    <th class="py-2.5 px-3">Statut Actuel</th>
-                                    <th class="py-2.5 px-3 text-right">Action Agent</th>
+                                    <th scope="col" class="py-2.5 px-3">Ticket</th>
+                                    <th scope="col" class="py-2.5 px-3">Citoyen</th>
+                                    <th scope="col" class="py-2.5 px-3">Service Concerne</th>
+                                    <th scope="col" class="py-2.5 px-3">Objet & Message</th>
+                                    <th scope="col" class="py-2.5 px-3">Urgence</th>
+                                    <th scope="col" class="py-2.5 px-3">Statut Actuel</th>
+                                    <th scope="col" class="py-2.5 px-3 text-right">Action Agent</th>
                                 </tr>
                             </thead>
                             <tbody id="agent-tickets-tbody" class="divide-y divide-cyan-950/60">
@@ -1240,7 +1447,7 @@
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4">
                         <div>
                             <div class="inline-flex items-center space-x-2 text-xs text-[#00F0FF] uppercase tracking-widest mb-1">
-                                <i class="fa-solid fa-code-pull-request"></i>
+                                <i aria-hidden="true" class="fa-solid fa-code-pull-request"></i>
                                 <span>FLUX D'INFRASTRUCTURE (EXIGENCE D19 — 750 XP)</span>
                             </div>
                             <h3 class="text-xl sm:text-2xl font-black font-orbitron text-[#00F0FF] uppercase tracking-wider">
@@ -1270,6 +1477,8 @@
             </div>
         </section>
 
+        </main>
+
     </div>
 
     <!-- FOOTER OFFICIEL -->
@@ -1288,25 +1497,25 @@
     </footer>
 
     <!-- MODALE 1 : AUTHENTIFICATION CITOYENNE (D01 & D03) -->
-    <div id="auth-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+    <div id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
         <div class="holo-card max-w-md w-full p-6 border border-[#00F0FF] shadow-[0_0_50px_rgba(0,240,255,0.35)] relative">
             <div class="corner-tr"></div>
             <div class="corner-bl"></div>
 
             <div class="flex justify-between items-center pb-3 border-b border-cyan-900/60 mb-5">
                 <span class="font-orbitron text-sm font-bold text-[#00F0FF] flex items-center space-x-2">
-                    <i class="fa-solid fa-fingerprint"></i>
+                    <i aria-hidden="true" class="fa-solid fa-fingerprint"></i>
                     <span id="auth-modal-title">ACCÈS CITOYEN TERRA NOVA</span>
                 </span>
-                <button onclick="closeAuthModal()" class="text-[#4A607A] hover:text-[#00F0FF] text-lg font-bold">✕</button>
+                <button type="button" onclick="closeAuthModal()" aria-label="Fermer la fenêtre" class="text-[#4A607A] hover:text-[#00F0FF] text-lg font-bold"><span aria-hidden="true">✕</span></button>
             </div>
 
             <!-- Tabs : Inscription / Connexion -->
             <div class="flex border-b border-cyan-900/60 mb-6 text-xs">
-                <button id="tab-login" onclick="setAuthTab('login')" class="flex-1 py-2 font-orbitron font-bold text-[#00F0FF] border-b-2 border-[#00F0FF] text-center">
+                <button type="button" id="tab-login" aria-pressed="true" onclick="setAuthTab('login')" class="flex-1 py-2 font-orbitron font-bold text-[#00F0FF] border-b-2 border-[#00F0FF] text-center">
                     CONNEXION (D03)
                 </button>
-                <button id="tab-register" onclick="setAuthTab('register')" class="flex-1 py-2 font-orbitron font-bold text-[#4A607A] border-b-2 border-transparent text-center hover:text-[#00F0FF]">
+                <button type="button" id="tab-register" aria-pressed="false" onclick="setAuthTab('register')" class="flex-1 py-2 font-orbitron font-bold text-[#4A607A] border-b-2 border-transparent text-center hover:text-[#00F0FF]">
                     INSCRIPTION NOUVEAU COLON (D01)
                 </button>
             </div>
@@ -1314,11 +1523,11 @@
             <!-- Form Connexion -->
             <form id="form-login" onsubmit="handleLoginSubmit(event)" class="space-y-4">
                 <div class="flex flex-col space-y-1.5">
-                    <label class="text-xs text-[#4A607A] uppercase">Matricule Citoyen ou Nom</label>
+                    <label for="login-matricule" class="text-xs text-[#4A607A] uppercase">Matricule Citoyen ou Nom</label>
                     <input type="text" id="login-matricule" required placeholder="ex: TN-2842-8812 ou Kaelen Vance" class="cyber-input py-2 px-2 text-xs">
                 </div>
                 <div class="flex flex-col space-y-1.5">
-                    <label class="text-xs text-[#4A607A] uppercase">Empreinte Cryptographique / Code</label>
+                    <label for="login-pwd" class="text-xs text-[#4A607A] uppercase">Empreinte Cryptographique / Code</label>
                     <input type="password" id="login-pwd" required placeholder="••••••••••••" class="cyber-input py-2 px-2 text-xs">
                 </div>
                 <div class="pt-2">
@@ -1334,11 +1543,11 @@
             <!-- Form Inscription (D01) -->
             <form id="form-register" onsubmit="handleRegisterSubmit(event)" class="space-y-4 hidden">
                 <div class="flex flex-col space-y-1.5">
-                    <label class="text-xs text-[#4A607A] uppercase">Nom & Prénom du Colon</label>
+                    <label for="reg-name" class="text-xs text-[#4A607A] uppercase">Nom & Prénom du Colon</label>
                     <input type="text" id="reg-name" required placeholder="ex: Thalia Kren" class="cyber-input py-2 px-2 text-xs">
                 </div>
                 <div class="flex flex-col space-y-1.5">
-                    <label class="text-xs text-[#4A607A] uppercase">Spécialisation / Profession</label>
+                    <label for="reg-role" class="text-xs text-[#4A607A] uppercase">Spécialisation / Profession</label>
                     <select id="reg-role" class="cyber-input py-2 px-2 text-xs bg-[#03070E] text-[#E0F4FF]">
                         <option value="Ingénieur Systèmes Plasma">Ingénieur Systèmes Plasma</option>
                         <option value="Biologiste / Dôme Atmosphère">Biologiste / Dôme Atmosphère</option>
@@ -1349,7 +1558,7 @@
                     </select>
                 </div>
                 <div class="flex flex-col space-y-1.5">
-                    <label class="text-xs text-[#4A607A] uppercase">Dôme de Résidence Assigné</label>
+                    <label for="reg-dome" class="text-xs text-[#4A607A] uppercase">Dôme de Résidence Assigné</label>
                     <select id="reg-dome" class="cyber-input py-2 px-2 text-xs bg-[#03070E] text-[#E0F4FF]">
                         <option value="Dôme Alpha - Anneau 1">Dôme Alpha - Anneau 1 (Bio-Résidence)</option>
                         <option value="Dôme Bêta - Anneau 2">Dôme Bêta - Anneau 2 (Technocité)</option>
@@ -1358,7 +1567,7 @@
                     </select>
                 </div>
                 <div class="flex flex-col space-y-1.5">
-                    <label class="text-xs text-[#4A607A] uppercase">Code de Sécurité d'Accès</label>
+                    <label for="reg-pwd" class="text-xs text-[#4A607A] uppercase">Code de Sécurité d'Accès</label>
                     <input type="password" id="reg-pwd" required placeholder="••••••••••••" class="cyber-input py-2 px-2 text-xs">
                 </div>
                 <div class="pt-2">
@@ -1371,17 +1580,17 @@
     </div>
 
     <!-- MODALE 2 : LECTURE DÉTAILLÉE D'UNE ANNONCE / DÉCRET (D06) -->
-    <div id="news-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+    <div id="news-modal" role="dialog" aria-modal="true" aria-labelledby="news-modal-title" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
         <div class="holo-card max-w-lg w-full p-6 border border-[#00F0FF] shadow-[0_0_50px_rgba(0,240,255,0.35)] relative">
             <div class="corner-tr"></div>
             <div class="corner-bl"></div>
 
             <div class="flex justify-between items-center pb-3 border-b border-cyan-900/60 mb-4">
                 <span class="font-orbitron text-xs font-bold text-[#00F0FF] uppercase flex items-center space-x-2">
-                    <i class="fa-solid fa-scroll"></i>
+                    <i aria-hidden="true" class="fa-solid fa-scroll"></i>
                     <span id="news-modal-badge">DÉCRET OFFICIEL</span>
                 </span>
-                <button onclick="closeNewsModal()" class="text-[#4A607A] hover:text-[#00F0FF] text-lg font-bold">✕</button>
+                <button type="button" onclick="closeNewsModal()" aria-label="Fermer la fenêtre" class="text-[#4A607A] hover:text-[#00F0FF] text-lg font-bold"><span aria-hidden="true">✕</span></button>
             </div>
 
             <h3 class="font-orbitron font-bold text-xl text-[#E0F4FF] mb-3" id="news-modal-title">Titre de l'annonce</h3>
@@ -1399,28 +1608,28 @@
     </div>
 
     <!-- MODALE 3 : CONSOLE TERMINAL DIRECT AETHEL-OS -->
-    <div id="modal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+    <div id="modal" role="dialog" aria-modal="true" aria-labelledby="console-modal-title" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
         <div class="holo-card max-w-lg w-full p-6 border border-[#00F0FF] shadow-[0_0_50px_rgba(0,240,255,0.35)]">
             <div class="corner-tr"></div>
             <div class="corner-bl"></div>
 
             <div class="flex justify-between items-center pb-3 border-b border-cyan-900/60 mb-4">
                 <span class="font-orbitron text-sm font-bold text-[#00F0FF] flex items-center space-x-2">
-                    <i class="fa-solid fa-terminal"></i>
-                    <span>CONSOLE DIRECTE AETHEL-OS v2.4</span>
+                    <i aria-hidden="true" class="fa-solid fa-terminal"></i>
+                    <span id="console-modal-title">CONSOLE DIRECTE AETHEL-OS v2.4</span>
                 </span>
-                <button onclick="toggleModal()" class="text-[#4A607A] hover:text-[#00F0FF] text-lg font-bold">✕</button>
+                <button type="button" onclick="toggleModal()" aria-label="Fermer la fenêtre" class="text-[#4A607A] hover:text-[#00F0FF] text-lg font-bold"><span aria-hidden="true">✕</span></button>
             </div>
 
             <div class="bg-[#03070E] border border-cyan-900/80 p-4 font-mono text-xs space-y-2 h-52 overflow-y-auto mb-4 text-[#E0F4FF]"
-                id="modal-console">
+                id="modal-console" role="log" aria-live="polite" aria-label="Sortie de la console">
                 <div class="text-[#4A607A]">> Initialisation de la liaison directe Aethel...</div>
                 <div class="text-[#00F0FF]">> Connexion établie avec le noyau central de Terra Nova.</div>
                 <div>> Tapez 'help' pour afficher les commandes d'administration.</div>
             </div>
 
             <div class="flex space-x-2">
-                <input type="text" id="cmd-input" placeholder="Tapez 'status', 'requests', 'role agent' ou 'help'..."
+                <input type="text" id="cmd-input" aria-label="Commande Aethel-OS" placeholder="Tapez 'status', 'requests', 'role agent' ou 'help'..."
                     class="cyber-input flex-1 text-xs py-2 px-3" onkeypress="handleCmdKeyPress(event)">
                 <button onclick="execCmd()" class="btn-cyber px-5 py-2 text-xs font-bold uppercase">EXEC</button>
             </div>
@@ -1518,6 +1727,8 @@
                 if (restrictedBanner) restrictedBanner.classList.add('hidden');
                 if (agentWorkspace) agentWorkspace.classList.remove('opacity-40', 'pointer-events-none', 'select-none');
             }
+
+            if (agentWorkspace) agentWorkspace.inert = currentRole === 'citizen';
 
             renderAgentTicketsTable();
         }
@@ -1653,7 +1864,7 @@
             if (!requests || requests.length === 0) {
                 grid.innerHTML = `
                     <div class="col-span-full holo-card p-8 text-center text-xs text-[#4A607A]">
-                        <i class="fa-solid fa-satellite-dish text-2xl text-[#4A607A] mb-3 block"></i>
+                        <i aria-hidden="true" class="fa-solid fa-satellite-dish text-2xl text-[#4A607A] mb-3 block"></i>
                         Aucune demande actuellement accessible dans le flux de la cité.
                     </div>
                 `;
@@ -1686,7 +1897,7 @@
 
                             <!-- Demandeur -->
                             <div class="text-[11px] text-[#4A607A] font-mono mb-3 flex items-center gap-1.5">
-                                <i class="fa-regular fa-building text-[10px] text-[#00F0FF]"></i>
+                                <i aria-hidden="true" class="fa-regular fa-building text-[10px] text-[#00F0FF]"></i>
                                 <span class="text-[#E0F4FF] font-semibold">${req.requester_name || 'Haut Conseil'}</span>
                                 ${req.requester_type ? `<span class="opacity-60">(${req.requester_type})</span>` : ''}
                             </div>
@@ -1699,7 +1910,7 @@
 
                         <!-- Footer de la carte -->
                         <div class="border-t border-cyan-900/40 pt-3 flex justify-between items-center text-[10px] text-[#4A607A] font-mono">
-                            <span><i class="fa-solid fa-clock-rotate-left mr-1"></i>${arrivalLabel}</span>
+                            <span><i aria-hidden="true" class="fa-solid fa-clock-rotate-left mr-1"></i>${arrivalLabel}</span>
                             <span class="text-[#00F0FF] font-bold">DISPONIBLE</span>
                         </div>
                     </div>
@@ -1760,6 +1971,7 @@
             receiptTicketId.innerText = ticketId;
             receiptText.innerText = `Votre démarche concernant "${subject}" a été transmise à la direction "${service}". Un agent municipal a été notifié.`;
             receipt.classList.remove('hidden');
+            receipt.focus();
 
             // Reset form
             document.getElementById('contact-subject').value = '';
@@ -2029,6 +2241,9 @@
             const tabLogin = document.getElementById('tab-login');
             const tabReg = document.getElementById('tab-register');
             const title = document.getElementById('auth-modal-title');
+
+            tabLogin.setAttribute('aria-pressed', String(tab === 'login'));
+            tabReg.setAttribute('aria-pressed', String(tab !== 'login'));
 
             if (tab === 'login') {
                 formLogin.classList.remove('hidden');
@@ -2312,7 +2527,155 @@
         // ==========================================
         // 11. INITIALISATION AU CHARGEMENT DU DOM
         // ==========================================
+        // ==========================================
+        // 11. ACCESSIBILITÉ (F21, F23, F24)
+        // ==========================================
+        const FONT_SCALES = [1, 1.15, 1.3, 1.5];
+        const MODAL_CLOSERS = {
+            'auth-modal': () => closeAuthModal(),
+            'news-modal': () => closeNewsModal(),
+            'modal': () => toggleModal()
+        };
+        const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+        let lastFocusBeforeModal = null;
+
+        function savePref(key, value) {
+            try { localStorage.setItem(key, value); } catch (e) { }
+        }
+
+        function announce(msg) {
+            const live = document.getElementById('a11y-live');
+            if (!live) return;
+            live.textContent = '';
+            setTimeout(() => { live.textContent = msg; }, 50);
+        }
+
+        function currentFontIndex() {
+            const scale = parseFloat(document.documentElement.style.getPropertyValue('--tn-font-scale')) || 1;
+            const idx = FONT_SCALES.indexOf(scale);
+            return idx === -1 ? 0 : idx;
+        }
+
+        function updateA11yUI() {
+            const root = document.documentElement;
+            const idx = currentFontIndex();
+            document.getElementById('a11y-font-value').textContent = `${Math.round(FONT_SCALES[idx] * 100)} %`;
+            document.getElementById('a11y-font-down').disabled = idx === 0;
+            document.getElementById('a11y-font-up').disabled = idx === FONT_SCALES.length - 1;
+            document.getElementById('a11y-contrast-btn').setAttribute('aria-pressed', String(root.classList.contains('hc')));
+            document.getElementById('a11y-motion-btn').setAttribute('aria-pressed', String(root.classList.contains('tn-reduce-motion')));
+        }
+
+        // F24 : delta = -1 / +1, ou 0 pour revenir à la taille normale
+        function changeFontScale(delta) {
+            const root = document.documentElement;
+            const idx = delta === 0 ? 0 : Math.min(FONT_SCALES.length - 1, Math.max(0, currentFontIndex() + delta));
+            root.style.setProperty('--tn-font-scale', FONT_SCALES[idx]);
+            root.classList.toggle('tn-text-lg', idx > 0);
+            savePref('tn_a11y_font', FONT_SCALES[idx]);
+            updateA11yUI();
+            announce(`Taille du texte : ${Math.round(FONT_SCALES[idx] * 100)} %`);
+        }
+
+        // F23
+        function toggleContrast() {
+            const on = document.documentElement.classList.toggle('hc');
+            savePref('tn_a11y_contrast', on ? '1' : '0');
+            updateA11yUI();
+            announce(on ? 'Contraste renforcé activé' : 'Contraste renforcé désactivé');
+        }
+
+        function toggleReducedMotion() {
+            const on = document.documentElement.classList.toggle('tn-reduce-motion');
+            savePref('tn_a11y_motion', on ? '1' : '0');
+            updateA11yUI();
+            announce(on ? 'Animations réduites' : 'Animations rétablies');
+        }
+
+        function toggleA11yPanel(force) {
+            const panel = document.getElementById('a11y-panel');
+            const toggle = document.getElementById('a11y-toggle');
+            const open = typeof force === 'boolean' ? force : panel.hidden;
+            panel.hidden = !open;
+            toggle.setAttribute('aria-expanded', String(open));
+            if (open) {
+                panel.querySelector('button:not([disabled])').focus();
+            } else {
+                toggle.focus();
+            }
+        }
+
+        function openModalElement() {
+            return Object.keys(MODAL_CLOSERS)
+                .map(id => document.getElementById(id))
+                .find(el => el && !el.classList.contains('hidden'));
+        }
+
+        function initA11y() {
+            updateA11yUI();
+
+            // F21 : état des filtres exposé aux lecteurs d'écran
+            ['service-filter-btn', 'news-filter-btn', 'agent-ticket-filter', 'api-filter-btn'].forEach(cls => {
+                document.querySelectorAll('.' + cls).forEach((btn, i) => {
+                    btn.type = 'button';
+                    btn.setAttribute('aria-pressed', String(i === 0));
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.' + cls).forEach(other => other.setAttribute('aria-pressed', String(other === btn)));
+                    });
+                });
+            });
+
+            // F21 : modales (focus à l'ouverture, retour du focus à la fermeture)
+            Object.keys(MODAL_CLOSERS).forEach(id => {
+                const modal = document.getElementById(id);
+                let wasOpen = false;
+                new MutationObserver(() => {
+                    const isOpen = !modal.classList.contains('hidden');
+                    if (isOpen === wasOpen) return;
+                    wasOpen = isOpen;
+                    if (isOpen) {
+                        lastFocusBeforeModal = document.activeElement;
+                        const first = Array.from(modal.querySelectorAll('input, select, textarea')).find(el => el.offsetParent !== null) || modal.querySelector(FOCUSABLE);
+                        if (first) first.focus();
+                    } else if (lastFocusBeforeModal && document.contains(lastFocusBeforeModal)) {
+                        lastFocusBeforeModal.focus();
+                    }
+                }).observe(modal, { attributes: true, attributeFilter: ['class'] });
+            });
+
+            document.addEventListener('keydown', (e) => {
+                const modal = openModalElement();
+                if (e.key === 'Escape') {
+                    if (modal) {
+                        MODAL_CLOSERS[modal.id]();
+                    } else if (!document.getElementById('a11y-panel').hidden) {
+                        toggleA11yPanel(false);
+                    }
+                    return;
+                }
+
+                // Le focus reste dans la modale ouverte
+                if (e.key === 'Tab' && modal) {
+                    const items = Array.from(modal.querySelectorAll(FOCUSABLE)).filter(el => el.offsetParent !== null);
+                    if (!items.length) return;
+                    const first = items[0];
+                    const last = items[items.length - 1];
+                    if (e.shiftKey && document.activeElement === first) {
+                        e.preventDefault();
+                        last.focus();
+                    } else if (!e.shiftKey && document.activeElement === last) {
+                        e.preventDefault();
+                        first.focus();
+                    } else if (!modal.contains(document.activeElement)) {
+                        e.preventDefault();
+                        first.focus();
+                    }
+                }
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+            initA11y();
             initCanvas();
             applyRolePermissions();
             updateCitizenProfileUI();
