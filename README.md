@@ -5,7 +5,7 @@ Plateforme officielle de la première colonie spatiale de l'humanité sur un nou
 
 ---
 
-## ✨ Fonctionnalités Majeures (Vague Initiale — 10 Demandes / 3750 XP)
+## ✨ Fonctionnalités Majeures (Vagues 0 à 4)
 
 * **D07 (500 XP) — Accueil Immersif & Hiérarchisé :** Matrice télémétrique en direct (boucliers, atmosphère, population), guide des nouveaux arrivants et accès en 1 clic aux modules urbains.
 * **D05 (250 XP) — Catalogue des Services Municipaux :** Les 6 directions centrales (Atmosphère, Transports Hyper-Tube, Énergie Plasma, Cryo-Santé, Sécurité Civile, État Civil).
@@ -33,6 +33,10 @@ Plateforme officielle de la première colonie spatiale de l'humanité sur un nou
 * **F30 (560 XP) — Notifications :** Centre de notifications avec compteur de non-lus, annonce à l'écran des nouveaux messages et notification du navigateur sur demande ; les changements d'état des demandes y figurent aussi.
 * **F31 (840 XP) — Recommandations Adaptées par IA :** Pour l'alerte canicule, l'habitant coche sa situation (65 ans ou plus, grossesse, maladie chronique…) et reçoit des recommandations générées par IA (OpenRouter, côté serveur), dans sa langue. Recommandations de référence en secours.
 * **F32 (280 XP) — Recherche :** Recherche des services, démarches, annonces, alertes et demandes, insensible aux accents, avec mots courants (« santé », « lampadaire ») ; les éléments à traiter sont listés en premier.
+* **F33 (290 XP) — Suppression de Compte :** Bouton « Supprimer mon compte » dans l'espace citoyen. Une fenêtre accessible (focus piégé, Échap) liste ce qui sera effacé ; il faut saisir son matricule et son code de sécurité d'accès (conservé uniquement sous forme d'empreinte SHA-256) avant que le bouton ne s'active. Le compte, le profil et les demandes sont effacés, la session est fermée.
+* **F34 (580 XP) — Administration des Comptes (agents) :** Panneau « Comptes citoyens » dans l'espace agents (rôles agent et administrateur seulement) : recherche, filtre par état, modification du profil, suspension / réactivation (un compte suspendu ne peut plus se connecter), remise d'un code temporaire affiché une seule fois, suppression avec confirmation, journal des actions.
+* **F35 (290 XP) — Astuces Contextuelles :** Bulles courtes affichées une seule fois la première fois qu'une rubrique reste à l'écran (recherche, services, transports, démarches, espace citoyen, notifications, espace agents). Fermeture par « Compris » ou Échap, « Ne plus afficher les astuces », et bouton « Astuces » de la barre d'outils pour les rappeler ou les réactiver.
+* **F36 (580 XP) — Horaires des Transports :** Rubrique « Horaires des transports » : départ et destination au choix, trois prochains passages immédiatement (avec correspondance si besoin), état du trafic de chaque ligne relié aux alertes en cours (ex. montée des eaux dans le Secteur Sud).
 * **Console Aethel-OS & Particules Quantiques (Bonus Waouh) :** Terminal interactif et effets audio synthétiques via Web Audio API.
 
 ---

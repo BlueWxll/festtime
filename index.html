@@ -629,6 +629,7 @@
 
     <!-- Vague 2 : composants (suivi, premiers pas, fil d'Ariane, signalement, services à la une) -->
     <link rel="stylesheet" href="assets/features.css">
+    <link rel="stylesheet" href="assets/wave4.css">
 
     <!-- Préférences d'accessibilité appliquées avant le premier rendu (évite le flash) -->
     <script>
@@ -1812,9 +1813,11 @@
     <!-- Vagues 2 et 3 : traductions (D14, F27), fonctionnalités, puis alertes, notifications et recherche.
          Chargées avant la logique applicative qui les appelle. -->
     <script src="assets/i18n.js"></script>
+    <script src="assets/wave4-i18n.js"></script>
     <script src="assets/alert-seeds.js"></script>
     <script src="assets/features.js"></script>
     <script src="assets/alerts.js"></script>
+    <script src="assets/wave4.js"></script>
 
     <!-- SCRIPT DE LOGIQUE APPLICATIVE (API, RBAC, LOCALSTORAGE, RENDERING) -->
     <script>
@@ -2345,22 +2348,27 @@
             refreshPersonalisedViews();
         }
 
-        function handleRegisterSubmit(e) {
+        async function handleRegisterSubmit(e) {
             e.preventDefault();
             const name = document.getElementById('reg-name').value;
             const role = document.getElementById('reg-role').value;
             const dome = document.getElementById('reg-dome').value;
+            const accessCode = document.getElementById('reg-pwd').value;
 
             // Génération d'un matricule colonial unique (ex: TN-2842-4912)
-            const randomCode = Math.floor(1000 + Math.random() * 9000);
-            const matricule = `TN-2842-${randomCode}`;
+            let matricule;
+            do {
+                matricule = `TN-2842-${Math.floor(1000 + Math.random() * 9000)}`;
+            } while (registeredCitizens.some(c => c.matricule === matricule));
 
             const newCitizen = {
                 name: name,
                 matricule: matricule,
                 role: role,
                 dome: dome,
-                joined: "2842.10.03"
+                joined: "2842.10.03",
+                // Le code d'accès n'est jamais conservé en clair (F33 : exigé pour supprimer le compte)
+                pwdHash: await tnHashCode(accessCode, matricule)
             };
 
             registeredCitizens.push(newCitizen);
@@ -2380,14 +2388,26 @@
             playSciFiSound(880, 0.15);
         }
 
-        function handleLoginSubmit(e) {
+        async function handleLoginSubmit(e) {
             e.preventDefault();
             const query = document.getElementById('login-matricule').value.trim().toLowerCase();
+            const accessCode = document.getElementById('login-pwd').value;
 
             const found = registeredCitizens.find(c => 
                 c.matricule.toLowerCase() === query || 
                 c.name.toLowerCase().includes(query)
             );
+
+            // F34 : un compte suspendu par un agent ne peut plus se connecter
+            if (found && found.suspended) {
+                alert(t("Ce compte est suspendu. Contactez les services municipaux."));
+                return;
+            }
+            // Les comptes créés avec un code d'accès exigent ce code (les comptes plus anciens n'en ont pas)
+            if (found && found.pwdHash && (await tnHashCode(accessCode, found.matricule)) !== found.pwdHash) {
+                alert(t("Code de sécurité incorrect."));
+                return;
+            }
 
             if (found) {
                 activeCitizen = found;
