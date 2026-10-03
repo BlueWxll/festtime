@@ -631,6 +631,7 @@
     <link rel="stylesheet" href="assets/features.css">
     <link rel="stylesheet" href="assets/wave4.css">
     <link rel="stylesheet" href="assets/wave5.css">
+    <link rel="stylesheet" href="assets/wave6.css">
 
     <!-- Préférences d'accessibilité appliquées avant le premier rendu (évite le flash) -->
     <script>
@@ -642,8 +643,11 @@
                 if (contrast === null && window.matchMedia && window.matchMedia('(prefers-contrast: more)').matches) contrast = '1';
                 root.style.setProperty('--tn-font-scale', scale);
                 if (scale > 1) root.classList.add('tn-text-lg');
+                if (scale >= 1.75) root.classList.add('tn-text-xl');
                 if (contrast === '1') root.classList.add('hc');
                 if (localStorage.getItem('tn_a11y_motion') === '1') root.classList.add('tn-reduce-motion');
+                if (localStorage.getItem('tn_a11y_cb') === '1') root.classList.add('cb');
+                if (localStorage.getItem('tn_a11y_read') === '1') root.classList.add('tn-easy-read');
             } catch (e) { }
         })();
     </script>
@@ -673,6 +677,22 @@
             <div class="a11y-row">
                 <button type="button" class="a11y-btn" id="a11y-contrast-btn" aria-pressed="false" onclick="toggleContrast()">Contraste renforcé</button>
                 <button type="button" class="a11y-btn" id="a11y-motion-btn" aria-pressed="false" onclick="toggleReducedMotion()">Réduire les animations</button>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Couleurs et lecture</legend>
+            <div class="a11y-row">
+                <button type="button" class="a11y-btn" id="a11y-cb-btn" aria-pressed="false" onclick="w6ToggleColorBlind()">Couleurs adaptées (daltonisme)</button>
+                <button type="button" class="a11y-btn" id="a11y-read-btn" aria-pressed="false" onclick="w6ToggleEasyRead()">Lecture facilitée</button>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Aide</legend>
+            <div class="a11y-row">
+                <button type="button" class="a11y-btn" onclick="w6OpenLexicon()">Lexique : mots simples</button>
+                <button type="button" class="a11y-btn" onclick="w6OpenShortcuts()">Raccourcis clavier</button>
+                <button type="button" class="a11y-btn" onclick="w6OpenStatement()">Déclaration d'accessibilité</button>
+                <button type="button" class="a11y-btn" onclick="w6ResetA11y()">Réinitialiser les réglages</button>
             </div>
         </fieldset>
         <button type="button" class="a11y-btn" onclick="toggleA11yPanel(false)">Fermer</button>
@@ -1816,11 +1836,13 @@
     <script src="assets/i18n.js"></script>
     <script src="assets/wave4-i18n.js"></script>
     <script src="assets/wave5-i18n.js"></script>
+    <script src="assets/wave6-i18n.js"></script>
     <script src="assets/alert-seeds.js"></script>
     <script src="assets/features.js"></script>
     <script src="assets/alerts.js"></script>
     <script src="assets/wave4.js"></script>
     <script src="assets/wave5.js"></script>
+    <script src="assets/wave6.js"></script>
 
     <!-- SCRIPT DE LOGIQUE APPLICATIVE (API, RBAC, LOCALSTORAGE, RENDERING) -->
     <script>
@@ -2743,7 +2765,7 @@
         // ==========================================
         // 11. ACCESSIBILITÉ (F21, F23, F24)
         // ==========================================
-        const FONT_SCALES = [1, 1.15, 1.3, 1.5];
+        const FONT_SCALES = [1, 1.15, 1.3, 1.5, 1.75, 2];
         const MODAL_CLOSERS = {
             'auth-modal': () => closeAuthModal(),
             'news-modal': () => closeNewsModal(),

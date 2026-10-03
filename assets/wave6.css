@@ -1,0 +1,166 @@
+/* ==========================================================
+   VAGUE 6 — D13 lexique, D20 accessibilité pour tous, F41 clavier, F42 formulaires,
+   F43 couleurs, F44 agrandissement. Même charte que features.css / wave4.css / wave5.css.
+   ========================================================== */
+
+/* --- F41 : focus clavier visible partout, y compris sur les champs --- */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--cyber-300, #8FE1FF);
+    outline-offset: 2px;
+}
+.cyber-input:focus-visible { outline: 2px solid var(--cyber-300, #8FE1FF); outline-offset: 1px; }
+.tn-kb-target { cursor: pointer; }
+.tn-kb-target:focus-visible { outline: 2px solid var(--cyber-300, #8FE1FF); outline-offset: 3px; }
+/* Un élément qui reçoit le focus ne se cache jamais sous l'en-tête collant */
+:where(a, button, input, select, textarea, summary, [tabindex]) { scroll-margin-top: calc(var(--tn-header-h, 0px) + var(--tn-nav-h, 0px) + 1rem); scroll-margin-bottom: 4rem; }
+
+/* --- F41 : raccourcis --- */
+.tn-keys { display: grid; gap: 0.375rem; margin: 0 0 1rem; }
+.tn-keys > div { display: grid; grid-template-columns: minmax(7rem, 9rem) 1fr; gap: 0.75rem; align-items: baseline; }
+.tn-keys dt { margin: 0; }
+.tn-keys dd { margin: 0; font-size: 0.8125rem; color: var(--text-100); }
+.tn-keys kbd { display: inline-block; padding: 0.125rem 0.5rem; border: 1px solid var(--line-strong); border-bottom-width: 2px; background: var(--void-900); color: var(--cyber-300); font: 500 0.75rem/1.5 'JetBrains Mono', monospace; }
+.tn-check { display: flex; align-items: center; gap: 0.625rem; margin: 0.5rem 0; font-size: 0.8125rem; color: var(--text-100); cursor: pointer; }
+.tn-check input { width: 1.25rem; height: 1.25rem; accent-color: var(--cyber-500); }
+
+/* --- F42 : champs obligatoires, erreurs --- */
+.tn-req { color: var(--amber); font-weight: 700; }
+.tn-req-note { margin: 0 0 0.5rem; }
+.tn-invalid { border-color: var(--err) !important; box-shadow: inset 3px 0 0 var(--err); }
+.tn-field-error { display: flex; align-items: baseline; gap: 0.375rem; margin: 0.25rem 0 0; font-size: 0.8125rem; font-weight: 600; line-height: 1.4; color: var(--err); }
+.tn-error-summary { margin: 0 0 1rem; padding: 0.75rem 0.875rem; border: 1px solid var(--err); border-left-width: 4px; background: rgba(255, 84, 112, 0.08); }
+.tn-error-summary:focus { outline: none; }
+.tn-error-title { margin: 0 0 0.375rem; font-size: 0.875rem; font-weight: 700; color: var(--err); }
+.tn-error-summary ul { margin: 0; padding-left: 1.125rem; font-size: 0.8125rem; }
+.tn-error-summary a { color: var(--text-100); text-decoration: underline; text-underline-offset: 3px; }
+.tn-error-summary a:hover { color: var(--cyber-300); }
+.tn-notice { border-left-color: var(--cyber-500); }
+
+/* --- D13 : lexique --- */
+.tn-gloss {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 1.5rem; height: 1.5rem; margin-left: 0.5rem; padding: 0;
+    border: 1px solid var(--cyber-700); border-radius: 50%;
+    background: transparent; color: var(--cyber-300);
+    font: 700 0.75rem/1 'Chakra Petch', sans-serif; text-transform: none; letter-spacing: 0;
+    vertical-align: middle; cursor: pointer;
+}
+.tn-gloss:hover { background: var(--cyber-900); border-color: var(--cyber-500); }
+.tn-gloss-plain { margin: 0 0 1rem; font-size: 1rem; line-height: 1.6; color: var(--text-100); }
+.tn-gloss-chip {
+    position: absolute; z-index: 95; padding: 0.5rem 0.75rem;
+    border: 1px solid var(--cyber-500); background: var(--void-800); color: var(--cyber-300);
+    font: 600 0.75rem/1.2 'IBM Plex Sans', sans-serif; cursor: pointer; box-shadow: 0 0 18px rgba(0, 184, 255, 0.25);
+}
+.tn-lex { margin: 0.5rem 0 1rem; max-height: 50vh; overflow-y: auto; padding-right: 0.25rem; }
+.tn-lex-item { padding: 0.625rem 0; border-top: 1px solid var(--line-subtle); }
+.tn-lex-item dt { margin: 0; font: 600 0.9375rem/1.3 'Chakra Petch', sans-serif; color: var(--cyber-300); }
+.tn-lex-item dd { margin: 0.25rem 0 0; font-size: 0.875rem; line-height: 1.55; color: var(--text-100); }
+
+/* --- F43 : couleurs adaptées au daltonisme ---
+   Palette de Okabe et Ito (sûre pour les trois formes de daltonisme) ;
+   chaque état reçoit en plus un symbole et reste écrit en toutes lettres. */
+html.cb {
+    --ok: #56B4E9;      /* bleu ciel */
+    --amber: #F0E442;   /* jaune */
+    --err: #E69BC8;     /* rose-violet */
+}
+html.cb .text-green-400 { color: #56B4E9; }
+html.cb .text-red-400 { color: #E69BC8; }
+html.cb .tn-badge::before { width: auto; height: auto; background: none; font-size: 0.8125rem; line-height: 1; }
+html.cb .tn-badge--pending::before { content: '▲'; }
+html.cb .tn-badge--progress::before { content: '◆'; }
+html.cb .tn-badge--resolved::before { content: '✔'; }
+html.cb .tn-badge--neutral::before { content: '●'; }
+html.cb .tn-badge--pending { border-style: dashed; }
+html.cb .tn-badge--resolved { border-style: double; }
+html.cb .tn-field-error, html.cb .tn-error-title { text-decoration: underline wavy; text-underline-offset: 3px; }
+html.cb main a:not(.btn-cyber):not(.skip-link), html.cb footer a, html.cb .tn-link { text-decoration: underline; text-underline-offset: 3px; }
+html.cb .tn-slot--taken span { text-decoration: line-through; border-style: dashed; }
+html.cb .tn-guard, html.cb .tn-svc-status { border-style: dashed; }
+
+/* --- D20 : lecture facilitée --- */
+html.tn-easy-read body { font-family: 'IBM Plex Sans', Verdana, Arial, sans-serif; line-height: 1.75; letter-spacing: 0.02em; word-spacing: 0.08em; }
+html.tn-easy-read h1, html.tn-easy-read h2, html.tn-easy-read h3, html.tn-easy-read h4,
+html.tn-easy-read legend, html.tn-easy-read label, html.tn-easy-read th, html.tn-easy-read button, html.tn-easy-read a,
+html.tn-easy-read .tn-eyebrow, html.tn-easy-read .tn-badge, html.tn-easy-read .uppercase { text-transform: none !important; letter-spacing: 0.02em !important; }
+html.tn-easy-read p, html.tn-easy-read li, html.tn-easy-read dd { max-width: 70ch; text-align: left; }
+html.tn-easy-read p { margin-bottom: 0.75em; }
+html.tn-easy-read .font-orbitron, html.tn-easy-read .font-mono { font-family: 'IBM Plex Sans', Verdana, Arial, sans-serif !important; }
+
+/* --- F44 : agrandissement jusqu'à 200 % sans casser l'affichage ---
+   Les images, tableaux, champs et blocs flexibles ne dépassent jamais la largeur de l'écran. */
+img, svg, video, canvas, iframe { max-width: 100%; height: auto; }
+.cyber-input, select, textarea, input { max-width: 100%; min-width: 0; }
+.holo-card, main, section, .grid > * { min-width: 0; }
+body { overflow-wrap: break-word; }
+table { max-width: 100%; }
+.overflow-x-auto { max-width: 100%; }
+
+@media (max-width: 479px), (min-resolution: 0dpi) and (max-width: 639px) {
+    #tn-locbar { flex-wrap: wrap; row-gap: 0.375rem; }
+    #site-nav > #tn-locbar { flex-wrap: wrap; }
+    .tn-tools { flex-wrap: wrap; justify-content: flex-start; }
+    .tn-tool-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .tn-tool { min-width: 2.75rem; justify-content: center; }
+    .tn-dialog-actions > * { flex: 1 1 100%; }
+    .tn-keys > div { grid-template-columns: 1fr; gap: 0; }
+}
+
+html.tn-text-xl .flex:not(.flex-col):not(.flex-nowrap):not(.tn-crumbs):not(.tn-slot) { flex-wrap: wrap; }
+html.tn-text-lg #tn-locbar, html.tn-text-lg #site-nav > #tn-locbar { flex-wrap: wrap; row-gap: 0.375rem; }
+html.tn-text-lg .tn-tool-label { position: static; width: auto; height: auto; clip: auto; }
+html.tn-text-lg .tn-tools { flex-wrap: wrap; }
+html.tn-text-lg .tn-lang select { max-width: 100%; }
+html.tn-text-xl .grid { grid-template-columns: minmax(0, 1fr); }
+html.tn-text-lg .tn-appt-dl > div { grid-template-columns: 1fr; gap: 0; }
+html.tn-text-lg .tn-keys > div { grid-template-columns: 1fr; gap: 0; }
+html.tn-text-lg .tn-slot-row { gap: 0.5rem; }
+html.tn-text-lg input, html.tn-text-lg select, html.tn-text-lg textarea, html.tn-text-lg button { max-width: 100%; }
+html.tn-text-lg .tn-tab, html.tn-text-lg .btn-cyber { white-space: normal; text-align: center; }
+html.tn-text-lg footer .flex { flex-wrap: wrap; gap: 0.5rem 1rem; }
+html.tn-text-lg footer .space-x-6 > * { margin-left: 0; margin-right: 0; }
+html.tn-text-lg [class*="h-["]:not(svg):not(img) { height: auto; min-height: 0; }
+
+/* --- Contraste renforcé (F23) --- */
+html.hc .tn-gloss, html.hc .tn-gloss-chip { color: #FFFFFF; border-color: #FFFFFF; background: #000000; }
+html.hc .tn-gloss-plain, html.hc .tn-lex-item dt, html.hc .tn-lex-item dd, html.hc .tn-keys dd { color: #FFFFFF; }
+html.hc .tn-keys kbd { color: #FFFFFF; border-color: #FFFFFF; background: #000000; }
+html.hc .tn-field-error, html.hc .tn-error-title, html.hc .tn-req { color: #FFFFFF; }
+html.hc .tn-error-summary { background: #000000; border-color: #FFFFFF; }
+html.hc .tn-invalid { border-color: #FFFFFF !important; }
+
+/* --- F44 : très petit écran ou texte à 175 % et plus ---
+   Les mots longs se coupent, les marges se réduisent et chaque colonne peut rétrécir. */
+@media (max-width: 639px) {
+    body * { overflow-wrap: anywhere; }
+    .tn-tools, #tn-locbar > * { min-width: 0; max-width: 100%; flex-shrink: 1; }
+    .tn-tools { margin-left: 0; }
+    footer .flex, footer .space-x-6 { flex-wrap: wrap; gap: 0.5rem 1rem; }
+    footer .space-x-6 > * { margin-left: 0 !important; margin-right: 0 !important; }
+    .tn-featured-item, .tn-alert-cols, .tn-advice-options, .tn-profile-form { grid-template-columns: minmax(0, 1fr); }
+    .tn-featured-item .btn-cyber { grid-column: 1; }
+    .tn-badge { white-space: normal; flex-wrap: wrap; max-width: 100%; }
+    .flex.items-center.gap-3, .flex.items-center.gap-2 { flex-wrap: wrap; }
+}
+html.tn-text-xl main section, html.tn-text-xl main > div, html.tn-text-xl footer > div, html.tn-text-xl #site-header > div, html.tn-text-xl #site-nav > div {
+    padding-left: 0.75rem !important; padding-right: 0.75rem !important;
+}
+html.tn-text-xl .holo-card { padding: 0.875rem !important; }
+html.tn-text-xl [class*="p-8"], html.tn-text-xl [class*="p-6"] { padding: 0.875rem !important; }
+html.tn-text-xl .tn-tools { flex-wrap: wrap; }
+html.tn-text-xl .tn-badge { white-space: normal; max-width: 100%; }
+html.tn-text-xl * { overflow-wrap: anywhere; }
+html.tn-text-xl .tn-featured-item, html.tn-text-xl .tn-alert-cols, html.tn-text-xl .tn-advice-options, html.tn-text-xl .tn-profile-form { grid-template-columns: minmax(0, 1fr); }
+html.tn-text-xl .tn-featured-item .btn-cyber { grid-column: 1; }
+
+/* Formulaires en grille : la colonne peut rétrécir sous la largeur de son contenu */
+.tn-dialog-form, .tn-account-tools, .tn-transit-form { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 640px) { .tn-account-tools { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); } }
+@media (min-width: 540px) { .tn-transit-form { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); } }
+html.tn-text-xl .tn-account-tools, html.tn-text-xl .tn-transit-form { grid-template-columns: minmax(0, 1fr); }
+select { text-overflow: ellipsis; }
+
+/* Les astuces ne cachent jamais tout l'écran */
+.tn-tip { max-height: 45vh; overflow-y: auto; }
+html.tn-text-xl .tn-tip { left: 0.5rem; right: 0.5rem; width: auto; }
