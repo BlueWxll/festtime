@@ -627,6 +627,9 @@
 
     </style>
 
+    <!-- Vague 2 : composants (suivi, premiers pas, fil d'Ariane, signalement, services à la une) -->
+    <link rel="stylesheet" href="assets/features.css">
+
     <!-- Préférences d'accessibilité appliquées avant le premier rendu (évite le flash) -->
     <script>
         (function () {
@@ -873,7 +876,7 @@
                             <div class="font-orbitron font-bold text-[11px] text-[#E6F1F7]">DÉCRETS</div>
                             <div class="text-[9px] text-[#6F8696]">Journal officiel</div>
                         </a>
-                        <a href="#demarches" class="holo-card p-3 text-center hover:border-[#FFB347] transition group">
+                        <a href="#demarches" onclick="setContactMode('report')" class="holo-card p-3 text-center hover:border-[#FFB347] transition group">
                             <i aria-hidden="true" class="fa-solid fa-paper-plane text-xl text-[#FFB347] mb-2 group-hover:scale-110 transition"></i>
                             <div class="font-orbitron font-bold text-[11px] text-[#FFB347]">SIGNALER</div>
                             <div class="text-[9px] text-[#6F8696]">Doléance en ligne</div>
@@ -1372,24 +1375,8 @@
                     </div>
                 </form>
 
-                <!-- Receipt Modal / Box (Generated upon submission) -->
-                <div id="contact-receipt" role="status" tabindex="-1" class="mt-6 p-4 bg-[#00B8FF]/10 border border-[#00B8FF] text-xs hidden">
-                    <div class="flex items-center space-x-2 text-[#00B8FF] font-orbitron font-bold mb-2">
-                        <i aria-hidden="true" class="fa-solid fa-circle-check text-base"></i>
-                        <span>TRANSMISSION CONFIRMÉE — RÉCÉPISSÉ MUNICIPAL OFFICIEL</span>
-                    </div>
-                    <div class="text-[#E6F1F7] mb-2 leading-relaxed" id="receipt-text">
-                        Votre démarche a été enregistrée avec succès auprès du service municipal concerné.
-                    </div>
-                    <div class="p-2 bg-[#05080C] border border-cyan-900/60 font-mono text-[11px] flex justify-between items-center">
-                        <span class="text-[#6F8696]">NUMÉRO DE SUIVI :</span>
-                        <span class="text-[#FFB347] font-bold" id="receipt-ticket-id">TK-TN-8492</span>
-                    </div>
-                    <div class="mt-3 text-[10px] text-[#6F8696] flex justify-between">
-                        <span>Ce ticket est désormais consultable dans votre Espace Citoyen et a été transmis aux Agents.</span>
-                        <a href="#espace-citoyen" class="text-[#00B8FF] hover:underline font-bold">Voir mon espace &rarr;</a>
-                    </div>
-                </div>
+                <!-- Confirmation d'envoi (D16), rendue par showSubmissionConfirmation() -->
+                <div id="contact-receipt" role="status" tabindex="-1" class="hidden"></div>
             </div>
         </section>
 
@@ -1483,9 +1470,9 @@
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-cyan-900/60 mb-6 gap-2">
                             <div>
                                 <h3 class="font-orbitron font-bold text-base text-[#00B8FF] uppercase">
-                                    MES DÉMARCHES & REQUÊTES EN COURS
+                                    MES DÉMARCHES : SUIVI & HISTORIQUE
                                 </h3>
-                                <p class="text-[11px] text-[#6F8696]">Suivi en direct des tickets envoyés aux services municipaux.</p>
+                                <p class="text-[11px] text-[#6F8696]">L'état de chaque demande, les étapes déjà réalisées et toutes vos demandes précédentes.</p>
                             </div>
                             <a href="#demarches" class="btn-cyber btn-amber px-3 py-1.5 text-xs font-bold uppercase flex items-center gap-1.5">
                                 <i aria-hidden="true" class="fa-solid fa-plus text-[10px]"></i>
@@ -1493,30 +1480,8 @@
                             </a>
                         </div>
 
-                        <!-- Ticket List Table / Cards -->
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs">
-                                <thead>
-                                    <tr class="border-b border-cyan-900/50 text-[#6F8696] uppercase text-[10px]">
-                                        <th scope="col" class="py-2 px-3">N° Ticket</th>
-                                        <th scope="col" class="py-2 px-3">Service</th>
-                                        <th scope="col" class="py-2 px-3">Objet</th>
-                                        <th scope="col" class="py-2 px-3">Urgence</th>
-                                        <th scope="col" class="py-2 px-3">Statut</th>
-                                        <th scope="col" class="py-2 px-3 text-right">Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="citizen-tickets-tbody" class="divide-y divide-cyan-950/60">
-                                    <!-- Injected via JavaScript -->
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- Empty state if no tickets -->
-                        <div id="no-tickets-msg" class="py-8 text-center text-xs text-[#6F8696] hidden">
-                            <i aria-hidden="true" class="fa-regular fa-folder-open text-2xl text-[#6F8696] mb-2 block"></i>
-                            Aucune démarche active pour le moment. Utilisez le formulaire de signalement pour transmettre votre premier besoin.
-                        </div>
+                        <!-- Suivi et historique (D11, F26), rendus par renderCitizenTracker() -->
+                        <div id="citizen-tracker" data-crumb="Mes démarches" tabindex="-1"></div>
                     </div>
                 </div>
 
@@ -1626,6 +1591,9 @@
                         </div>
                     </div>
 
+                    <!-- Charge de travail (D17), rendue par renderWorkload() -->
+                    <div id="agent-workload" data-crumb="Charge de travail"></div>
+
                     <!-- Tickets Table for Agents -->
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-xs">
@@ -1674,7 +1642,7 @@
                     </div>
 
                     <!-- Requests Grid (Dynamically rendered cards) -->
-                    <div id="requestsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div id="requestsGrid" data-crumb="Flux API" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <!-- Les cartes API sont injectées dynamiquement via JavaScript -->
                     </div>
                 </div>
@@ -1841,6 +1809,10 @@
         </div>
     </div>
 
+    <!-- Vague 2 : traductions (D14, F27) puis fonctionnalités, chargées avant la logique applicative qui les appelle -->
+    <script src="assets/i18n.js"></script>
+    <script src="assets/features.js"></script>
+
     <!-- SCRIPT DE LOGIQUE APPLICATIVE (API, RBAC, LOCALSTORAGE, RENDERING) -->
     <script>
         // ==========================================
@@ -1947,6 +1919,7 @@
             }
 
             renderAgentTicketsTable();
+            renderFeaturedServices();
         }
 
         // ==========================================
@@ -2152,88 +2125,63 @@
         function handleContactMunicipal(e) {
             e.preventDefault();
 
+            // F25 : en signalement, le service et l'objet sont déduits de la nature du problème et du lieu
+            const report = contactMode === 'report' ? readReportFields() : null;
             const name = document.getElementById('contact-name').value;
-            const service = document.getElementById('contact-service').value;
-            const category = document.getElementById('contact-category').value;
+            const service = report ? report.service : document.getElementById('contact-service').value;
+            const category = report ? 'Signalement' : document.getElementById('contact-category').value;
             const priority = document.getElementById('contact-priority').value;
-            const subject = document.getElementById('contact-subject').value;
+            const subject = report ? report.subject : document.getElementById('contact-subject').value;
             const message = document.getElementById('contact-message').value;
 
+            // D16 : pas de doublon envoyé par erreur
+            const duplicate = findRecentDuplicate(name, service, subject);
+            if (duplicate && !confirm(t("Vous avez déjà envoyé une demande identique il y a peu ({id}). Voulez-vous vraiment l'envoyer à nouveau ?", { id: duplicate.id }))) return;
+
             const ticketId = "TK-TN-" + Math.floor(1000 + Math.random() * 9000);
-            const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
+            const dateStr = tnLocalStamp();
 
             const newTicket = {
                 id: ticketId,
                 citizenName: name,
                 service: service,
+                category: category,
                 subject: subject,
                 message: message,
                 priority: priority,
                 status: "En attente",
-                date: dateStr
+                date: dateStr,
+                history: [{ status: "En attente", date: dateStr }]
             };
+            if (report) {
+                newTicket.kind = report.kind;
+                newTicket.location = report.location;
+            }
 
             citizenTickets.unshift(newTicket);
             localStorage.setItem('tn_tickets', JSON.stringify(citizenTickets));
 
-            // Affichage du récépissé
-            const receipt = document.getElementById('contact-receipt');
-            const receiptText = document.getElementById('receipt-text');
-            const receiptTicketId = document.getElementById('receipt-ticket-id');
-
-            receiptTicketId.innerText = ticketId;
-            receiptText.innerText = `Votre démarche concernant "${subject}" a été transmise à la direction "${service}". Un agent municipal a été notifié.`;
-            receipt.classList.remove('hidden');
-            receipt.focus();
-
             // Reset form
             document.getElementById('contact-subject').value = '';
             document.getElementById('contact-message').value = '';
+            document.getElementById('report-place').value = '';
 
             // Rendu
             renderCitizenTicketsTable();
             renderAgentTicketsTable();
+            renderFeaturedServices();
+            completeOnboardingStep('demarche');
+
+            // D16 : confirmation immédiate à la place du formulaire
+            showSubmissionConfirmation(newTicket);
 
             consoleLog(`[D04] Ticket généré : ${ticketId} (${service})`);
             playSciFiSound(600, 0.1);
         }
 
+        // D11 & F26 : le suivi et l'historique sont rendus par renderCitizenTracker() (assets/features.js)
         function renderCitizenTicketsTable() {
-            const tbody = document.getElementById('citizen-tickets-tbody');
-            const emptyMsg = document.getElementById('no-tickets-msg');
-            if (!tbody) return;
-
-            // Uniquement les démarches du citoyen connecté ; un visiteur non connecté n'en voit aucune
-            const userTickets = activeCitizen
-                ? citizenTickets.filter(t => t.citizenName.includes(activeCitizen.name) || t.citizenName.includes(activeCitizen.matricule))
-                : [];
-
-            if (userTickets.length === 0) {
-                tbody.innerHTML = '';
-                if (emptyMsg) emptyMsg.classList.remove('hidden');
-                return;
-            }
-
-            if (emptyMsg) emptyMsg.classList.add('hidden');
-
-            tbody.innerHTML = userTickets.map(t => {
-                const statusBadge = t.status === 'Résolu' 
-                    ? `<span class="text-green-400 border border-green-500/40 bg-green-500/10 px-2 py-0.5 rounded text-[10px]">Résolu</span>`
-                    : t.status === 'En cours'
-                    ? `<span class="text-[#00B8FF] border border-[#00B8FF]/40 bg-[#00B8FF]/10 px-2 py-0.5 rounded text-[10px]">En cours</span>`
-                    : `<span class="text-[#FFB347] border border-[#FFB347]/40 bg-[#FFB347]/10 px-2 py-0.5 rounded text-[10px]">En attente</span>`;
-
-                return `
-                    <tr class="hover:bg-cyan-950/20 transition">
-                        <td class="py-2.5 px-3 font-mono font-bold text-[#FFB347]">${escapeHtml(t.id)}</td>
-                        <td class="py-2.5 px-3 text-[#E6F1F7]">${escapeHtml(t.service)}</td>
-                        <td class="py-2.5 px-3 text-[#E6F1F7]/90 font-medium">${escapeHtml(t.subject)}</td>
-                        <td class="py-2.5 px-3 text-[#6F8696]">${escapeHtml(t.priority)}</td>
-                        <td class="py-2.5 px-3">${statusBadge}</td>
-                        <td class="py-2.5 px-3 text-right font-mono text-[#6F8696] text-[10px]">${escapeHtml(t.date)}</td>
-                    </tr>
-                `;
-            }).join('');
+            renderCitizenTracker();
         }
 
         // Le filtre choisi est conservé quand un agent change l'état d'un ticket
@@ -2259,6 +2207,8 @@
             if (elPending) elPending.innerText = countPending;
             if (elProgress) elProgress.innerText = countProgress;
             if (elResolved) elResolved.innerText = countResolved;
+
+            renderWorkload();
 
             let displayedTickets = citizenTickets;
             if (filter === 'pending') displayedTickets = citizenTickets.filter(t => t.status === 'En attente');
@@ -2289,8 +2239,9 @@
                         <td class="py-3 px-3 text-[#E6F1F7] font-semibold">${escapeHtml(t.citizenName)}</td>
                         <td class="py-3 px-3 text-[#00B8FF]">${escapeHtml(t.service)}</td>
                         <td class="py-3 px-3">
-                            <div class="text-[#E6F1F7] font-bold">${escapeHtml(t.subject)}</div>
-                            <div class="text-[11px] text-[#6F8696] line-clamp-1">${escapeHtml(t.message)}</div>
+                            <div class="text-[#E6F1F7] font-bold" data-no-i18n>${escapeHtml(tnTicketTitle(t))}</div>
+                            <div class="text-[11px] text-[#6F8696] line-clamp-1" data-no-i18n>${escapeHtml(t.message)}</div>
+                            ${t.location ? `<div class="text-[11px] text-[#8FE1FF]" data-no-i18n><i aria-hidden="true" class="fa-solid fa-location-dot mr-1"></i>${escapeHtml(tnTicketPlace(t))}</div>` : ''}
                         </td>
                         <td class="py-3 px-3 text-[11px]">${escapeHtml(t.priority)}</td>
                         <td class="py-3 px-3">${statusBadge}</td>
@@ -2319,6 +2270,7 @@
             const ticket = citizenTickets.find(t => t.id === ticketId);
             if (ticket) {
                 ticket.status = newStatus;
+                recordTicketStep(ticket, newStatus);
                 localStorage.setItem('tn_tickets', JSON.stringify(citizenTickets));
                 renderAgentTicketsTable();
                 renderCitizenTicketsTable();
@@ -2338,8 +2290,11 @@
         function prefillContactForm(service, subject) {
             const servSelect = document.getElementById('contact-service');
             const subjInput = document.getElementById('contact-subject');
+            setContactMode('contact');
+            if (document.getElementById('contact-municipal-form').hidden) resetContactForm();
             if (servSelect) servSelect.value = service;
             if (subjInput) subjInput.value = subject;
+            completeOnboardingStep('service');
             window.location.hash = "#demarches";
             playSciFiSound(500, 0.08);
         }
@@ -2366,6 +2321,7 @@
                 if (hint) hint.innerText = "";
                 if (contactField) contactField.value = "";
                 renderCitizenTicketsTable();
+                renderOnboarding();
                 return;
             }
 
@@ -2380,6 +2336,7 @@
             if (contactName) contactName.value = `${activeCitizen.name} (${activeCitizen.matricule})`;
 
             renderCitizenTicketsTable();
+            renderOnboarding();
         }
 
         function handleRegisterSubmit(e) {
@@ -2409,7 +2366,10 @@
             updateCitizenProfileUI();
             closeAuthModal();
 
-            alert(`BIENVENUE SUR TERRA NOVA !\nVotre compte colon a été créé avec succès.\nVotre matricule officiel est : ${matricule}\nConservez-le précieusement.`);
+            alert(t("BIENVENUE SUR TERRA NOVA !\nVotre compte colon a été créé avec succès.\nVotre matricule officiel est : {matricule}\nConservez-le précieusement.", { matricule }));
+
+            // D12 : première connexion, le nouvel habitant arrive sur le guide de premiers pas
+            startOnboarding();
             consoleLog(`[D01] Nouveau citoyen enregistré : ${name} (${matricule})`);
             playSciFiSound(880, 0.15);
         }
@@ -2428,16 +2388,16 @@
                 localStorage.setItem('tn_active_citizen', JSON.stringify(activeCitizen));
                 updateCitizenProfileUI();
                 closeAuthModal();
-                alert(`Connexion réussie. Bienvenue, ${activeCitizen.name}.`);
+                alert(t("Connexion réussie. Bienvenue, {name}.", { name: activeCitizen.name }));
                 consoleLog(`[D03] Citoyen authentifié : ${activeCitizen.name}`);
                 playSciFiSound(800, 0.1);
             } else {
-                alert(`Matricule ou identifiant non reconnu sur la colonie. Vérifiez votre saisie ou enregistrez-vous.`);
+                alert(t("Matricule ou identifiant non reconnu sur la colonie. Vérifiez votre saisie ou enregistrez-vous."));
             }
         }
 
         function logoutCitizen() {
-            if (confirm("Confirmer la déconnexion de l'espace citoyen ?")) {
+            if (confirm(t("Confirmer la déconnexion de l'espace citoyen ?"))) {
                 activeCitizen = null;
                 localStorage.setItem('tn_active_citizen', 'null');
                 updateCitizenProfileUI();

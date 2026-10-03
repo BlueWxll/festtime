@@ -19,6 +19,15 @@ Plateforme officielle de la première colonie spatiale de l'humanité sur un nou
 * **F21 (520 XP) — Compatibilité Lecteur d'Écran :** Lien d'évitement, repères `main`/`nav`, libellés de formulaires associés, boutons nommés, modales (`role="dialog"`, focus piégé, touche Échap), états des filtres annoncés, icônes décoratives masquées.
 * **F23 (520 XP) — Contraste Renforcé :** Mode haut contraste activable depuis le panneau d'accessibilité (mémorisé, activé d'office si le système le demande), gris secondaire éclairci et focus clavier visible.
 * **F24 (260 XP) — Taille du Texte Réglable :** Quatre paliers de 100 % à 150 % sans chevauchement (mise en page en `rem`, barres qui passent à la ligne).
+* **D11 (540 XP) — Suivi des Démarches :** Chaque demande affiche son état et ses étapes datées (envoyée, prise en charge, résolue), avec une chronologie détaillée.
+* **F26 (270 XP) — Historique des Demandes :** Onglet « Historique complet » dans l'espace citoyen, avec recherche et filtre par état.
+* **D12 (540 XP) — Premiers Pas :** À la première connexion, un guide en trois étapes (compléter son profil, trouver un service, commencer une démarche) avec progression.
+* **D14 & F27 (1080 XP) — Multilingue :** Interface, catalogue des services et démarches en français, anglais et espagnol. Dictionnaire dans `assets/i18n.js`.
+* **D15 (270 XP) — Fil d'Ariane :** Repère d'emplacement sous la navigation, liens vers les niveaux précédents et section courante mise en évidence.
+* **D16 (270 XP) — Confirmation d'Envoi :** Le formulaire laisse place à une confirmation avec numéro de suivi et récapitulatif ; alerte en cas de doublon.
+* **D17 (270 XP) — Charge de Travail :** Indicateurs en tête du backoffice (demandes en attente, urgentes, en cours, résolues, plus ancienne en attente).
+* **F25 (540 XP) — Signalement :** Formulaire dédié (nature du problème, secteur, repère précis) ; le service compétent est attribué automatiquement.
+* **F28 (270 XP) — Services à la Une :** Démarches les plus courantes en tête du catalogue ; agents et administrateurs choisissent les services mis en avant.
 * **Console Aethel-OS & Particules Quantiques (Bonus Waouh) :** Terminal interactif et effets audio synthétiques via Web Audio API.
 
 ---
