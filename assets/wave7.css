@@ -1,0 +1,83 @@
+/* ==========================================================
+   VAGUE 7 — F45 plan des services, F46 urgences, F47/F48 journal d'activité.
+   ========================================================== */
+.tn-map { position: relative; width: 100%; aspect-ratio: 4 / 3; border: 1px solid var(--line-strong); background: var(--void-900); overflow: hidden; }
+.tn-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.tn-map .map-city { fill: none; stroke: var(--line-strong); stroke-width: 0.4; }
+.tn-map .map-tube { fill: none; stroke: var(--cyber-500); stroke-width: 0.5; stroke-dasharray: 2 1.5; }
+.tn-map .map-dome { fill: rgba(0, 184, 255, 0.05); stroke: var(--cyber-500); stroke-width: 0.4; }
+.tn-map .map-core { fill: rgba(255, 179, 71, 0.08); stroke: var(--amber); }
+.tn-map .map-ring { fill: none; stroke: var(--line-strong); stroke-width: 0.4; }
+.tn-map .map-zone { fill: rgba(255, 255, 255, 0.02); stroke: var(--line-subtle); stroke-width: 0.3; stroke-dasharray: 1 1; }
+.tn-map .map-label { fill: var(--text-500); font: 400 2.4px 'JetBrains Mono', monospace; letter-spacing: 0.1em; text-transform: uppercase; }
+
+.tn-poi { position: absolute; transform: translate(-50%, -50%); display: grid; place-items: center; width: 2.25rem; height: 2.25rem; padding: 0; border: 1px solid var(--cyber-500); background: var(--void-800); color: var(--cyber-300); cursor: pointer; font-size: 0.75rem; }
+.tn-poi i { pointer-events: none; }
+.tn-shape-circle { border-radius: 50%; }
+.tn-shape-square { border-radius: 0; }
+.tn-shape-diamond { border-radius: 0; }
+.tn-poi.tn-shape-diamond { transform: translate(-50%, -50%) rotate(45deg); }
+.tn-poi.tn-shape-diamond i { transform: rotate(-45deg); }
+.tn-poi:hover, .tn-poi--on { background: var(--cyber-900); border-color: var(--cyber-300); box-shadow: 0 0 0 2px var(--cyber-500); z-index: 3; }
+.tn-poi--dim { opacity: 0.25; }
+.tn-poi:focus-visible { outline: 2px solid var(--cyber-300); outline-offset: 3px; z-index: 4; }
+.tn-here { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; pointer-events: none; z-index: 2; }
+.tn-here-dot { width: 0.875rem; height: 0.875rem; border-radius: 50%; background: var(--amber); box-shadow: 0 0 0 3px rgba(255, 179, 71, 0.35); }
+.tn-here-label { margin-top: 0.125rem; padding: 0 0.25rem; background: var(--void-900); color: var(--amber); font: 600 0.625rem/1.4 'JetBrains Mono', monospace; text-transform: uppercase; }
+
+.tn-poi-tools { display: grid; gap: 0.5rem; margin-bottom: 0.75rem; }
+.tn-poi-tools > * { min-width: 0; }
+.tn-poi-list { margin: 0.75rem 0 0; padding: 0; list-style: none; }
+.tn-poi-card { padding: 0.75rem; border: 1px solid var(--line-subtle); margin-top: 0.5rem; }
+.tn-poi-card--on { border-color: var(--cyber-500); background: var(--void-900); }
+.tn-poi-head { display: flex; align-items: flex-start; gap: 0.625rem; margin: 0; color: var(--text-100); }
+.tn-poi-icon { flex: none; display: grid; place-items: center; width: 2rem; height: 2rem; border: 1px solid var(--cyber-500); color: var(--cyber-300); }
+.tn-poi-text { min-width: 0; display: grid; gap: 0.125rem; overflow-wrap: anywhere; font-size: 0.8125rem; }
+.tn-poi-open { margin-top: 0.25rem; }
+.tn-poi-note { margin: 0.5rem 0 0; padding: 0.375rem 0.5rem; border-left: 3px solid var(--amber); background: rgba(255, 179, 71, 0.06); font-size: 0.8125rem; color: var(--text-100); }
+.tn-poi-card .tn-hint { margin: 0.375rem 0 0; }
+.tn-poi-card .tn-row-actions { margin-top: 0.5rem; }
+.tn-urgent-box { margin-bottom: 1rem; padding: 0.875rem 1rem; border: 1px solid var(--amber); border-left-width: 4px; background: rgba(255, 179, 71, 0.06); }
+.tn-urgent-box:empty { display: none; }
+.tn-urgent-name { margin: 0.25rem 0; font-size: 1.0625rem; font-weight: 700; color: var(--text-100); overflow-wrap: anywhere; }
+.tn-urgent-call { display: inline-flex; align-items: center; gap: 0.5rem; margin: 0.25rem 0; padding: 0.5rem 0.75rem; border: 1px solid var(--amber); color: var(--amber); font: 700 0.875rem/1.2 'JetBrains Mono', monospace; }
+.tn-em-list { margin: 0.75rem 0 0; padding: 0; list-style: none; display: grid; gap: 0.5rem; }
+.tn-em-list > li { padding: 0.5rem 0.625rem; border: 1px solid var(--line-subtle); overflow-wrap: anywhere; }
+.tn-tool--urgent { border-color: var(--amber); color: var(--amber); }
+.tn-tool--urgent .tn-tool-label { position: static; width: auto; height: auto; clip: auto; overflow: visible; margin-left: 0.25rem; font-weight: 700; }
+
+/* --- Journal d'activité --- */
+.tn-audit-name { display: flex; flex-wrap: wrap; align-items: end; gap: 0.5rem; margin: 0.75rem 0; }
+.tn-audit-name > * { min-width: 0; }
+.tn-audit-filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr)); gap: 0.5rem; margin: 0.75rem 0; }
+.tn-audit-filters > * { min-width: 0; }
+.tn-audit-table td, .tn-audit-table th { overflow-wrap: anywhere; vertical-align: top; }
+.tn-audit-table { min-width: 36rem; }
+.tn-audit-actions { margin-top: 0.75rem; }
+.tn-diff { margin: 0.25rem 0 0; padding: 0; list-style: none; font-size: 0.75rem; }
+.tn-diff li { padding: 0.125rem 0; }
+.tn-diff del { color: var(--err, #ff6b6b); text-decoration: line-through; }
+.tn-diff ins { color: var(--ok, #4ade80); text-decoration: none; font-weight: 600; }
+.tn-diff ins::before { content: '→ '; }
+.tn-history { margin: 0.5rem 0 0; padding: 0; list-style: none; }
+.tn-history li { padding: 0.5rem 0; border-top: 1px solid var(--line-subtle); font-size: 0.8125rem; color: var(--text-100); overflow-wrap: anywhere; }
+.tn-lastmod { margin: 0.25rem 0 0; font-size: 0.6875rem; }
+.tn-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.75rem 0; }
+#audit-journal :focus-visible, #plan-ville :focus-visible { outline: 2px solid var(--cyber-300); outline-offset: 2px; }
+
+html.hc .tn-map, html.hc .tn-poi, html.hc .tn-poi-card, html.hc .tn-urgent-box, html.hc .tn-em-list > li { background: #000; border-color: #fff; color: #fff; }
+html.hc .tn-urgent-name, html.hc .tn-poi-text, html.hc .tn-urgent-call, html.hc .tn-poi-note, html.hc .tn-history li { color: #fff; }
+html.hc .tn-map .map-label { fill: #fff; }
+html.hc .tn-poi--on { background: #fff; color: #000; }
+html.cb .tn-diff del { text-decoration: line-through; }
+html.cb .tn-diff ins { text-decoration: underline; }
+
+@media (max-width: 539px) { .tn-poi { width: 2rem; height: 2rem; font-size: 0.6875rem; } }
+html.tn-text-xl .tn-poi { width: 2rem; height: 2rem; }
+
+#audit-journal { min-width: 0; max-width: 100%; }
+#audit-journal .overflow-x-auto { max-width: 100%; }
+#audit-journal .tn-audit-actions { flex-wrap: wrap; }
+#audit-journal .sr-only, #plan-ville .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+#audit-journal .overflow-x-auto { position: relative; }
+@media (min-width: 1024px) { #plan-ville .tn-poi-list { max-height: 44rem; overflow-y: auto; padding-right: 0.25rem; } #plan-ville .tn-map { position: sticky; top: 1rem; } }

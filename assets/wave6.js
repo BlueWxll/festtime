@@ -292,7 +292,7 @@ function w6SyncShortcutsToggle() {
 
 function w6OpenShortcuts() {
     const rows = [
-        ['?', 'Afficher cette aide'], ['/', 'Rechercher'], ['n', 'Notifications'], ['a', "Réglages d'accessibilité"], ['l', 'Lexique : les mots simples'],
+        ['?', 'Afficher cette aide'], ['/', 'Rechercher'], ['n', 'Notifications'], ['a', "Réglages d'accessibilité"], ['l', 'Lexique : les mots simples'], ['u', 'Urgences et hôpitaux'],
         ['g puis h', "Aller à l'accueil"], ['g puis s', 'Aller aux services municipaux'], ['g puis d', 'Aller aux démarches'],
         ['g puis r', 'Aller aux rendez-vous'], ['g puis t', 'Aller aux transports'], ['g puis c', "Aller à l'espace citoyen"], ['g puis a', 'Aller aux actualités'],
         ['Tab / Maj+Tab', 'Passer à l’élément suivant / précédent'], ['Entrée ou Espace', 'Activer le bouton ou le lien'], ['Échap', 'Fermer la fenêtre ou le panneau ouvert']
@@ -330,6 +330,7 @@ function initShortcuts() {
         else if (key === 'n') { event.preventDefault(); if (typeof toggleNotifications === 'function') toggleNotifications(); }
         else if (key === 'a') { event.preventDefault(); toggleA11yPanel(true); }
         else if (key === 'l') { event.preventDefault(); w6OpenLexicon(); }
+        else if (key === 'u') { event.preventDefault(); if (typeof w7OpenEmergency === 'function') w7OpenEmergency(); }
     });
 }
 

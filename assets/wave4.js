@@ -195,7 +195,7 @@ function openDeleteAccount() {
             }
         }
         const removedTickets = w4RemoveAccount(account);
-        w4Audit(`Compte ${account.matricule} supprimé par son titulaire`);
+        w4Audit(`Compte ${account.matricule} supprimé par son titulaire`, { category: 'compte', target: account.matricule, targetLabel: account.name, before: { etat: 'Actif' }, after: { etat: 'Supprimé' } });
         const body = document.getElementById('tn-dialog-body');
         body.innerHTML = `
             <p role="status">${t('Votre compte {matricule} a été supprimé, ainsi que {n} demande(s).', { matricule: escapeHtml(account.matricule), n: removedTickets })}</p>
@@ -354,13 +354,14 @@ function w4AccountAction(action, matricule, trigger) {
     if (!account) return;
 
     if (action === 'suspend' || action === 'reactivate') {
+        const wasSuspended = !!account.suspended;
         account.suspended = action === 'suspend';
         w4SaveCitizens();
         if (account.suspended && activeCitizen && activeCitizen.matricule === matricule) {
             activeCitizen = null;
             localStorage.setItem('tn_active_citizen', 'null');
         }
-        w4Audit(`${account.suspended ? 'Compte suspendu' : 'Compte réactivé'} : ${matricule}`);
+        w4Audit(`${account.suspended ? 'Compte suspendu' : 'Compte réactivé'} : ${matricule}`, { category: 'compte', target: matricule, targetLabel: account.name, before: { etat: wasSuspended ? 'Suspendu' : 'Actif' }, after: { etat: account.suspended ? 'Suspendu' : 'Actif' } });
         updateCitizenProfileUI();
         w4RenderAccounts();
         announce(t(account.suspended ? 'Compte suspendu.' : 'Compte réactivé.'));
@@ -403,6 +404,7 @@ function openEditAccount(account) {
         const name = dialog.querySelector('#edit-name').value.trim();
         if (!name) return;
         const previous = account.name;
+        const beforeSnap = { nom: account.name, role: account.role, dome: account.dome };
         // Les demandes déjà envoyées restent rattachées au compte : on met aussi à jour leur auteur
         citizenTickets.forEach(ticket => {
             if (String(ticket.citizenName).includes(account.matricule) || ticket.citizenName === previous) {
@@ -418,7 +420,7 @@ function openEditAccount(account) {
             activeCitizen = Object.assign({}, activeCitizen, { name: account.name, role: account.role, dome: account.dome });
             localStorage.setItem('tn_active_citizen', JSON.stringify(activeCitizen));
         }
-        w4Audit(`Profil modifié : ${account.matricule}`);
+        w4Audit(`Profil modifié : ${account.matricule}`, { category: 'compte', target: account.matricule, targetLabel: account.name, before: beforeSnap, after: { nom: account.name, role: account.role, dome: account.dome } });
         w4CloseDialog();
         w4RefreshAll();
         announce(t('Compte modifié.'));
@@ -439,7 +441,7 @@ function openResetCode(account) {
         account.pwdHash = await tnHashCode(code, account.matricule);
         account.resetPending = true;
         w4SaveCitizens();
-        w4Audit(`Code d'accès remis : ${account.matricule}`);
+        w4Audit(`Code d'accès remis : ${account.matricule}`, { category: 'compte', target: account.matricule, targetLabel: account.name });
         const body = document.getElementById('tn-dialog-body');
         body.innerHTML = `
             <p class="tn-hint">${t('Code temporaire de {name} :', { name: `<strong>${escapeHtml(account.name)}</strong>` })}</p>
@@ -464,7 +466,7 @@ function openDeleteAccountByStaff(account) {
     dialog.querySelector('#staff-delete-confirm').addEventListener('click', () => {
         if (!w4Staff()) return;
         w4RemoveAccount(account);
-        w4Audit(`Compte supprimé par un agent : ${account.matricule}`);
+        w4Audit(`Compte supprimé par un agent : ${account.matricule}`, { category: 'compte', target: account.matricule, targetLabel: account.name, before: { etat: 'Actif' }, after: { etat: 'Supprimé' } });
         w4CloseDialog();
         w4RenderAccounts();
         announce(t('Compte supprimé.'));

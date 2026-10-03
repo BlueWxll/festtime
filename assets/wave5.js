@@ -334,7 +334,7 @@ function w5Unlock(key) {
     guard.recent = [];
     guard.globalUntil = 0;
     w5Save(W5_STORE.guard, guard);
-    if (typeof w4Audit === 'function') w4Audit(`Blocage de connexion levé : ${key}`);
+    if (typeof w4Audit === 'function') w4Audit(`Blocage de connexion levé : ${key}`, { category: 'securite', target: 'login:' + key, targetLabel: key });
     announce(t('Blocage levé.'));
     w5RenderSecurity();
 }
@@ -558,10 +558,12 @@ function initServiceStatusAdmin() {
             if (alt === service) { error.textContent = t('Le service à contacter doit être un autre service.'); return; }
         }
         const map = w5StatusMap();
+        const prevEntry = map[service];
+        const fmt = e => e ? { etat: ({ available: 'Disponible', maintenance: 'En maintenance', incident: 'Incident en cours' })[e.state] || e.state, raison: e.reason || '', retour: e.backAt || '', alternative: e.alt || '', conseil: e.todo || '' } : { etat: 'Disponible' };
         if (state === 'available') delete map[service];
         else map[service] = { state, reason, backAt: back, alt, todo, since: new Date().toISOString() };
         w5Save(W5_STORE.status, map);
-        if (typeof w4Audit === 'function') w4Audit(`Disponibilité de « ${service} » : ${state === 'available' ? 'rétabli' : state}`);
+        if (typeof w4Audit === 'function') w4Audit(`Disponibilité de « ${service} » : ${state === 'available' ? 'rétabli' : state === 'maintenance' ? 'en maintenance' : 'incident en cours'}`, { category: 'service', target: 'service:' + service, targetLabel: service, before: fmt(prevEntry), after: fmt(map[service]) });
         announce(t('État du service enregistré.'));
         w5RenderStatuses();
         w5RenderStatusAdminList();

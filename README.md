@@ -94,3 +94,8 @@ Les messages diffusés et les recommandations déjà générées sont enregistr�
 * **Couleur Secondaire :** Plasma Violet (`#9D00FF`)
 * **Couleur d'Alerte :** Bio-Amber (`#FFB700`)
 * **Typographies :** Orbitron (Titres) & Share Tech Mono (Données & Télémétrie)
+
+- **F45 Plan de la ville** : section « Plan de la ville » (15 lieux : hôpitaux, pharmacies, mairie, transports, sentinelles, abris), tri par proximité selon le secteur, horaires et état ouvert/fermé, recherche et filtres, lien vers la prise de rendez-vous.
+- **F46 Urgences** : bouton « Urgences » toujours visible (raccourci `u`), le lieu d'urgence le plus proche en un écran, numéro 112, note quand un service est interrompu.
+- **F47 Journal d'activité** : espace agents, journal chaîné (empreinte SHA-256), filtres qui/quoi/quand, vérification d'intégrité, export CSV. Stocké dans le navigateur (localStorage).
+- **F48 Qui a modifié quoi** : valeurs avant/après, dernière modification sur chaque compte et service, historique par élément.
