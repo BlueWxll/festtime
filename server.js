@@ -48,9 +48,21 @@ const MIME_TYPES = {
     '.jpeg': 'image/jpeg',
     '.svg': 'image/svg+xml',
     '.ico': 'image/x-icon',
-    '.md': 'text/markdown; charset=utf-8',
+    '.webp': 'image/webp',
+    '.woff2': 'font/woff2',
     '.pdf': 'application/pdf'
 };
+
+// Fichiers du dépôt qui ne doivent jamais être servis au public (code serveur, configuration, documentation)
+const PRIVATE_ROOT_FILES = new Set(['server.js', 'package.json', 'package-lock.json', 'build.sh', 'hodifly.json']);
+const PRIVATE_EXTENSIONS = new Set(['.md', '.sh', '.php', '.env', '.log', '.lock']);
+
+function isPrivatePath(relPath) {
+    const parts = relPath.split(/[\\/]+/).filter(Boolean);
+    if (parts.some(part => part.startsWith('.') || part === 'node_modules')) return true;
+    if (parts.length === 1 && PRIVATE_ROOT_FILES.has(parts[0].toLowerCase())) return true;
+    return PRIVATE_EXTENSIONS.has(path.extname(relPath).toLowerCase());
+}
 
 // Cache de sécurité en cas de panne réseau
 let lastCachedApiResponse = null;
@@ -61,6 +73,11 @@ const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Webcup-Api-Key');
+
+    // En-têtes de sécurité
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
 
     if (req.method === 'OPTIONS') {
         res.writeHead(204);
@@ -148,8 +165,16 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    const isPrivate = isPrivatePath(pathname);
+
     fs.stat(filePath, (err, stats) => {
-        if (err || !stats.isFile()) {
+        if (isPrivate || err || !stats.isFile()) {
+            // Une ressource introuvable ou privée (chemin avec extension) renvoie une vraie 404
+            if (path.extname(pathname)) {
+                res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+                res.end('404 Ressource introuvable');
+                return;
+            }
             // Fallback SPA sur index.html pour les routes inconnues
             filePath = path.join(__dirname, 'index.html');
         }

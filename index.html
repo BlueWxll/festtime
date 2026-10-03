@@ -8,6 +8,8 @@
     <meta name="description"
         content="Plateforme officielle de la première mégapole exoplanétaire de l'humanité. Services municipaux, espace citoyen, flux de requêtes en direct et télémesure Aethel-OS.">
 
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2303070E'/%3E%3Crect x='8' y='8' width='16' height='16' fill='none' stroke='%2300F0FF' stroke-width='2.5' transform='rotate(45 16 16)'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%2300F0FF'/%3E%3C/svg%3E">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -259,6 +261,38 @@
         .diff-3 { color: var(--bio-amber); border-color: var(--bio-amber); background: rgba(255, 183, 0, 0.1); }
         .diff-4 { color: #FF0055; border-color: #FF0055; background: rgba(255, 0, 85, 0.1); }
 
+        /* Menus déroulants : la liste native reste sombre (sinon texte clair sur fond blanc) */
+        html { color-scheme: dark; scroll-behavior: smooth; }
+        select.cyber-input, select.cyber-input:focus { background-color: #03070E; }
+        select.cyber-input option { background-color: #03070E; color: #E0F4FF; }
+
+        /* La navigation collante se cale sous la hauteur réelle de l'en-tête, et les ancres ne passent plus dessous */
+        html #site-nav { top: var(--tn-header-h, 5rem); }
+        main section[id] { scroll-margin-top: calc(var(--tn-header-h, 5rem) + var(--tn-nav-h, 3rem) + 0.75rem); }
+
+        /* Sur grand écran, la navigation passe sur deux lignes au lieu de couper le dernier lien */
+        @media (min-width: 1024px) {
+            #site-nav > div { flex-wrap: wrap; justify-content: center; overflow: visible; row-gap: 0.125rem; }
+        }
+
+        /* En-tête mobile : libellés réduits à leur icône pour que tous les boutons tiennent dans la largeur */
+        #site-nav > div { scrollbar-width: none; }
+        #site-nav > div::-webkit-scrollbar { display: none; }
+
+        @media (max-width: 639px) {
+            #site-header > div:first-child { gap: 0.5rem; }
+            #site-header > div:first-child a.font-orbitron { font-size: 1.05rem; }
+
+            #current-role-badge, #auth-nav-label {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+            }
+        }
+
         /* ==========================================
            ACCESSIBILITÉ (F21 lecteur d'écran, F23 contraste, F24 taille du texte)
            ========================================== */
@@ -284,6 +318,7 @@
         html.tn-text-lg #site-nav > div { flex-wrap: wrap; overflow: visible; row-gap: 0.25rem; }
         html.tn-text-lg .whitespace-nowrap { white-space: normal; }
         html.tn-text-lg .truncate { white-space: normal; overflow: visible; text-overflow: clip; }
+        html.tn-text-lg main section[id] { scroll-margin-top: 1rem; }
         html.tn-text-lg h1 { font-size: min(3.75rem, 11vw); line-height: 1.1; }
 
         /* F23 : le gris secondaire d'origine (#4A607A) est trop peu contrasté sur fond sombre */
@@ -396,7 +431,6 @@
         html.hc [class*="text-green-"] { color: #7CFFB0; }
         html.hc .text-transparent { color: #FFFFFF; background-image: none; -webkit-text-fill-color: #FFFFFF; }
         html.hc .diff-4 { color: #FF8FB3; border-color: #FF8FB3; }
-        html.hc [class*="opacity-40"] { opacity: 0.75; }
 
         html.hc a { text-decoration: underline; }
         html.hc .btn-cyber { background: #000000; border-width: 2px; box-shadow: none; clip-path: none; }
@@ -405,6 +439,7 @@
         html.hc .btn-amber { border-color: #FFD24D; color: #FFD24D; }
         html.hc .cyber-input { background: #000000; border: 2px solid #FFFFFF; color: #FFFFFF; }
         html.hc .cyber-input::placeholder { color: #C9D6E3; }
+        html.hc select.cyber-input, html.hc select.cyber-input option { background-color: #000000; color: #FFFFFF; }
         html.hc .cyber-input:focus { background: #000000; box-shadow: none; border-color: #FFD24D; }
         html.hc .pulse-amber, html.hc .animate-ping, html.hc .animate-pulse { animation: none; }
 
@@ -485,10 +520,10 @@
                         <i aria-hidden="true" class="fa-solid fa-atom text-[#00F0FF] -rotate-45 text-lg"></i>
                     </div>
                     <div>
-                        <a href="#" class="text-xl sm:text-2xl font-black font-orbitron tracking-widest text-[#00F0FF] hover:text-white transition drop-shadow-[0_0_12px_rgba(0,240,255,0.6)]">
+                        <a href="#" class="text-xl sm:text-2xl whitespace-nowrap font-black font-orbitron tracking-widest text-[#00F0FF] hover:text-white transition drop-shadow-[0_0_12px_rgba(0,240,255,0.6)]">
                             TERRA NOVA
                         </a>
-                        <div class="text-[9px] tracking-widest text-[#4A607A] font-mono uppercase flex items-center gap-2">
+                        <div class="text-[9px] tracking-widest text-[#4A607A] font-mono uppercase hidden sm:flex items-center gap-2">
                             <span>MÉGAPOLE EXOPLANÉTAIRE</span>
                             <span class="w-1 h-1 bg-[#00F0FF] rounded-full"></span>
                             <span class="text-[#00F0FF]">AETHEL-OS v2.4</span>
@@ -558,7 +593,7 @@
 
                     <!-- Console Toggle Button -->
                     <button type="button" onclick="toggleModal()" title="Console Directe" aria-label="Ouvrir la console directe Aethel-OS"
-                        class="border border-cyan-900/80 hover:border-[#00F0FF] text-[#00F0FF] p-2 text-xs transition">
+                        class="hidden sm:block border border-cyan-900/80 hover:border-[#00F0FF] text-[#00F0FF] p-2 text-xs transition">
                         <i aria-hidden="true" class="fa-solid fa-terminal"></i>
                     </button>
                 </div>
@@ -586,7 +621,7 @@
 
         <!-- SUB-NAVIGATION BAR (Accès rapide aux modules de Terra Nova) -->
         <nav id="site-nav" aria-label="Navigation principale" class="bg-[#050D1A]/95 border-b border-cyan-900/40 sticky top-20 z-40 backdrop-blur-md">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center space-x-1 sm:space-x-6 overflow-x-auto py-2 text-xs">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center space-x-1 overflow-x-auto py-2 text-xs">
                 <a href="#accueil" class="px-3 py-1.5 hover:text-[#00F0FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
                     <i aria-hidden="true" class="fa-solid fa-globe text-[11px] text-[#00F0FF]"></i>
                     <span>ACCUEIL CITÉ</span>
@@ -613,7 +648,7 @@
                 </a>
                 <a href="#espace-agent" class="px-3 py-1.5 hover:text-[#9D00FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap border-l border-cyan-900/60 pl-4 text-[#9D00FF]">
                     <i aria-hidden="true" class="fa-solid fa-shield-halved text-[11px]"></i>
-                    <span>ESPACE AGENTS (BACKOFFICE)</span>
+                    <span>ESPACE AGENTS</span>
                     <span class="text-[9px] bg-purple-950 text-[#9D00FF] px-1.5 py-0.5 rounded border border-purple-800">D19/F22</span>
                 </a>
             </div>
@@ -1643,15 +1678,12 @@
         // ==========================================
         const PROXY_API_URL = "/api/requests";
         const SNAPSHOT_API_URL = "/api/requests.json";
-        const DIRECT_API_URL = "https://24h.webcup.fr/wp-json/webcup/v1/requests";
-        const DEFAULT_API_KEY = "s45f4ds5fgrtr4hytutyt45y4t54yty";
 
-        // Sources du flux par ordre de priorité : proxy Node (local), instantané généré au
-        // déploiement par build.sh (hébergement statique), puis appel direct
+        // Sources du flux par ordre de priorité : proxy Node (la clé API reste côté serveur),
+        // puis instantané de secours généré au déploiement par build.sh
         const API_SOURCES = [
             { name: 'proxy', url: PROXY_API_URL },
-            { name: 'snapshot', url: SNAPSHOT_API_URL },
-            { name: 'direct', url: DIRECT_API_URL, headers: { 'X-Webcup-Api-Key': DEFAULT_API_KEY } }
+            { name: 'snapshot', url: SNAPSHOT_API_URL }
         ];
         let activeApiSource = null;
         let apiSnapshotDate = null;
@@ -1672,7 +1704,13 @@
             }
         ];
 
-        let activeCitizen = JSON.parse(localStorage.getItem('tn_active_citizen')) || registeredCitizens[0];
+        // Première visite : compte de démonstration. Une déconnexion explicite ('null') est conservée.
+        const storedActiveCitizen = localStorage.getItem('tn_active_citizen');
+        let activeCitizen = storedActiveCitizen === null ? registeredCitizens[0] : JSON.parse(storedActiveCitizen);
+
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
 
         // Base locale des tickets / démarches citoyennes (D04 & F22)
         let citizenTickets = JSON.parse(localStorage.getItem('tn_tickets')) || [
@@ -1721,24 +1759,22 @@
                 
                 // D09 : Le citoyen ne peut pas accéder aux outils municipaux confidentiels
                 if (restrictedBanner) restrictedBanner.classList.remove('hidden');
-                if (agentWorkspace) agentWorkspace.classList.add('opacity-40', 'pointer-events-none', 'select-none');
+                if (agentWorkspace) agentWorkspace.classList.add('hidden');
             } else if (currentRole === 'agent') {
                 badge.innerText = 'AGENT';
                 badge.className = 'font-orbitron font-bold text-[#9D00FF]';
                 icon.className = 'fa-solid fa-id-badge text-[#9D00FF]';
 
                 if (restrictedBanner) restrictedBanner.classList.add('hidden');
-                if (agentWorkspace) agentWorkspace.classList.remove('opacity-40', 'pointer-events-none', 'select-none');
+                if (agentWorkspace) agentWorkspace.classList.remove('hidden');
             } else if (currentRole === 'admin') {
                 badge.innerText = 'ADMIN';
                 badge.className = 'font-orbitron font-bold text-[#FFB700]';
                 icon.className = 'fa-solid fa-crown text-[#FFB700]';
 
                 if (restrictedBanner) restrictedBanner.classList.add('hidden');
-                if (agentWorkspace) agentWorkspace.classList.remove('opacity-40', 'pointer-events-none', 'select-none');
+                if (agentWorkspace) agentWorkspace.classList.remove('hidden');
             }
-
-            if (agentWorkspace) agentWorkspace.inert = currentRole === 'citizen';
 
             renderAgentTicketsTable();
         }
@@ -1760,7 +1796,7 @@
             for (const source of (activeApiSource ? [activeApiSource] : API_SOURCES)) {
                 try {
                     const res = await fetch(source.url, {
-                        headers: { 'Accept': 'application/json', ...source.headers },
+                        headers: { 'Accept': 'application/json' },
                         cache: 'no-store'
                     });
                     if (!res.ok) continue;
@@ -1892,9 +1928,9 @@
                             <div class="flex justify-between items-start mb-3">
                                 <div class="flex items-center space-x-2">
                                     <span class="font-orbitron font-black text-lg text-[#00F0FF] group-hover:text-white transition">
-                                        ${req.request_code}
+                                        ${escapeHtml(req.request_code)}
                                     </span>
-                                    <span class="diff-badge diff-${diffLevel}">${req.difficulty || 'Normal'}</span>
+                                    <span class="diff-badge diff-${diffLevel}">${escapeHtml(req.difficulty || 'Normal')}</span>
                                 </div>
                                 <div class="text-right">
                                     <span class="font-orbitron font-bold text-sm text-[#FFB700]">${req.xp_total || req.xp_base} XP</span>
@@ -1905,19 +1941,19 @@
                             <!-- Demandeur -->
                             <div class="text-[11px] text-[#4A607A] font-mono mb-3 flex items-center gap-1.5">
                                 <i aria-hidden="true" class="fa-regular fa-building text-[10px] text-[#00F0FF]"></i>
-                                <span class="text-[#E0F4FF] font-semibold">${req.requester_name || 'Haut Conseil'}</span>
-                                ${req.requester_type ? `<span class="opacity-60">(${req.requester_type})</span>` : ''}
+                                <span class="text-[#E0F4FF] font-semibold">${escapeHtml(req.requester_name || 'Haut Conseil')}</span>
+                                ${req.requester_type ? `<span class="opacity-60">(${escapeHtml(req.requester_type)})</span>` : ''}
                             </div>
 
                             <!-- Message Public / Besoin fonctionnel -->
                             <p class="text-xs text-[#E0F4FF]/90 leading-relaxed mb-4 bg-[#03070E]/70 p-3 border border-cyan-900/40">
-                                "${req.message_public}"
+                                "${escapeHtml(req.message_public)}"
                             </p>
                         </div>
 
                         <!-- Footer de la carte -->
                         <div class="border-t border-cyan-900/40 pt-3 flex justify-between items-center text-[10px] text-[#4A607A] font-mono">
-                            <span><i aria-hidden="true" class="fa-solid fa-clock-rotate-left mr-1"></i>${arrivalLabel}</span>
+                            <span><i aria-hidden="true" class="fa-solid fa-clock-rotate-left mr-1"></i>${escapeHtml(arrivalLabel)}</span>
                             <span class="text-[#00F0FF] font-bold">DISPONIBLE</span>
                         </div>
                     </div>
@@ -1930,7 +1966,7 @@
             document.querySelectorAll('.api-filter-btn').forEach(btn => {
                 btn.className = "px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] api-filter-btn";
             });
-            event.target.className = "px-2.5 py-1 text-xs border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 api-filter-btn";
+            event.target.closest('button').className = "px-2.5 py-1 text-xs border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 api-filter-btn";
 
             if (diff === 'all') {
                 renderRequestsGrid(cachedRequests);
@@ -1997,9 +2033,10 @@
             const emptyMsg = document.getElementById('no-tickets-msg');
             if (!tbody) return;
 
-            // Filtre par le citoyen connecté ou tous si pas de compte
-            const activeMatricule = activeCitizen ? activeCitizen.name : "";
-            const userTickets = citizenTickets.filter(t => !activeMatricule || t.citizenName.includes(activeCitizen.name) || t.citizenName.includes(activeCitizen.matricule));
+            // Uniquement les démarches du citoyen connecté ; un visiteur non connecté n'en voit aucune
+            const userTickets = activeCitizen
+                ? citizenTickets.filter(t => t.citizenName.includes(activeCitizen.name) || t.citizenName.includes(activeCitizen.matricule))
+                : [];
 
             if (userTickets.length === 0) {
                 tbody.innerHTML = '';
@@ -2018,20 +2055,24 @@
 
                 return `
                     <tr class="hover:bg-cyan-950/20 transition">
-                        <td class="py-2.5 px-3 font-mono font-bold text-[#FFB700]">${t.id}</td>
-                        <td class="py-2.5 px-3 text-[#E0F4FF]">${t.service}</td>
-                        <td class="py-2.5 px-3 text-[#E0F4FF]/90 font-medium">${t.subject}</td>
-                        <td class="py-2.5 px-3 text-[#4A607A]">${t.priority}</td>
+                        <td class="py-2.5 px-3 font-mono font-bold text-[#FFB700]">${escapeHtml(t.id)}</td>
+                        <td class="py-2.5 px-3 text-[#E0F4FF]">${escapeHtml(t.service)}</td>
+                        <td class="py-2.5 px-3 text-[#E0F4FF]/90 font-medium">${escapeHtml(t.subject)}</td>
+                        <td class="py-2.5 px-3 text-[#4A607A]">${escapeHtml(t.priority)}</td>
                         <td class="py-2.5 px-3">${statusBadge}</td>
-                        <td class="py-2.5 px-3 text-right font-mono text-[#4A607A] text-[10px]">${t.date}</td>
+                        <td class="py-2.5 px-3 text-right font-mono text-[#4A607A] text-[10px]">${escapeHtml(t.date)}</td>
                     </tr>
                 `;
             }).join('');
         }
 
-        function renderAgentTicketsTable(filter = 'all') {
+        // Le filtre choisi est conservé quand un agent change l'état d'un ticket
+        let currentAgentFilter = 'all';
+
+        function renderAgentTicketsTable(filter = currentAgentFilter) {
             const tbody = document.getElementById('agent-tickets-tbody');
             if (!tbody) return;
+            currentAgentFilter = filter;
 
             // Compteurs
             const countAll = citizenTickets.length;
@@ -2074,27 +2115,27 @@
 
                 return `
                     <tr class="hover:bg-cyan-950/30 transition">
-                        <td class="py-3 px-3 font-mono font-bold text-[#FFB700]">${t.id}</td>
-                        <td class="py-3 px-3 text-[#E0F4FF] font-semibold">${t.citizenName}</td>
-                        <td class="py-3 px-3 text-[#00F0FF]">${t.service}</td>
+                        <td class="py-3 px-3 font-mono font-bold text-[#FFB700]">${escapeHtml(t.id)}</td>
+                        <td class="py-3 px-3 text-[#E0F4FF] font-semibold">${escapeHtml(t.citizenName)}</td>
+                        <td class="py-3 px-3 text-[#00F0FF]">${escapeHtml(t.service)}</td>
                         <td class="py-3 px-3">
-                            <div class="text-[#E0F4FF] font-bold">${t.subject}</div>
-                            <div class="text-[11px] text-[#4A607A] line-clamp-1">${t.message}</div>
+                            <div class="text-[#E0F4FF] font-bold">${escapeHtml(t.subject)}</div>
+                            <div class="text-[11px] text-[#4A607A] line-clamp-1">${escapeHtml(t.message)}</div>
                         </td>
-                        <td class="py-3 px-3 text-[11px]">${t.priority}</td>
+                        <td class="py-3 px-3 text-[11px]">${escapeHtml(t.priority)}</td>
                         <td class="py-3 px-3">${statusBadge}</td>
                         <td class="py-3 px-3 text-right space-x-1 whitespace-nowrap">
                             ${t.status !== 'En cours' && t.status !== 'Résolu' ? `
-                                <button onclick="updateTicketStatus('${t.id}', 'En cours')" class="px-2 py-1 bg-cyan-950 border border-[#00F0FF] text-[#00F0FF] text-[10px] hover:bg-[#00F0FF] hover:text-black transition">
+                                <button onclick="updateTicketStatus('${escapeHtml(t.id)}', 'En cours')" class="px-2 py-1 bg-cyan-950 border border-[#00F0FF] text-[#00F0FF] text-[10px] hover:bg-[#00F0FF] hover:text-black transition">
                                     Prendre en charge
                                 </button>
                             ` : ''}
                             ${t.status !== 'Résolu' ? `
-                                <button onclick="updateTicketStatus('${t.id}', 'Résolu')" class="px-2 py-1 bg-green-950 border border-green-500 text-green-400 text-[10px] hover:bg-green-500 hover:text-black transition">
+                                <button onclick="updateTicketStatus('${escapeHtml(t.id)}', 'Résolu')" class="px-2 py-1 bg-green-950 border border-green-500 text-green-400 text-[10px] hover:bg-green-500 hover:text-black transition">
                                     Clôturer
                                 </button>
                             ` : `
-                                <button onclick="updateTicketStatus('${t.id}', 'En attente')" class="px-2 py-1 border border-cyan-900 text-[#4A607A] text-[10px] hover:text-[#FFB700] transition">
+                                <button onclick="updateTicketStatus('${escapeHtml(t.id)}', 'En attente')" class="px-2 py-1 border border-cyan-900 text-[#4A607A] text-[10px] hover:text-[#FFB700] transition">
                                     Rouvrir
                                 </button>
                             `}
@@ -2120,7 +2161,7 @@
             document.querySelectorAll('.agent-ticket-filter').forEach(btn => {
                 btn.className = "px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] agent-ticket-filter";
             });
-            event.target.className = "px-2.5 py-1 text-xs border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 agent-ticket-filter";
+            event.target.closest('button').className = "px-2.5 py-1 text-xs border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 agent-ticket-filter";
             renderAgentTicketsTable(status);
         }
 
@@ -2137,14 +2178,26 @@
         // 6. GESTION DES HABITANTS (D01 & D03)
         // ==========================================
         function updateCitizenProfileUI() {
-            if (!activeCitizen) return;
-
             const nameEl = document.getElementById('citizen-display-name');
             const idEl = document.getElementById('citizen-display-id');
             const roleEl = document.getElementById('citizen-display-role');
             const domeEl = document.getElementById('citizen-display-dome');
             const navLabel = document.getElementById('auth-nav-label');
             const hint = document.getElementById('contact-user-hint');
+
+            // Visiteur non connecté (y compris après rechargement de la page)
+            if (!activeCitizen) {
+                const contactField = document.getElementById('contact-name');
+                if (nameEl) nameEl.innerText = "Non Connecté";
+                if (idEl) idEl.innerText = "—";
+                if (roleEl) roleEl.innerText = "Visiteur spatial";
+                if (domeEl) domeEl.innerText = "Transit";
+                if (navLabel) navLabel.innerText = "Connexion";
+                if (hint) hint.innerText = "";
+                if (contactField) contactField.value = "";
+                renderCitizenTicketsTable();
+                return;
+            }
 
             if (nameEl) nameEl.innerText = activeCitizen.name;
             if (idEl) idEl.innerText = activeCitizen.matricule;
@@ -2216,14 +2269,8 @@
         function logoutCitizen() {
             if (confirm("Confirmer la déconnexion de l'espace citoyen ?")) {
                 activeCitizen = null;
-                localStorage.removeItem('tn_active_citizen');
-                document.getElementById('auth-nav-label').innerText = "Connexion";
-                document.getElementById('contact-name').value = "";
-                document.getElementById('citizen-display-name').innerText = "Non Connecté";
-                document.getElementById('citizen-display-id').innerText = "—";
-                document.getElementById('citizen-display-role').innerText = "Visiteur spatial";
-                document.getElementById('citizen-display-dome').innerText = "Transit";
-                renderCitizenTicketsTable();
+                localStorage.setItem('tn_active_citizen', 'null');
+                updateCitizenProfileUI();
                 consoleLog(`[AUTH] Déconnexion citoyenne effectuée.`);
             }
         }
@@ -2343,7 +2390,7 @@
             document.querySelectorAll('.news-filter-btn').forEach(btn => {
                 btn.className = "px-3 py-1 border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] news-filter-btn";
             });
-            event.target.className = "px-3 py-1 border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 news-filter-btn";
+            event.target.closest('button').className = "px-3 py-1 border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 news-filter-btn";
 
             document.querySelectorAll('.news-card').forEach(card => {
                 if (cat === 'all' || card.getAttribute('data-category') === cat) {
@@ -2358,7 +2405,7 @@
             document.querySelectorAll('.service-filter-btn').forEach(btn => {
                 btn.className = "px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] service-filter-btn";
             });
-            event.target.className = "px-2.5 py-1 text-xs border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 service-filter-btn";
+            event.target.closest('button').className = "px-2.5 py-1 text-xs border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 service-filter-btn";
 
             document.querySelectorAll('.service-item').forEach(card => {
                 if (cat === 'all' || card.getAttribute('data-category') === cat) {
@@ -2681,7 +2728,24 @@
             });
         }
 
+        // La navigation collante et les ancres se calent sur la hauteur réelle de l'en-tête
+        function initStickyOffsets() {
+            const header = document.getElementById('site-header');
+            const nav = document.getElementById('site-nav');
+            if (!header || !nav || !window.ResizeObserver) return;
+
+            const sync = () => {
+                document.documentElement.style.setProperty('--tn-header-h', `${header.offsetHeight}px`);
+                document.documentElement.style.setProperty('--tn-nav-h', `${nav.offsetHeight}px`);
+            };
+            const observer = new ResizeObserver(sync);
+            observer.observe(header);
+            observer.observe(nav);
+            sync();
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+            initStickyOffsets();
             initA11y();
             initCanvas();
             applyRolePermissions();

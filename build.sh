@@ -1,6 +1,6 @@
 #!/bin/sh
-# Build Hodifly : l'hébergement est statique (ni Node ni PHP). On enregistre donc au déploiement
-# un instantané de l'API Webcup dans api/requests.json, lu par le backoffice agents.
+# Build Hodifly : enregistre au déploiement un instantané de l'API Webcup dans api/requests.json.
+# Le backoffice agents s'en sert en secours quand le proxy Node (/api/requests) ne répond pas.
 # La clé vient de la variable d'environnement API_KEY. Un échec ne bloque jamais le déploiement.
 
 API_URL="https://24h.webcup.fr/wp-json/webcup/v1/requests"
@@ -25,7 +25,7 @@ if [ -f "$OUT" ] && grep -q '"requests"' "$OUT"; then
     echo "$OUT généré"
 else
     rm -f "$OUT"
-    echo "Instantané API indisponible : le backoffice affichera HORS LIGNE" >&2
+    echo "Instantané API indisponible" >&2
 fi
 
 exit 0
