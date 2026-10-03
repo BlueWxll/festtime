@@ -8,7 +8,7 @@
     <meta name="description"
         content="Plateforme officielle de la première mégapole exoplanétaire de l'humanité. Services municipaux, espace citoyen, flux de requêtes en direct et télémesure Aethel-OS.">
 
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2303070E'/%3E%3Crect x='8' y='8' width='16' height='16' fill='none' stroke='%2300F0FF' stroke-width='2.5' transform='rotate(45 16 16)'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%2300F0FF'/%3E%3C/svg%3E">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2305080C'/%3E%3Crect x='8' y='8' width='16' height='16' fill='none' stroke='%2300B8FF' stroke-width='2.5' transform='rotate(45 16 16)'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%2300B8FF'/%3E%3C/svg%3E">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,27 +18,29 @@
             theme: {
                 extend: {
                     colors: {
-                        void: '#03070E',
-                        cyber: '#00F0FF',
-                        plasma: '#9D00FF',
-                        amber: '#FFB700',
-                        steel: '#4A607A',
-                        lumina: '#E0F4FF'
+                        void: '#05080C',
+                        cyber: '#00B8FF',
+                        plasma: '#8FE1FF',
+                        amber: '#FFB347',
+                        steel: '#6F8696',
+                        lumina: '#E6F1F7',
+                        cyan: { 300: '#8FE1FF', 400: '#3DCBFF', 500: '#00B8FF', 600: '#0093CC', 700: '#006C99', 800: '#2A4052', 900: '#22323F', 950: '#06303F' }
                     },
                     fontFamily: {
-                        orbitron: ['Orbitron', 'sans-serif'],
-                        mono: ['Share Tech Mono', 'monospace']
+                        orbitron: ['Chakra Petch', 'sans-serif'],
+                        sans: ['IBM Plex Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
                     }
                 }
             }
         }
     </script>
 
-    <!-- Google Fonts: Orbitron & Share Tech Mono -->
+    <!-- Google Fonts: Chakra Petch, IBM Plex Sans & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
 
     <!-- FontAwesome icons -->
@@ -46,25 +48,25 @@
 
     <style>
         :root {
-            --void-black: #03070E;
-            --cyber-blue: #00F0FF;
-            --plasma-violet: #9D00FF;
-            --bio-amber: #FFB700;
-            --text-primary: #E0F4FF;
-            --text-secondary: #4A607A;
-            --panel-bg: rgba(5, 13, 26, 0.88);
+            --void-black: #05080C;
+            --cyber-blue: #00B8FF;
+            --plasma-violet: #8FE1FF;
+            --bio-amber: #FFB347;
+            --text-primary: #E6F1F7;
+            --text-secondary: #6F8696;
+            --panel-bg: rgba(16, 25, 35, 0.88);
         }
 
         body {
             background-color: var(--void-black);
             color: var(--text-primary);
-            font-family: 'Share Tech Mono', monospace;
+            font-family: 'JetBrains Mono', monospace;
             overflow-x: hidden;
             letter-spacing: 0.5px;
         }
 
         h1, h2, h3, h4, .font-orbitron {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Chakra Petch', sans-serif;
         }
 
         /* Scanline Overlay CRT */
@@ -84,8 +86,8 @@
         /* Ambient Grid */
         .grid-bg {
             background-image:
-                linear-gradient(to right, rgba(0, 240, 255, 0.035) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(0, 240, 255, 0.035) 1px, transparent 1px);
+                linear-gradient(to right, rgba(0, 184, 255, 0.035) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 184, 255, 0.035) 1px, transparent 1px);
             background-size: 44px 44px;
         }
 
@@ -97,14 +99,14 @@
             color: var(--cyber-blue);
             clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 0 12px rgba(0, 240, 255, 0.25);
+            box-shadow: 0 0 12px rgba(0, 184, 255, 0.25);
             cursor: pointer;
         }
 
         .btn-cyber:hover {
-            background: linear-gradient(45deg, rgba(0, 240, 255, 0.25), rgba(157, 0, 255, 0.25));
+            background: linear-gradient(45deg, rgba(0, 184, 255, 0.25), rgba(143, 225, 255, 0.25));
             color: #FFFFFF;
-            box-shadow: 0 0 22px rgba(0, 240, 255, 0.75);
+            box-shadow: 0 0 22px rgba(0, 184, 255, 0.75);
             border-color: #FFFFFF;
         }
 
@@ -117,23 +119,23 @@
         .btn-amber {
             border-color: var(--bio-amber);
             color: var(--bio-amber);
-            box-shadow: 0 0 10px rgba(255, 183, 0, 0.2);
+            box-shadow: 0 0 10px rgba(255, 179, 71, 0.2);
         }
 
         .btn-amber:hover {
-            background: linear-gradient(45deg, rgba(255, 183, 0, 0.25), rgba(157, 0, 255, 0.2));
-            box-shadow: 0 0 22px rgba(255, 183, 0, 0.75);
+            background: linear-gradient(45deg, rgba(255, 179, 71, 0.25), rgba(143, 225, 255, 0.2));
+            box-shadow: 0 0 22px rgba(255, 179, 71, 0.75);
         }
 
         .btn-violet {
             border-color: var(--plasma-violet);
             color: var(--plasma-violet);
-            box-shadow: 0 0 10px rgba(157, 0, 255, 0.2);
+            box-shadow: 0 0 10px rgba(143, 225, 255, 0.2);
         }
 
         .btn-violet:hover {
-            background: linear-gradient(45deg, rgba(157, 0, 255, 0.3), rgba(0, 240, 255, 0.2));
-            box-shadow: 0 0 22px rgba(157, 0, 255, 0.75);
+            background: linear-gradient(45deg, rgba(143, 225, 255, 0.3), rgba(0, 184, 255, 0.2));
+            box-shadow: 0 0 22px rgba(143, 225, 255, 0.75);
             color: #fff;
         }
 
@@ -142,7 +144,7 @@
             background-color: var(--panel-bg);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(0, 240, 255, 0.25);
+            border: 1px solid rgba(0, 184, 255, 0.25);
             position: relative;
         }
 
@@ -192,7 +194,7 @@
 
         /* Holographic Underline Input */
         .cyber-input {
-            background: rgba(3, 7, 14, 0.7);
+            background: rgba(5, 8, 12, 0.7);
             border: none;
             border-bottom: 2px solid var(--text-secondary);
             color: var(--text-primary);
@@ -202,8 +204,8 @@
 
         .cyber-input:focus {
             border-bottom-color: var(--cyber-blue);
-            box-shadow: 0 4px 14px -2px rgba(0, 240, 255, 0.4);
-            background: rgba(0, 240, 255, 0.05);
+            box-shadow: 0 4px 14px -2px rgba(0, 184, 255, 0.4);
+            background: rgba(0, 184, 255, 0.05);
         }
 
         /* Custom Scrollbar */
@@ -227,8 +229,8 @@
 
         /* Glow Animations */
         @keyframes pulse-amber-glow {
-            0%, 100% { opacity: 1; filter: drop-shadow(0 0 8px rgba(255, 183, 0, 0.8)); }
-            50% { opacity: 0.55; filter: drop-shadow(0 0 2px rgba(255, 183, 0, 0.2)); }
+            0%, 100% { opacity: 1; filter: drop-shadow(0 0 8px rgba(255, 179, 71, 0.8)); }
+            50% { opacity: 0.55; filter: drop-shadow(0 0 2px rgba(255, 179, 71, 0.2)); }
         }
 
         .pulse-amber {
@@ -250,21 +252,21 @@
             font-size: 0.65rem;
             padding: 0.15rem 0.5rem;
             text-transform: uppercase;
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Chakra Petch', sans-serif;
             font-weight: 700;
             border: 1px solid currentColor;
             letter-spacing: 1px;
         }
 
-        .diff-1 { color: #00FF66; border-color: #00FF66; background: rgba(0, 255, 102, 0.1); }
-        .diff-2 { color: var(--cyber-blue); border-color: var(--cyber-blue); background: rgba(0, 240, 255, 0.1); }
-        .diff-3 { color: var(--bio-amber); border-color: var(--bio-amber); background: rgba(255, 183, 0, 0.1); }
-        .diff-4 { color: #FF0055; border-color: #FF0055; background: rgba(255, 0, 85, 0.1); }
+        .diff-1 { color: #3DDC97; border-color: #3DDC97; background: rgba(61, 220, 151, 0.1); }
+        .diff-2 { color: var(--cyber-blue); border-color: var(--cyber-blue); background: rgba(0, 184, 255, 0.1); }
+        .diff-3 { color: var(--bio-amber); border-color: var(--bio-amber); background: rgba(255, 179, 71, 0.1); }
+        .diff-4 { color: #FF5470; border-color: #FF5470; background: rgba(255, 84, 112, 0.1); }
 
         /* Menus déroulants : la liste native reste sombre (sinon texte clair sur fond blanc) */
         html { color-scheme: dark; scroll-behavior: smooth; }
-        select.cyber-input, select.cyber-input:focus { background-color: #03070E; }
-        select.cyber-input option { background-color: #03070E; color: #E0F4FF; }
+        select.cyber-input, select.cyber-input:focus { background-color: #05080C; }
+        select.cyber-input option { background-color: #05080C; color: #E6F1F7; }
 
         /* La navigation collante se cale sous la hauteur réelle de l'en-tête, et les ancres ne passent plus dessous */
         html #site-nav { top: var(--tn-header-h, 5rem); }
@@ -321,8 +323,8 @@
         html.tn-text-lg main section[id] { scroll-margin-top: 1rem; }
         html.tn-text-lg h1 { font-size: min(3.75rem, 11vw); line-height: 1.1; }
 
-        /* F23 : le gris secondaire d'origine (#4A607A) est trop peu contrasté sur fond sombre */
-        html [class~="text-[#4A607A]"] { color: #8CA3BF; }
+        /* F23 : le gris secondaire d'origine (#6F8696) est trop peu contrasté sur fond sombre */
+        html [class~="text-[#6F8696]"] { color: #8CA3BF; }
         .cyber-input::placeholder { color: #7C93AE; opacity: 1; }
 
         /* F21 : focus clavier toujours visible */
@@ -356,7 +358,7 @@
             width: 3rem;
             height: 3rem;
             border-radius: 50%;
-            background: #03070E;
+            background: #05080C;
             border: 2px solid var(--cyber-blue);
             color: var(--cyber-blue);
             font-size: 1.35rem;
@@ -371,7 +373,7 @@
             width: min(20rem, calc(100vw - 2rem));
             max-height: calc(100vh - 6rem);
             overflow-y: auto;
-            background: #03070E;
+            background: #05080C;
             border: 2px solid var(--cyber-blue);
             padding: 1rem;
             font-size: 0.875rem;
@@ -421,11 +423,11 @@
         html.hc .holo-card { background: #000000; -webkit-backdrop-filter: none; backdrop-filter: none; border-color: #FFFFFF; }
         html.hc [class*="border-cyan-9"], html.hc [class*="border-cyan-8"] { border-color: #9FEFFF; }
 
-        html.hc [class~="text-[#4A607A]"] { color: #E6EEF7; }
-        html.hc [class~="text-[#E0F4FF]"], html.hc [class*=" text-[#E0F4FF]/"], html.hc [class^="text-[#E0F4FF]/"] { color: #FFFFFF; }
-        html.hc [class~="text-[#00F0FF]"], html.hc [class*=" text-[#00F0FF]/"], html.hc [class^="text-[#00F0FF]/"] { color: #5FF5FF; }
-        html.hc [class~="text-[#9D00FF]"] { color: #DDB0FF; }
-        html.hc [class~="text-[#FFB700]"] { color: #FFD24D; }
+        html.hc [class~="text-[#6F8696]"] { color: #E6EEF7; }
+        html.hc [class~="text-[#E6F1F7]"], html.hc [class*=" text-[#E6F1F7]/"], html.hc [class^="text-[#E6F1F7]/"] { color: #FFFFFF; }
+        html.hc [class~="text-[#00B8FF]"], html.hc [class*=" text-[#00B8FF]/"], html.hc [class^="text-[#00B8FF]/"] { color: #6FD8FF; }
+        html.hc [class~="text-[#8FE1FF]"] { color: #BFEBFF; }
+        html.hc [class~="text-[#FFB347]"] { color: #FFC978; }
         html.hc [class*="text-slate-"], html.hc [class*="text-gray-"] { color: #FFFFFF; }
         html.hc [class*="text-red-"] { color: #FFA3A3; }
         html.hc [class*="text-green-"] { color: #7CFFB0; }
@@ -435,12 +437,12 @@
         html.hc a { text-decoration: underline; }
         html.hc .btn-cyber { background: #000000; border-width: 2px; box-shadow: none; clip-path: none; }
         html.hc .btn-cyber:hover { background: #FFFFFF; color: #000000; border-color: #FFFFFF; }
-        html.hc .btn-violet { border-color: #DDB0FF; color: #DDB0FF; }
-        html.hc .btn-amber { border-color: #FFD24D; color: #FFD24D; }
+        html.hc .btn-violet { border-color: #BFEBFF; color: #BFEBFF; }
+        html.hc .btn-amber { border-color: #FFC978; color: #FFC978; }
         html.hc .cyber-input { background: #000000; border: 2px solid #FFFFFF; color: #FFFFFF; }
         html.hc .cyber-input::placeholder { color: #C9D6E3; }
         html.hc select.cyber-input, html.hc select.cyber-input option { background-color: #000000; color: #FFFFFF; }
-        html.hc .cyber-input:focus { background: #000000; box-shadow: none; border-color: #FFD24D; }
+        html.hc .cyber-input:focus { background: #000000; box-shadow: none; border-color: #FFC978; }
         html.hc .pulse-amber, html.hc .animate-ping, html.hc .animate-pulse { animation: none; }
 
         @media (prefers-reduced-motion: reduce) {
@@ -453,6 +455,176 @@
 
             #bg-canvas { display: none; }
         }
+
+        /* ==========================================================
+           CHARTE GRAPHIQUE — « Instrument d'observation »
+           (voir CHARTE_GRAPHIQUE.md). Couche de surcharge : tokens,
+           typographie, formes, composants, effets.
+           ========================================================== */
+        :root {
+            --cyber-300: #8FE1FF; --cyber-400: #3DCBFF; --cyber-500: #00B8FF;
+            --cyber-600: #0093CC; --cyber-700: #006C99; --cyber-900: #06303F;
+            --void-950: #05080C; --void-900: #0A1018; --void-800: #101923;
+            --void-700: #17232F; --void-600: #22323F;
+            --line-subtle: #1B2B38; --line: #2A4052; --line-strong: #3F6178;
+            --text-100: #E6F1F7; --text-300: #A9BDC9; --text-500: #6F8696; --text-700: #465967;
+            --amber: #FFB347; --ok: #3DDC97; --err: #FF5470;
+            --ease: cubic-bezier(.2, .8, .2, 1);
+        }
+
+        /* --- Typographie : Chakra Petch (titres) / IBM Plex Sans (corps) / JetBrains Mono (données) --- */
+        body {
+            font-family: 'IBM Plex Sans', system-ui, sans-serif;
+            letter-spacing: 0;
+            background-color: var(--void-950);
+            color: var(--text-100);
+        }
+        h1, h2, h3, h4, .font-orbitron { font-family: 'Chakra Petch', sans-serif; }
+        .font-mono, code, pre, kbd, .uppercase:not(h1):not(h2):not(h3):not(h4):not(.font-orbitron),
+        .tracking-widest:not(h1):not(h2):not(h3):not(.font-orbitron) {
+            font-family: 'JetBrains Mono', ui-monospace, monospace;
+        }
+        h1 { letter-spacing: -0.01em !important; }
+        h2 { letter-spacing: 0.01em !important; }
+        h3, h4 { letter-spacing: 0.03em; }
+        [id^="telemetry"], [id^="sess"], [id^="header-"], [id^="mobile-"] { font-variant-numeric: tabular-nums; }
+
+        /* --- Fond : grille 64 px, halo unique, grain --- */
+        .grid-bg {
+            background-image:
+                radial-gradient(600px circle at 72% 0, rgba(0, 184, 255, 0.08), transparent 70%),
+                linear-gradient(to right, rgba(42, 64, 82, 0.4) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(42, 64, 82, 0.4) 1px, transparent 1px);
+            background-size: 100% 100%, 64px 64px, 64px 64px;
+            background-repeat: no-repeat, repeat, repeat;
+        }
+        .scanline-overlay {
+            background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 160px 160px;
+            opacity: 0.04;
+        }
+
+        /* --- Formes : zéro arrondi, zéro ombre, zéro glow décoratif --- */
+        .rounded, .rounded-md, .rounded-lg, .rounded-xl, .rounded-2xl { border-radius: 0 !important; }
+        [class*="shadow-["], .shadow-2xl, .shadow-xl, .shadow-lg, .shadow-md, .shadow { box-shadow: none !important; }
+        [class*="drop-shadow"] { filter: none !important; }
+        .pulse-amber { animation: pulse-signal 2s infinite ease-in-out; }
+        @keyframes pulse-signal { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+        ::selection { background: var(--cyber-900); color: var(--cyber-300); }
+        ::-webkit-scrollbar-track { background: var(--void-800); }
+        ::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 0; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--cyber-500); }
+
+        /* --- Boutons : coins coupés (haut-droit / bas-gauche), trait de scan --- */
+        .btn-cyber {
+            background: transparent;
+            border: 1px solid var(--cyber-500);
+            color: var(--cyber-500);
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            box-shadow: none;
+            overflow: hidden;
+            clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+            transition: background .16s var(--ease), color .16s var(--ease), border-color .16s var(--ease);
+        }
+        .btn-cyber::after {
+            content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 1px;
+            background: var(--cyber-400); opacity: 0; pointer-events: none;
+        }
+        .btn-cyber:hover { background: var(--cyber-900); color: var(--cyber-300); border-color: var(--cyber-400); box-shadow: none; }
+        .btn-cyber:hover::after { animation: scan-x .6s ease-out; }
+        .btn-cyber:active, .btn-cyber.active-pulse { background: var(--cyber-700); border-color: var(--cyber-600); color: var(--text-100); box-shadow: none; }
+        @keyframes scan-x { 0% { left: 0; opacity: .9; } 100% { left: 100%; opacity: 0; } }
+        /* Bouton primaire : plein cyber, texte sombre */
+        #auth-nav-btn, .btn-cyber[onclick*="openAuthModal('register')"] { background: var(--cyber-500); color: var(--void-950); border-color: var(--cyber-500); }
+        #auth-nav-btn:hover, .btn-cyber[onclick*="openAuthModal('register')"]:hover { background: var(--cyber-400); color: var(--void-950); border-color: var(--cyber-400); }
+        .btn-amber { border-color: var(--amber); color: var(--amber); box-shadow: none; }
+        .btn-amber:hover { background: rgba(255, 179, 71, 0.12); color: var(--amber); border-color: var(--amber); box-shadow: none; }
+        .btn-violet { border-color: var(--cyber-300); color: var(--cyber-300); box-shadow: none; }
+        .btn-violet:hover { background: var(--cyber-900); color: var(--cyber-300); border-color: var(--cyber-300); box-shadow: none; }
+
+        /* --- Cartes : fond mat, 1 px, repères « + » aux coins --- */
+        .holo-card {
+            background-color: var(--void-800);
+            -webkit-backdrop-filter: none; backdrop-filter: none;
+            border: 1px solid var(--line);
+            border-radius: 0;
+            background-image: linear-gradient(var(--cyber-500), var(--cyber-500));
+            background-repeat: no-repeat;
+            background-size: 1px 100%;
+            background-position: -4px 0;
+            transition: border-color .22s var(--ease);
+        }
+        .holo-card:hover { border-color: var(--line-strong); animation: scan-card .7s ease-out; }
+        @keyframes scan-card { from { background-position: -4px 0; } to { background-position: calc(100% + 4px) 0; } }
+        .holo-card::before, .holo-card::after {
+            content: '+'; width: auto; height: auto; border: 0;
+            font: 500 12px/1 'JetBrains Mono', monospace; color: var(--line-strong);
+            transition: color .22s var(--ease);
+        }
+        .holo-card::before { top: -7px; left: -4px; border-width: 0; }
+        .holo-card::after { bottom: -7px; right: -4px; border-width: 0; }
+        .holo-card:hover::before, .holo-card:hover::after { color: var(--cyber-500); }
+        .corner-tr, .corner-bl {
+            width: auto; height: auto; border: 0;
+            font: 500 12px/1 'JetBrains Mono', monospace; color: var(--line-strong);
+        }
+        .corner-tr::before, .corner-bl::before { content: '+'; }
+        .corner-tr { top: -7px; right: -4px; }
+        .corner-bl { bottom: -7px; left: -4px; }
+
+        /* --- Formulaires : fond void-700, filet bas, focus cyber --- */
+        .cyber-input {
+            background: var(--void-700);
+            border: 0; border-bottom: 1px solid var(--line); border-radius: 0;
+            color: var(--text-100);
+            box-shadow: none;
+        }
+        .cyber-input:focus { background: var(--void-700); border-bottom-color: var(--cyber-500); box-shadow: inset 0 -1px 0 var(--cyber-500); }
+        select.cyber-input, select.cyber-input:focus { background-color: var(--void-700); }
+        select.cyber-input option { background-color: var(--void-800); color: var(--text-100); }
+
+        /* --- Badges --- */
+        .diff-badge { font-family: 'JetBrains Mono', monospace; font-weight: 500; letter-spacing: 0.08em; border-radius: 0; }
+        .diff-1 { color: var(--ok); border-color: var(--ok); background: transparent; }
+        .diff-2 { color: var(--cyber-500); border-color: var(--cyber-500); background: transparent; }
+        .diff-3 { color: var(--amber); border-color: var(--amber); background: transparent; }
+        .diff-4 { color: var(--err); border-color: var(--err); background: transparent; }
+        .text-green-400 { color: var(--ok); }
+        .text-red-400 { color: var(--err); }
+
+        /* --- En-tête & navigation : numérotation, filet actif --- */
+        #site-header { background-color: rgba(5, 8, 12, 0.88) !important; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border-color: var(--line-subtle); }
+        #site-nav { background-color: var(--void-900) !important; border-color: var(--line-subtle); counter-reset: nav; }
+        #site-nav a {
+            counter-increment: nav;
+            font-family: 'JetBrains Mono', monospace !important;
+            font-weight: 500; font-size: 0.75rem; letter-spacing: 0.12em;
+            color: var(--text-300);
+            transition: color .16s var(--ease), box-shadow .16s var(--ease);
+        }
+        #site-nav a::before { content: counter(nav, decimal-leading-zero); color: var(--text-500); font-size: 0.65rem; }
+        #site-nav a:hover { color: var(--cyber-300); box-shadow: inset 0 -2px 0 var(--cyber-500); }
+
+        /* --- Secteurs numérotés (signature) --- */
+        main { counter-reset: sector; }
+        main section[id] { counter-increment: sector; }
+        main section[id]::before {
+            content: '// SECTEUR ' counter(sector, decimal-leading-zero);
+            display: block; margin-bottom: 1.25rem;
+            font: 500 0.75rem/1.2 'JetBrains Mono', monospace; letter-spacing: 0.14em;
+            color: var(--cyber-300);
+        }
+
+        /* --- Accessibilité : focus cyber 2 px, décalage 3 px --- */
+        :focus-visible { outline: 2px solid var(--cyber-500) !important; outline-offset: 3px; }
+        .skip-link { background: var(--cyber-500); }
+        #a11y-toggle { border-radius: 0; border-width: 1px; clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px)); }
+        #a11y-panel { border-width: 1px; border-color: var(--cyber-700); background: var(--void-800); }
+        .a11y-btn { border-width: 1px; border-color: var(--line-strong); background: var(--void-700); }
+        .a11y-btn[aria-pressed="true"] { background: var(--cyber-500); border-color: var(--cyber-500); color: var(--void-950); }
+
     </style>
 
     <!-- Préférences d'accessibilité appliquées avant le premier rendu (évite le flash) -->
@@ -511,22 +683,20 @@
     <div class="relative z-10 flex-1">
 
         <!-- Top Navigation & Role Bar -->
-        <header id="site-header" class="border-b border-cyan-900/50 bg-[#03070E]/90 backdrop-blur-md sticky top-0 z-50">
+        <header id="site-header" class="border-b border-cyan-900/50 bg-[#05080C]/90 backdrop-blur-md sticky top-0 z-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
 
                 <!-- Logo & Brand -->
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 border border-[#00F0FF] flex items-center justify-center relative rotate-45 bg-[#00F0FF]/10 shadow-[0_0_15px_rgba(0,240,255,0.4)]">
-                        <i aria-hidden="true" class="fa-solid fa-atom text-[#00F0FF] -rotate-45 text-lg"></i>
-                    </div>
+                    <svg aria-hidden="true" width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#00B8FF" stroke-width="1.5" stroke-linecap="square"><path d="M22.78 4.24 A16 16 0 0 1 35.04 25.47"/><path d="M32.26 30.28 A16 16 0 0 1 7.74 30.29"/><path d="M4.96 25.47 A16 16 0 0 1 17.22 4.24"/><rect x="30.86" y="9" width="6" height="6" fill="#00B8FF" stroke="none"/></svg>
                     <div>
-                        <a href="#" class="text-xl sm:text-2xl whitespace-nowrap font-black font-orbitron tracking-widest text-[#00F0FF] hover:text-white transition drop-shadow-[0_0_12px_rgba(0,240,255,0.6)]">
+                        <a href="#" class="text-xl sm:text-2xl whitespace-nowrap font-black font-orbitron tracking-widest text-[#00B8FF] hover:text-white transition drop-shadow-[0_0_12px_rgba(0,184,255,0.6)]">
                             TERRA NOVA
                         </a>
-                        <div class="text-[9px] tracking-widest text-[#4A607A] font-mono uppercase hidden sm:flex items-center gap-2">
+                        <div class="text-[9px] tracking-widest text-[#6F8696] font-mono uppercase hidden sm:flex items-center gap-2">
                             <span>MÉGAPOLE EXOPLANÉTAIRE</span>
-                            <span class="w-1 h-1 bg-[#00F0FF] rounded-full"></span>
-                            <span class="text-[#00F0FF]">AETHEL-OS v2.4</span>
+                            <span class="w-1 h-1 bg-[#00B8FF] rounded-full"></span>
+                            <span class="text-[#00B8FF]">AETHEL-OS v2.4</span>
                         </div>
                     </div>
                 </div>
@@ -534,22 +704,22 @@
                 <!-- Live API Telemetry Header Metrics -->
                 <div class="hidden lg:flex items-center space-x-5 text-xs border-x border-cyan-900/50 px-5 py-2">
                     <div class="flex items-center space-x-2">
-                        <span id="header-pulse" aria-hidden="true" class="w-2.5 h-2.5 rounded-full bg-[#00F0FF] animate-ping"></span>
-                        <span class="text-[#4A607A]">SESSION:</span>
-                        <span class="text-[#E0F4FF] font-bold" id="header-sess-status">CONNECTING...</span>
+                        <span id="header-pulse" aria-hidden="true" class="w-2.5 h-2.5 rounded-full bg-[#00B8FF] animate-ping"></span>
+                        <span class="text-[#6F8696]">SESSION:</span>
+                        <span class="text-[#E6F1F7] font-bold" id="header-sess-status">CONNECTING...</span>
                     </div>
                     <div class="h-4 w-px bg-cyan-900/60"></div>
                     <div>
-                        <span class="text-[#4A607A]">VAGUE:</span>
-                        <span class="text-[#00F0FF] font-bold" id="header-wave-val">0</span>
+                        <span class="text-[#6F8696]">VAGUE:</span>
+                        <span class="text-[#00B8FF] font-bold" id="header-wave-val">0</span>
                     </div>
                     <div class="h-4 w-px bg-cyan-900/60"></div>
                     <div>
-                        <span class="text-[#4A607A]">DEMANDES:</span>
-                        <span class="text-[#FFB700] font-bold" id="header-requests-count">0</span>
+                        <span class="text-[#6F8696]">DEMANDES:</span>
+                        <span class="text-[#FFB347] font-bold" id="header-requests-count">0</span>
                     </div>
                     <div class="h-4 w-px bg-cyan-900/60"></div>
-                    <div class="text-[#9D00FF] font-bold flex items-center gap-1">
+                    <div class="text-[#8FE1FF] font-bold flex items-center gap-1">
                         <i aria-hidden="true" class="fa-regular fa-clock text-[10px]"></i>
                         <span id="header-next-wave-timer">NEXT: --</span>
                     </div>
@@ -559,27 +729,27 @@
                 <div class="flex items-center space-x-3">
                     <!-- Role Switcher (D08 & D09 Demo) -->
                     <div class="relative group">
-                        <button type="button" id="role-selector-btn" aria-haspopup="true" class="flex items-center space-x-2 border border-cyan-800 bg-[#050D1A] px-3 py-1.5 text-xs hover:border-[#00F0FF] transition">
-                            <i aria-hidden="true" id="role-icon" class="fa-solid fa-user text-[#00F0FF]"></i>
+                        <button type="button" id="role-selector-btn" aria-haspopup="true" class="flex items-center space-x-2 border border-cyan-800 bg-[#101923] px-3 py-1.5 text-xs hover:border-[#00B8FF] transition">
+                            <i aria-hidden="true" id="role-icon" class="fa-solid fa-user text-[#00B8FF]"></i>
                             <span class="sr-only">Changer de profil. Profil actuel :</span>
-                            <span aria-hidden="true" class="text-[#4A607A] hidden sm:inline">RÔLE:</span>
-                            <span id="current-role-badge" class="font-orbitron font-bold text-[#00F0FF]">CITOYEN</span>
-                            <i aria-hidden="true" class="fa-solid fa-chevron-down text-[10px] text-[#4A607A]"></i>
+                            <span aria-hidden="true" class="text-[#6F8696] hidden sm:inline">RÔLE:</span>
+                            <span id="current-role-badge" class="font-orbitron font-bold text-[#00B8FF]">CITOYEN</span>
+                            <i aria-hidden="true" class="fa-solid fa-chevron-down text-[10px] text-[#6F8696]"></i>
                         </button>
                         <!-- Dropdown Menu -->
-                        <div class="absolute right-0 mt-2 w-48 bg-[#03070E] border border-cyan-800/80 shadow-2xl z-50 hidden group-hover:block group-focus-within:block holo-card p-1">
-                            <div class="text-[9px] uppercase px-3 py-1 text-[#4A607A] border-b border-cyan-900/40">Changer de Profil</div>
-                            <button onclick="switchRole('citizen')" class="w-full text-left px-3 py-2 text-xs hover:bg-[#00F0FF]/10 hover:text-[#00F0FF] flex items-center justify-between">
-                                <span><i aria-hidden="true" class="fa-solid fa-user text-[11px] mr-2 text-[#00F0FF]"></i>Citoyen</span>
+                        <div class="absolute right-0 mt-2 w-48 bg-[#05080C] border border-cyan-800/80 shadow-2xl z-50 hidden group-hover:block group-focus-within:block holo-card p-1">
+                            <div class="text-[9px] uppercase px-3 py-1 text-[#6F8696] border-b border-cyan-900/40">Changer de Profil</div>
+                            <button onclick="switchRole('citizen')" class="w-full text-left px-3 py-2 text-xs hover:bg-[#00B8FF]/10 hover:text-[#00B8FF] flex items-center justify-between">
+                                <span><i aria-hidden="true" class="fa-solid fa-user text-[11px] mr-2 text-[#00B8FF]"></i>Citoyen</span>
                                 <span class="text-[9px] text-green-400">Public</span>
                             </button>
-                            <button onclick="switchRole('agent')" class="w-full text-left px-3 py-2 text-xs hover:bg-[#9D00FF]/10 hover:text-[#9D00FF] flex items-center justify-between">
-                                <span><i aria-hidden="true" class="fa-solid fa-id-badge text-[11px] mr-2 text-[#9D00FF]"></i>Agent Municipal</span>
-                                <span class="text-[9px] text-[#9D00FF]">Pro</span>
+                            <button onclick="switchRole('agent')" class="w-full text-left px-3 py-2 text-xs hover:bg-[#8FE1FF]/10 hover:text-[#8FE1FF] flex items-center justify-between">
+                                <span><i aria-hidden="true" class="fa-solid fa-id-badge text-[11px] mr-2 text-[#8FE1FF]"></i>Agent Municipal</span>
+                                <span class="text-[9px] text-[#8FE1FF]">Pro</span>
                             </button>
-                            <button onclick="switchRole('admin')" class="w-full text-left px-3 py-2 text-xs hover:bg-[#FFB700]/10 hover:text-[#FFB700] flex items-center justify-between">
-                                <span><i aria-hidden="true" class="fa-solid fa-crown text-[11px] mr-2 text-[#FFB700]"></i>Haut Conseil</span>
-                                <span class="text-[9px] text-[#FFB700]">Admin</span>
+                            <button onclick="switchRole('admin')" class="w-full text-left px-3 py-2 text-xs hover:bg-[#FFB347]/10 hover:text-[#FFB347] flex items-center justify-between">
+                                <span><i aria-hidden="true" class="fa-solid fa-crown text-[11px] mr-2 text-[#FFB347]"></i>Haut Conseil</span>
+                                <span class="text-[9px] text-[#FFB347]">Admin</span>
                             </button>
                         </div>
                     </div>
@@ -593,63 +763,63 @@
 
                     <!-- Console Toggle Button -->
                     <button type="button" onclick="toggleModal()" title="Console Directe" aria-label="Ouvrir la console directe Aethel-OS"
-                        class="hidden sm:block border border-cyan-900/80 hover:border-[#00F0FF] text-[#00F0FF] p-2 text-xs transition">
+                        class="hidden sm:block border border-cyan-900/80 hover:border-[#00B8FF] text-[#00B8FF] p-2 text-xs transition">
                         <i aria-hidden="true" class="fa-solid fa-terminal"></i>
                     </button>
                 </div>
             </div>
 
             <!-- Mobile Sub-Bar -->
-            <div class="lg:hidden flex justify-between items-center px-4 py-1.5 bg-[#050D1A] border-t border-cyan-900/40 text-[11px]">
+            <div class="lg:hidden flex justify-between items-center px-4 py-1.5 bg-[#101923] border-t border-cyan-900/40 text-[11px]">
                 <div class="flex items-center space-x-2">
-                    <span class="text-[#4A607A]">SESSION:</span>
-                    <span id="mobile-sess-status" class="text-[#00F0FF] font-bold">ACTIF</span>
+                    <span class="text-[#6F8696]">SESSION:</span>
+                    <span id="mobile-sess-status" class="text-[#00B8FF] font-bold">ACTIF</span>
                 </div>
                 <div>
-                    <span class="text-[#4A607A]">VAGUE:</span>
-                    <span id="mobile-wave-val" class="text-[#E0F4FF] font-bold">0</span>
+                    <span class="text-[#6F8696]">VAGUE:</span>
+                    <span id="mobile-wave-val" class="text-[#E6F1F7] font-bold">0</span>
                 </div>
                 <div>
-                    <span class="text-[#4A607A]">DEMANDES:</span>
-                    <span id="mobile-requests-count" class="text-[#FFB700] font-bold">0</span>
+                    <span class="text-[#6F8696]">DEMANDES:</span>
+                    <span id="mobile-requests-count" class="text-[#FFB347] font-bold">0</span>
                 </div>
                 <div>
-                    <span id="mobile-timer" class="text-[#9D00FF] font-mono">--</span>
+                    <span id="mobile-timer" class="text-[#8FE1FF] font-mono">--</span>
                 </div>
             </div>
         </header>
 
         <!-- SUB-NAVIGATION BAR (Accès rapide aux modules de Terra Nova) -->
-        <nav id="site-nav" aria-label="Navigation principale" class="bg-[#050D1A]/95 border-b border-cyan-900/40 sticky top-20 z-40 backdrop-blur-md">
+        <nav id="site-nav" aria-label="Navigation principale" class="bg-[#101923]/95 border-b border-cyan-900/40 sticky top-20 z-40 backdrop-blur-md">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center space-x-1 overflow-x-auto py-2 text-xs">
-                <a href="#accueil" class="px-3 py-1.5 hover:text-[#00F0FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
-                    <i aria-hidden="true" class="fa-solid fa-globe text-[11px] text-[#00F0FF]"></i>
+                <a href="#accueil" class="px-3 py-1.5 hover:text-[#00B8FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
+                    <i aria-hidden="true" class="fa-solid fa-globe text-[11px] text-[#00B8FF]"></i>
                     <span>ACCUEIL CITÉ</span>
                 </a>
-                <a href="#services-municipaux" class="px-3 py-1.5 hover:text-[#00F0FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
-                    <i aria-hidden="true" class="fa-solid fa-building-columns text-[11px] text-[#00F0FF]"></i>
+                <a href="#services-municipaux" class="px-3 py-1.5 hover:text-[#00B8FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
+                    <i aria-hidden="true" class="fa-solid fa-building-columns text-[11px] text-[#00B8FF]"></i>
                     <span>SERVICES MUNICIPAUX</span>
-                    <span class="text-[9px] bg-cyan-950 text-[#00F0FF] px-1.5 py-0.5 rounded border border-cyan-800">D05</span>
+                    <span class="text-[9px] bg-cyan-950 text-[#00B8FF] px-1.5 py-0.5 rounded border border-cyan-800">D05</span>
                 </a>
-                <a href="#annonces" class="px-3 py-1.5 hover:text-[#00F0FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
-                    <i aria-hidden="true" class="fa-solid fa-bullhorn text-[11px] text-[#00F0FF]"></i>
+                <a href="#annonces" class="px-3 py-1.5 hover:text-[#00B8FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
+                    <i aria-hidden="true" class="fa-solid fa-bullhorn text-[11px] text-[#00B8FF]"></i>
                     <span>ACTUALITÉS & DÉCRETS</span>
-                    <span class="text-[9px] bg-cyan-950 text-[#00F0FF] px-1.5 py-0.5 rounded border border-cyan-800">D06</span>
+                    <span class="text-[9px] bg-cyan-950 text-[#00B8FF] px-1.5 py-0.5 rounded border border-cyan-800">D06</span>
                 </a>
-                <a href="#demarches" class="px-3 py-1.5 hover:text-[#00F0FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
-                    <i aria-hidden="true" class="fa-solid fa-file-pen text-[11px] text-[#FFB700]"></i>
+                <a href="#demarches" class="px-3 py-1.5 hover:text-[#00B8FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
+                    <i aria-hidden="true" class="fa-solid fa-file-pen text-[11px] text-[#FFB347]"></i>
                     <span>SIGNALEMENT & CONTACT</span>
-                    <span class="text-[9px] bg-amber-950 text-[#FFB700] px-1.5 py-0.5 rounded border border-amber-800">D04</span>
+                    <span class="text-[9px] bg-amber-950 text-[#FFB347] px-1.5 py-0.5 rounded border border-amber-800">D04</span>
                 </a>
-                <a href="#espace-citoyen" class="px-3 py-1.5 hover:text-[#00F0FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
-                    <i aria-hidden="true" class="fa-solid fa-address-card text-[11px] text-[#00F0FF]"></i>
+                <a href="#espace-citoyen" class="px-3 py-1.5 hover:text-[#00B8FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap">
+                    <i aria-hidden="true" class="fa-solid fa-address-card text-[11px] text-[#00B8FF]"></i>
                     <span>ESPACE CITOYEN</span>
-                    <span class="text-[9px] bg-cyan-950 text-[#00F0FF] px-1.5 py-0.5 rounded border border-cyan-800">D01/D03</span>
+                    <span class="text-[9px] bg-cyan-950 text-[#00B8FF] px-1.5 py-0.5 rounded border border-cyan-800">D01/D03</span>
                 </a>
-                <a href="#espace-agent" class="px-3 py-1.5 hover:text-[#9D00FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap border-l border-cyan-900/60 pl-4 text-[#9D00FF]">
+                <a href="#espace-agent" class="px-3 py-1.5 hover:text-[#8FE1FF] transition font-orbitron font-semibold flex items-center gap-2 whitespace-nowrap border-l border-cyan-900/60 pl-4 text-[#8FE1FF]">
                     <i aria-hidden="true" class="fa-solid fa-shield-halved text-[11px]"></i>
                     <span>ESPACE AGENTS</span>
-                    <span class="text-[9px] bg-purple-950 text-[#9D00FF] px-1.5 py-0.5 rounded border border-purple-800">D19/F22</span>
+                    <span class="text-[9px] bg-purple-950 text-[#8FE1FF] px-1.5 py-0.5 rounded border border-purple-800">D19/F22</span>
                 </a>
             </div>
         </nav>
@@ -659,137 +829,137 @@
         <!-- SECTION 1 : ACCUEIL IMMERSIF & HIÉRARCHISÉ (D07 - 500 XP) -->
         <section id="accueil" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16 relative">
             <!-- Colon Welcome Banner -->
-            <div class="mb-8 p-4 holo-card border-l-4 border-l-[#00F0FF] border-cyan-900/60 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="mb-8 p-4 holo-card border-l-4 border-l-[#00B8FF] border-cyan-900/60 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 rounded-full bg-[#00F0FF]/20 flex items-center justify-center text-[#00F0FF]">
+                    <div class="w-8 h-8 rounded-full bg-[#00B8FF]/20 flex items-center justify-center text-[#00B8FF]">
                         <i aria-hidden="true" class="fa-solid fa-compass"></i>
                     </div>
                     <div>
-                        <div class="font-orbitron font-bold text-sm text-[#00F0FF] uppercase">GUIDE OFFICIEL D'ACCUEIL DES NOUVEAUX HABITANTS</div>
-                        <div class="text-xs text-[#E0F4FF]/80">Bienvenue sur la colonie. Créez votre matricule citoyen, explorez les 6 services municipaux et suivez les décrets en temps réel.</div>
+                        <div class="font-orbitron font-bold text-sm text-[#00B8FF] uppercase">GUIDE OFFICIEL D'ACCUEIL DES NOUVEAUX HABITANTS</div>
+                        <div class="text-xs text-[#E6F1F7]/80">Bienvenue sur la colonie. Créez votre matricule citoyen, explorez les 6 services municipaux et suivez les décrets en temps réel.</div>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
                     <button onclick="openAuthModal('register')" class="btn-cyber px-4 py-1.5 text-xs font-bold uppercase whitespace-nowrap">Créer mon compte (D01)</button>
-                    <a href="#services-municipaux" class="text-xs text-[#4A607A] hover:text-[#00F0FF] uppercase tracking-wider underline">Explorer la ville</a>
+                    <a href="#services-municipaux" class="text-xs text-[#6F8696] hover:text-[#00B8FF] uppercase tracking-wider underline">Explorer la ville</a>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
                 <!-- Left Column : Title, Pitch, Quick Stats -->
                 <div class="lg:col-span-7 space-y-6">
-                    <div class="inline-flex items-center space-x-2 border border-[#9D00FF]/50 bg-[#9D00FF]/10 px-3 py-1 text-xs text-[#9D00FF] uppercase tracking-widest">
+                    <div class="inline-flex items-center space-x-2 border border-[#8FE1FF]/50 bg-[#8FE1FF]/10 px-3 py-1 text-xs text-[#8FE1FF] uppercase tracking-widest">
                         <i aria-hidden="true" class="fa-solid fa-satellite"></i>
                         <span>Station Centrale & Dôme d'Exploration</span>
                     </div>
 
-                    <h1 class="text-4xl sm:text-6xl font-black font-orbitron tracking-wider leading-none uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] via-[#E0F4FF] to-[#9D00FF] drop-shadow-[0_0_25px_rgba(0,240,255,0.35)]">
+                    <h1 class="text-4xl sm:text-6xl font-black font-orbitron tracking-wider leading-none uppercase text-[#E6F1F7] drop-shadow-[0_0_25px_rgba(0,184,255,0.35)]">
                         TERRA NOVA
                     </h1>
 
-                    <p class="text-base sm:text-lg text-[#E0F4FF]/85 max-w-2xl leading-relaxed">
+                    <p class="text-base sm:text-lg text-[#E6F1F7]/85 max-w-2xl leading-relaxed">
                         Première métropole orbitale et sanctuaire exoplanétaire de l'humanité. Le système numérique central relie les citoyens, les équipes techniques et le Haut Conseil au cœur d'un réseau vivant et évolutif.
                     </p>
 
                     <!-- Navigation Action Cards -->
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-                        <a href="#services-municipaux" class="holo-card p-3 text-center hover:border-[#00F0FF] transition group">
-                            <i aria-hidden="true" class="fa-solid fa-hospital-user text-xl text-[#00F0FF] mb-2 group-hover:scale-110 transition"></i>
-                            <div class="font-orbitron font-bold text-[11px] text-[#E0F4FF]">6 SERVICES</div>
-                            <div class="text-[9px] text-[#4A607A]">Pôles municipaux</div>
+                        <a href="#services-municipaux" class="holo-card p-3 text-center hover:border-[#00B8FF] transition group">
+                            <i aria-hidden="true" class="fa-solid fa-hospital-user text-xl text-[#00B8FF] mb-2 group-hover:scale-110 transition"></i>
+                            <div class="font-orbitron font-bold text-[11px] text-[#E6F1F7]">6 SERVICES</div>
+                            <div class="text-[9px] text-[#6F8696]">Pôles municipaux</div>
                         </a>
-                        <a href="#annonces" class="holo-card p-3 text-center hover:border-[#00F0FF] transition group">
-                            <i aria-hidden="true" class="fa-solid fa-newspaper text-xl text-[#00F0FF] mb-2 group-hover:scale-110 transition"></i>
-                            <div class="font-orbitron font-bold text-[11px] text-[#E0F4FF]">DÉCRETS</div>
-                            <div class="text-[9px] text-[#4A607A]">Journal officiel</div>
+                        <a href="#annonces" class="holo-card p-3 text-center hover:border-[#00B8FF] transition group">
+                            <i aria-hidden="true" class="fa-solid fa-newspaper text-xl text-[#00B8FF] mb-2 group-hover:scale-110 transition"></i>
+                            <div class="font-orbitron font-bold text-[11px] text-[#E6F1F7]">DÉCRETS</div>
+                            <div class="text-[9px] text-[#6F8696]">Journal officiel</div>
                         </a>
-                        <a href="#demarches" class="holo-card p-3 text-center hover:border-[#FFB700] transition group">
-                            <i aria-hidden="true" class="fa-solid fa-paper-plane text-xl text-[#FFB700] mb-2 group-hover:scale-110 transition"></i>
-                            <div class="font-orbitron font-bold text-[11px] text-[#FFB700]">SIGNALER</div>
-                            <div class="text-[9px] text-[#4A607A]">Doléance en ligne</div>
+                        <a href="#demarches" class="holo-card p-3 text-center hover:border-[#FFB347] transition group">
+                            <i aria-hidden="true" class="fa-solid fa-paper-plane text-xl text-[#FFB347] mb-2 group-hover:scale-110 transition"></i>
+                            <div class="font-orbitron font-bold text-[11px] text-[#FFB347]">SIGNALER</div>
+                            <div class="text-[9px] text-[#6F8696]">Doléance en ligne</div>
                         </a>
-                        <a href="#espace-citoyen" class="holo-card p-3 text-center hover:border-[#9D00FF] transition group">
-                            <i aria-hidden="true" class="fa-solid fa-id-card-clip text-xl text-[#9D00FF] mb-2 group-hover:scale-110 transition"></i>
-                            <div class="font-orbitron font-bold text-[11px] text-[#9D00FF]">MON PROFIL</div>
-                            <div class="text-[9px] text-[#4A607A]">Espace habitant</div>
+                        <a href="#espace-citoyen" class="holo-card p-3 text-center hover:border-[#8FE1FF] transition group">
+                            <i aria-hidden="true" class="fa-solid fa-id-card-clip text-xl text-[#8FE1FF] mb-2 group-hover:scale-110 transition"></i>
+                            <div class="font-orbitron font-bold text-[11px] text-[#8FE1FF]">MON PROFIL</div>
+                            <div class="text-[9px] text-[#6F8696]">Espace habitant</div>
                         </a>
                     </div>
 
                     <!-- Telemetry Quick Bar -->
                     <div class="grid grid-cols-3 gap-4 pt-4 border-t border-cyan-900/40">
                         <div>
-                            <div class="text-[10px] text-[#4A607A] uppercase">Colons Enregistrés</div>
-                            <div class="text-xl font-orbitron font-bold text-[#00F0FF]" id="telemetry-pop">4 820 412</div>
+                            <div class="text-[10px] text-[#6F8696] uppercase">Colons Enregistrés</div>
+                            <div class="text-xl font-orbitron font-bold text-[#00B8FF]" id="telemetry-pop">4 820 412</div>
                         </div>
                         <div>
-                            <div class="text-[10px] text-[#4A607A] uppercase">Bouclier Quantique</div>
-                            <div class="text-xl font-orbitron font-bold text-[#E0F4FF]">100% NOMINAL</div>
+                            <div class="text-[10px] text-[#6F8696] uppercase">Bouclier Quantique</div>
+                            <div class="text-xl font-orbitron font-bold text-[#E6F1F7]">100% NOMINAL</div>
                         </div>
                         <div>
-                            <div class="text-[10px] text-[#4A607A] uppercase">Atmosphère Dômes</div>
-                            <div class="text-xl font-orbitron font-bold text-[#9D00FF]">78% N₂ / 21% O₂</div>
+                            <div class="text-[10px] text-[#6F8696] uppercase">Atmosphère Dômes</div>
+                            <div class="text-xl font-orbitron font-bold text-[#8FE1FF]">78% N₂ / 21% O₂</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Right Column : Realtime Tactical Dashboard -->
                 <div class="lg:col-span-5">
-                    <div class="holo-card p-6 rounded-none border border-[#00F0FF]/40 shadow-[0_0_35px_rgba(0,240,255,0.2)] relative">
+                    <div class="holo-card p-6 rounded-none border border-[#00B8FF]/40 shadow-[0_0_35px_rgba(0,184,255,0.2)] relative">
                         <div class="corner-tr"></div>
                         <div class="corner-bl"></div>
 
                         <!-- Card Header -->
                         <div class="flex items-center justify-between pb-3 border-b border-cyan-900/60 mb-5">
                             <div class="flex items-center space-x-2">
-                                <span class="w-3 h-3 bg-[#00F0FF] rounded-full inline-block shadow-[0_0_8px_#00F0FF] animate-pulse"></span>
-                                <span class="font-orbitron text-xs uppercase text-[#E0F4FF] tracking-wider font-bold">MATRICE TÉLÉMÉTRIQUE ORBITALE</span>
+                                <span class="w-3 h-3 bg-[#00B8FF] rounded-full inline-block shadow-[0_0_8px_#00B8FF] animate-pulse"></span>
+                                <span class="font-orbitron text-xs uppercase text-[#E6F1F7] tracking-wider font-bold">MATRICE TÉLÉMÉTRIQUE ORBITALE</span>
                             </div>
-                            <span class="text-[10px] text-[#4A607A] font-mono">FEED #TN-99</span>
+                            <span class="text-[10px] text-[#6F8696] font-mono">FEED #TN-99</span>
                         </div>
 
                         <!-- Graphic Visualization -->
-                        <div class="relative h-64 bg-[#03070E]/95 border border-cyan-900/60 p-4 flex flex-col justify-between overflow-hidden">
+                        <div class="relative h-64 bg-[#05080C]/95 border border-cyan-900/60 p-4 flex flex-col justify-between overflow-hidden">
                             <!-- Tactical Radar Circle -->
                             <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
-                                <div class="w-48 h-48 border border-[#00F0FF] rounded-full border-dashed animate-spin" style="animation-duration: 25s;"></div>
-                                <div class="w-32 h-32 border border-[#9D00FF] rounded-full absolute"></div>
+                                <div class="w-48 h-48 border border-[#00B8FF] rounded-full border-dashed animate-spin" style="animation-duration: 25s;"></div>
+                                <div class="w-32 h-32 border border-[#8FE1FF] rounded-full absolute"></div>
                             </div>
 
                             <!-- Realtime Updating Stats -->
                             <div class="space-y-3 relative z-10 text-xs">
                                 <div>
                                     <div class="flex justify-between mb-1">
-                                        <span class="text-[#4A607A]">DISTRIBUTION PLASMA URBAIN</span>
-                                        <span class="text-[#00F0FF]" id="plasma-pct">87.4%</span>
+                                        <span class="text-[#6F8696]">DISTRIBUTION PLASMA URBAIN</span>
+                                        <span class="text-[#00B8FF]" id="plasma-pct">87.4%</span>
                                     </div>
                                     <div class="w-full h-1.5 bg-slate-900 overflow-hidden">
-                                        <div id="plasma-bar" class="h-full bg-gradient-to-r from-[#00F0FF] to-[#9D00FF] w-[87%] transition-all duration-500"></div>
+                                        <div id="plasma-bar" class="h-full bg-[#00B8FF] w-[87%] transition-all duration-500"></div>
                                     </div>
                                 </div>
 
                                 <div>
                                     <div class="flex justify-between mb-1">
-                                        <span class="text-[#4A607A]">INTÉGRITÉ PRESSION DÔME ALPHA</span>
-                                        <span class="text-[#E0F4FF]">99.8%</span>
+                                        <span class="text-[#6F8696]">INTÉGRITÉ PRESSION DÔME ALPHA</span>
+                                        <span class="text-[#E6F1F7]">99.8%</span>
                                     </div>
                                     <div class="w-full h-1.5 bg-slate-900 overflow-hidden">
-                                        <div class="h-full bg-[#00F0FF] w-[99%]"></div>
+                                        <div class="h-full bg-[#00B8FF] w-[99%]"></div>
                                     </div>
                                 </div>
 
                                 <div>
                                     <div class="flex justify-between mb-1">
-                                        <span class="text-[#4A607A]">FLUX DEMANDES CITOYENNES (24H)</span>
-                                        <span class="text-[#FFB700]" id="flux-requests-val">10 actives</span>
+                                        <span class="text-[#6F8696]">FLUX DEMANDES CITOYENNES (24H)</span>
+                                        <span class="text-[#FFB347]" id="flux-requests-val">10 actives</span>
                                     </div>
                                     <div class="w-full h-1.5 bg-slate-900 overflow-hidden">
-                                        <div class="h-full bg-[#FFB700] w-[65%]"></div>
+                                        <div class="h-full bg-[#FFB347] w-[65%]"></div>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Realtime Logs Stream -->
-                            <div class="bg-black/80 p-2 border border-cyan-900/50 text-[10px] text-[#00F0FF]/90 font-mono h-20 overflow-hidden flex flex-col justify-end" id="terminal-logs">
+                            <div class="bg-black/80 p-2 border border-cyan-900/50 text-[10px] text-[#00B8FF]/90 font-mono h-20 overflow-hidden flex flex-col justify-end" id="terminal-logs">
                                 <div>[SYS_OK] Télémétrie orbitale stabilisée sur Terra Nova.</div>
                                 <div>[API_SYNC] Relais central connecté à https://24h.webcup.fr</div>
                                 <div>[SECURITY] Accréditation biolink active.</div>
@@ -798,8 +968,8 @@
 
                         <!-- Card Footer Control -->
                         <div class="mt-4 flex justify-between items-center text-xs">
-                            <span class="text-[#4A607A] text-[11px]">SYS_VER: 2.4.1 — WEBCUP 2026</span>
-                            <button onclick="triggerPurge()" class="text-[#FFB700] hover:underline uppercase tracking-wider text-[11px] flex items-center space-x-1">
+                            <span class="text-[#6F8696] text-[11px]">SYS_VER: 2.4.1 — WEBCUP 2026</span>
+                            <button onclick="triggerPurge()" class="text-[#FFB347] hover:underline uppercase tracking-wider text-[11px] flex items-center space-x-1">
                                 <i aria-hidden="true" class="fa-solid fa-arrows-rotate"></i>
                                 <span>Recalibrer Matrice</span>
                             </button>
@@ -813,22 +983,22 @@
         <section id="services-municipaux" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-cyan-900/40">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
                 <div>
-                    <div class="inline-flex items-center space-x-2 text-xs text-[#00F0FF] uppercase tracking-widest mb-1">
+                    <div class="inline-flex items-center space-x-2 text-xs text-[#00B8FF] uppercase tracking-widest mb-1">
                         <i aria-hidden="true" class="fa-solid fa-sitemap"></i>
                         <span>CATALOGUE OFFICIEL (EXIGENCE D05 — 250 XP)</span>
                     </div>
-                    <h2 class="text-3xl font-black font-orbitron text-[#00F0FF] uppercase tracking-wider">
+                    <h2 class="text-3xl font-black font-orbitron text-[#00B8FF] uppercase tracking-wider">
                         SERVICES MUNICIPAUX DE TERRA NOVA
                     </h2>
-                    <p class="text-xs text-[#4A607A] mt-1 max-w-2xl">
+                    <p class="text-xs text-[#6F8696] mt-1 max-w-2xl">
                         Consultez les 6 directions centrales de la colonie. Chaque service assure la pérennité, la sécurité et la qualité de vie des colons sur ce nouveau monde.
                     </p>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="text-xs text-[#4A607A]">Filtrer:</span>
-                    <button onclick="filterServices('all')" class="px-2.5 py-1 text-xs border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 service-filter-btn">Tous</button>
-                    <button onclick="filterServices('vital')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] service-filter-btn">Vitaux</button>
-                    <button onclick="filterServices('admin')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] service-filter-btn">Citoyenneté</button>
+                    <span class="text-xs text-[#6F8696]">Filtrer:</span>
+                    <button onclick="filterServices('all')" class="px-2.5 py-1 text-xs border border-[#00B8FF] text-[#00B8FF] bg-[#00B8FF]/10 service-filter-btn">Tous</button>
+                    <button onclick="filterServices('vital')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#6F8696] hover:text-[#00B8FF] service-filter-btn">Vitaux</button>
+                    <button onclick="filterServices('admin')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#6F8696] hover:text-[#00B8FF] service-filter-btn">Citoyenneté</button>
                 </div>
             </div>
 
@@ -836,24 +1006,24 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="services-grid">
 
                 <!-- Service 1 : Atmosphère & Biosphère -->
-                <div class="holo-card p-6 flex flex-col justify-between group hover:border-[#00F0FF] transition duration-300 service-item" data-category="vital">
+                <div class="holo-card p-6 flex flex-col justify-between group hover:border-[#00B8FF] transition duration-300 service-item" data-category="vital">
                     <div class="corner-tr"></div>
                     <div class="corner-bl"></div>
                     <div>
                         <div class="flex justify-between items-start mb-4">
-                            <div class="w-10 h-10 border border-[#00F0FF]/40 bg-[#00F0FF]/10 flex items-center justify-center text-[#00F0FF] text-lg">
+                            <div class="w-10 h-10 border border-[#00B8FF]/40 bg-[#00B8FF]/10 flex items-center justify-center text-[#00B8FF] text-lg">
                                 <i aria-hidden="true" class="fa-solid fa-wind"></i>
                             </div>
-                            <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#00F0FF]/40 text-[#00F0FF] bg-[#00F0FF]/5">Pôle Vital</span>
+                            <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#00B8FF]/40 text-[#00B8FF] bg-[#00B8FF]/5">Pôle Vital</span>
                         </div>
-                        <h3 class="font-orbitron font-bold text-lg text-[#E0F4FF] mb-2 group-hover:text-[#00F0FF] transition">Dôme Atmosphère & Biosphère</h3>
-                        <p class="text-xs text-[#E0F4FF]/70 mb-4 leading-relaxed">
+                        <h3 class="font-orbitron font-bold text-lg text-[#E6F1F7] mb-2 group-hover:text-[#00B8FF] transition">Dôme Atmosphère & Biosphère</h3>
+                        <p class="text-xs text-[#E6F1F7]/70 mb-4 leading-relaxed">
                             Régulation continue du mélange respirable (78% N₂, 21% O₂), filtration des particules météoritiques et recyclage de l'eau lourde pour les 4 anneaux.
                         </p>
                         <div class="space-y-1.5 text-xs border-t border-cyan-900/50 pt-3 mb-4">
-                            <div class="flex justify-between text-[#4A607A]"><span>Localisation :</span> <span class="text-[#E0F4FF]">Anneau Zéro - Secteur A</span></div>
-                            <div class="flex justify-between text-[#4A607A]"><span>Permanence :</span> <span class="text-[#00F0FF]">24h/24 Cycles Stellaires</span></div>
-                            <div class="flex justify-between text-[#4A607A]"><span>Démarches :</span> <span class="text-[#FFB700]">Signalement fuite, Analyse O2</span></div>
+                            <div class="flex justify-between text-[#6F8696]"><span>Localisation :</span> <span class="text-[#E6F1F7]">Anneau Zéro - Secteur A</span></div>
+                            <div class="flex justify-between text-[#6F8696]"><span>Permanence :</span> <span class="text-[#00B8FF]">24h/24 Cycles Stellaires</span></div>
+                            <div class="flex justify-between text-[#6F8696]"><span>Démarches :</span> <span class="text-[#FFB347]">Signalement fuite, Analyse O2</span></div>
                         </div>
                     </div>
                     <button onclick="prefillContactForm('Atmosphère & Biosphère', 'Demande de recalibrage de module O2')"
@@ -864,24 +1034,24 @@
                 </div>
 
                 <!-- Service 2 : Réseaux & Transports Hyper-Tube -->
-                <div class="holo-card p-6 flex flex-col justify-between group hover:border-[#00F0FF] transition duration-300 service-item" data-category="vital">
+                <div class="holo-card p-6 flex flex-col justify-between group hover:border-[#00B8FF] transition duration-300 service-item" data-category="vital">
                     <div class="corner-tr"></div>
                     <div class="corner-bl"></div>
                     <div>
                         <div class="flex justify-between items-start mb-4">
-                            <div class="w-10 h-10 border border-[#00F0FF]/40 bg-[#00F0FF]/10 flex items-center justify-center text-[#00F0FF] text-lg">
+                            <div class="w-10 h-10 border border-[#00B8FF]/40 bg-[#00B8FF]/10 flex items-center justify-center text-[#00B8FF] text-lg">
                                 <i aria-hidden="true" class="fa-solid fa-train-subway"></i>
                             </div>
-                            <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#00F0FF]/40 text-[#00F0FF] bg-[#00F0FF]/5">Mobilité</span>
+                            <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#00B8FF]/40 text-[#00B8FF] bg-[#00B8FF]/5">Mobilité</span>
                         </div>
-                        <h3 class="font-orbitron font-bold text-lg text-[#E0F4FF] mb-2 group-hover:text-[#00F0FF] transition">Transports & Hyper-Tubes</h3>
-                        <p class="text-xs text-[#E0F4FF]/70 mb-4 leading-relaxed">
+                        <h3 class="font-orbitron font-bold text-lg text-[#E6F1F7] mb-2 group-hover:text-[#00B8FF] transition">Transports & Hyper-Tubes</h3>
+                        <p class="text-xs text-[#E6F1F7]/70 mb-4 leading-relaxed">
                             Réseau de capsules magnétiques sous vide à 1 200 km/h reliant les dômes résidentiels au spatioport orbital et aux complexes industriels.
                         </p>
                         <div class="space-y-1.5 text-xs border-t border-cyan-900/50 pt-3 mb-4">
-                            <div class="flex justify-between text-[#4A607A]"><span>Lignes actives :</span> <span class="text-[#E0F4FF]">6 Lignes Principales</span></div>
-                            <div class="flex justify-between text-[#4A607A]"><span>Fréquence :</span> <span class="text-[#00F0FF]">Toutes les 90 secondes</span></div>
-                            <div class="flex justify-between text-[#4A607A]"><span>Démarches :</span> <span class="text-[#FFB700]">Titre de transport, Bagages cargo</span></div>
+                            <div class="flex justify-between text-[#6F8696]"><span>Lignes actives :</span> <span class="text-[#E6F1F7]">6 Lignes Principales</span></div>
+                            <div class="flex justify-between text-[#6F8696]"><span>Fréquence :</span> <span class="text-[#00B8FF]">Toutes les 90 secondes</span></div>
+                            <div class="flex justify-between text-[#6F8696]"><span>Démarches :</span> <span class="text-[#FFB347]">Titre de transport, Bagages cargo</span></div>
                         </div>
                     </div>
                     <button onclick="prefillContactForm('Transports & Hyper-Tubes', 'Réservation / Réclamation navette orbitale')"
@@ -892,24 +1062,24 @@
                 </div>
 
                 <!-- Service 3 : Énergie Plasma & Réacteur Singulier -->
-                <div class="holo-card p-6 flex flex-col justify-between group hover:border-[#9D00FF] transition duration-300 service-item" data-category="vital">
+                <div class="holo-card p-6 flex flex-col justify-between group hover:border-[#8FE1FF] transition duration-300 service-item" data-category="vital">
                     <div class="corner-tr"></div>
                     <div class="corner-bl"></div>
                     <div>
                         <div class="flex justify-between items-start mb-4">
-                            <div class="w-10 h-10 border border-[#9D00FF]/40 bg-[#9D00FF]/10 flex items-center justify-center text-[#9D00FF] text-lg">
+                            <div class="w-10 h-10 border border-[#8FE1FF]/40 bg-[#8FE1FF]/10 flex items-center justify-center text-[#8FE1FF] text-lg">
                                 <i aria-hidden="true" class="fa-solid fa-bolt"></i>
                             </div>
-                            <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#9D00FF]/40 text-[#9D00FF] bg-[#9D00FF]/5">Énergie</span>
+                            <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#8FE1FF]/40 text-[#8FE1FF] bg-[#8FE1FF]/5">Énergie</span>
                         </div>
-                        <h3 class="font-orbitron font-bold text-lg text-[#E0F4FF] mb-2 group-hover:text-[#9D00FF] transition">Énergie Plasma & Réacteur Zéro</h3>
-                        <p class="text-xs text-[#E0F4FF]/70 mb-4 leading-relaxed">
+                        <h3 class="font-orbitron font-bold text-lg text-[#E6F1F7] mb-2 group-hover:text-[#8FE1FF] transition">Énergie Plasma & Réacteur Zéro</h3>
+                        <p class="text-xs text-[#E6F1F7]/70 mb-4 leading-relaxed">
                             Gestion de la micro-fusion quantique, distribution des mégawatts pour les boucliers extérieurs et allocation des crédits d'énergie aux foyers.
                         </p>
                         <div class="space-y-1.5 text-xs border-t border-cyan-900/50 pt-3 mb-4">
-                            <div class="flex justify-between text-[#4A607A]"><span>Rendement :</span> <span class="text-[#9D00FF]">99.98% Constant</span></div>
-                            <div class="flex justify-between text-[#4A607A]"><span>Quota foyer :</span> <span class="text-[#00F0FF]">450 kW/cycle</span></div>
-                            <div class="flex justify-between text-[#4A607A]"><span>Démarches :</span> <span class="text-[#FFB700]">Raccordement, Extension quota</span></div>
+                            <div class="flex justify-between text-[#6F8696]"><span>Rendement :</span> <span class="text-[#8FE1FF]">99.98% Constant</span></div>
+                            <div class="flex justify-between text-[#6F8696]"><span>Quota foyer :</span> <span class="text-[#00B8FF]">450 kW/cycle</span></div>
+                            <div class="flex justify-between text-[#6F8696]"><span>Démarches :</span> <span class="text-[#FFB347]">Raccordement, Extension quota</span></div>
                         </div>
                     </div>
                     <button onclick="prefillContactForm('Énergie Plasma & Réacteur Zéro', 'Augmentation de quota énergétique')"
@@ -920,24 +1090,24 @@
                 </div>
 
                 <!-- Service 4 : Biotech & Cryo-Clinique Municipale -->
-                <div class="holo-card p-6 flex flex-col justify-between group hover:border-[#00F0FF] transition duration-300 service-item" data-category="vital">
+                <div class="holo-card p-6 flex flex-col justify-between group hover:border-[#00B8FF] transition duration-300 service-item" data-category="vital">
                     <div class="corner-tr"></div>
                     <div class="corner-bl"></div>
                     <div>
                         <div class="flex justify-between items-start mb-4">
-                            <div class="w-10 h-10 border border-[#00F0FF]/40 bg-[#00F0FF]/10 flex items-center justify-center text-[#00F0FF] text-lg">
+                            <div class="w-10 h-10 border border-[#00B8FF]/40 bg-[#00B8FF]/10 flex items-center justify-center text-[#00B8FF] text-lg">
                                 <i aria-hidden="true" class="fa-solid fa-heart-pulse"></i>
                             </div>
-                            <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#00F0FF]/40 text-[#00F0FF] bg-[#00F0FF]/5">Santé</span>
+                            <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#00B8FF]/40 text-[#00B8FF] bg-[#00B8FF]/5">Santé</span>
                         </div>
-                        <h3 class="font-orbitron font-bold text-lg text-[#E0F4FF] mb-2 group-hover:text-[#00F0FF] transition">Santé Biotech & Cryo-Soins</h3>
-                        <p class="text-xs text-[#E0F4FF]/70 mb-4 leading-relaxed">
+                        <h3 class="font-orbitron font-bold text-lg text-[#E6F1F7] mb-2 group-hover:text-[#00B8FF] transition">Santé Biotech & Cryo-Soins</h3>
+                        <p class="text-xs text-[#E6F1F7]/70 mb-4 leading-relaxed">
                             Régénération cellulaire, suivi des implants biolinks, protocoles d'adaptation à la gravité d'exoplanète et traitement des traumatismes cosmiques.
                         </p>
                         <div class="space-y-1.5 text-xs border-t border-cyan-900/50 pt-3 mb-4">
-                            <div class="flex justify-between text-[#4A607A]"><span>Centres d'urgence :</span> <span class="text-[#E0F4FF]">4 Unités Cryo</span></div>
-                            <div class="flex justify-between text-[#4A607A]"><span>Télé-diagnostic :</span> <span class="text-[#00F0FF]">Instantané par Biolink</span></div>
-                            <div class="flex justify-between text-[#4A607A]"><span>Démarches :</span> <span class="text-[#FFB700]">Visite médicale, Certificat colon</span></div>
+                            <div class="flex justify-between text-[#6F8696]"><span>Centres d'urgence :</span> <span class="text-[#E6F1F7]">4 Unités Cryo</span></div>
+                            <div class="flex justify-between text-[#6F8696]"><span>Télé-diagnostic :</span> <span class="text-[#00B8FF]">Instantané par Biolink</span></div>
+                            <div class="flex justify-between text-[#6F8696]"><span>Démarches :</span> <span class="text-[#FFB347]">Visite médicale, Certificat colon</span></div>
                         </div>
                     </div>
                     <button onclick="prefillContactForm('Santé Biotech & Cryo-Soins', 'Demande de visite médicale colon')"
@@ -948,24 +1118,24 @@
                 </div>
 
                 <!-- Service 5 : Sécurité Urbaine & Boucliers -->
-                <div class="holo-card p-6 flex flex-col justify-between group hover:border-[#FFB700] transition duration-300 service-item" data-category="vital">
+                <div class="holo-card p-6 flex flex-col justify-between group hover:border-[#FFB347] transition duration-300 service-item" data-category="vital">
                     <div class="corner-tr"></div>
                     <div class="corner-bl"></div>
                     <div>
                         <div class="flex justify-between items-start mb-4">
-                            <div class="w-10 h-10 border border-[#FFB700]/40 bg-[#FFB700]/10 flex items-center justify-center text-[#FFB700] text-lg">
+                            <div class="w-10 h-10 border border-[#FFB347]/40 bg-[#FFB347]/10 flex items-center justify-center text-[#FFB347] text-lg">
                                 <i aria-hidden="true" class="fa-solid fa-shield-halved"></i>
                             </div>
-                            <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#FFB700]/40 text-[#FFB700] bg-[#FFB700]/5">Protection</span>
+                            <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#FFB347]/40 text-[#FFB347] bg-[#FFB347]/5">Protection</span>
                         </div>
-                        <h3 class="font-orbitron font-bold text-lg text-[#E0F4FF] mb-2 group-hover:text-[#FFB700] transition">Sécurité Civile & Sentinelles</h3>
-                        <p class="text-xs text-[#E0F4FF]/70 mb-4 leading-relaxed">
+                        <h3 class="font-orbitron font-bold text-lg text-[#E6F1F7] mb-2 group-hover:text-[#FFB347] transition">Sécurité Civile & Sentinelles</h3>
+                        <p class="text-xs text-[#E6F1F7]/70 mb-4 leading-relaxed">
                             Surveillance automatisée des sas de décompression, patrouilles de drones sentinelles et maintien de la paix au sein des dômes de vie.
                         </p>
                         <div class="space-y-1.5 text-xs border-t border-cyan-900/50 pt-3 mb-4">
-                            <div class="flex justify-between text-[#4A607A]"><span>Intervention drone :</span> <span class="text-[#FFB700]">< 45 secondes</span></div>
-                            <div class="flex justify-between text-[#4A607A]"><span>Niveau alerte :</span> <span class="text-green-400">VERT (Nominal)</span></div>
-                            <div class="flex justify-between text-[#4A607A]"><span>Démarches :</span> <span class="text-[#FFB700]">Signalement incident, Badge sas</span></div>
+                            <div class="flex justify-between text-[#6F8696]"><span>Intervention drone :</span> <span class="text-[#FFB347]">< 45 secondes</span></div>
+                            <div class="flex justify-between text-[#6F8696]"><span>Niveau alerte :</span> <span class="text-green-400">VERT (Nominal)</span></div>
+                            <div class="flex justify-between text-[#6F8696]"><span>Démarches :</span> <span class="text-[#FFB347]">Signalement incident, Badge sas</span></div>
                         </div>
                     </div>
                     <button onclick="prefillContactForm('Sécurité Civile & Sentinelles', 'Signalement d\'anomalie de périmètre')"
@@ -976,24 +1146,24 @@
                 </div>
 
                 <!-- Service 6 : État Civil, Enregistrement & Citoyenneté -->
-                <div class="holo-card p-6 flex flex-col justify-between group hover:border-[#00F0FF] transition duration-300 service-item" data-category="admin">
+                <div class="holo-card p-6 flex flex-col justify-between group hover:border-[#00B8FF] transition duration-300 service-item" data-category="admin">
                     <div class="corner-tr"></div>
                     <div class="corner-bl"></div>
                     <div>
                         <div class="flex justify-between items-start mb-4">
-                            <div class="w-10 h-10 border border-[#00F0FF]/40 bg-[#00F0FF]/10 flex items-center justify-center text-[#00F0FF] text-lg">
+                            <div class="w-10 h-10 border border-[#00B8FF]/40 bg-[#00B8FF]/10 flex items-center justify-center text-[#00B8FF] text-lg">
                                 <i aria-hidden="true" class="fa-solid fa-id-card"></i>
                             </div>
-                            <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#00F0FF]/40 text-[#00F0FF] bg-[#00F0FF]/5">Citoyenneté</span>
+                            <span class="text-[9px] uppercase tracking-widest px-2 py-0.5 border border-[#00B8FF]/40 text-[#00B8FF] bg-[#00B8FF]/5">Citoyenneté</span>
                         </div>
-                        <h3 class="font-orbitron font-bold text-lg text-[#E0F4FF] mb-2 group-hover:text-[#00F0FF] transition">Mairie & État Civil Spatial</h3>
-                        <p class="text-xs text-[#E0F4FF]/70 mb-4 leading-relaxed">
+                        <h3 class="font-orbitron font-bold text-lg text-[#E6F1F7] mb-2 group-hover:text-[#00B8FF] transition">Mairie & État Civil Spatial</h3>
+                        <p class="text-xs text-[#E6F1F7]/70 mb-4 leading-relaxed">
                             Attribution des matricules de citoyenneté spatiale, enregistrement des naissances et mariages sous dôme, et gestion des titres de propriété.
                         </p>
                         <div class="space-y-1.5 text-xs border-t border-cyan-900/50 pt-3 mb-4">
-                            <div class="flex justify-between text-[#4A607A]"><span>Délai matricule :</span> <span class="text-[#00F0FF]">Immédiat (Digital)</span></div>
-                            <div class="flex justify-between text-[#4A607A]"><span>Guichet central :</span> <span class="text-[#E0F4FF]">Dôme Administratif</span></div>
-                            <div class="flex justify-between text-[#4A607A]"><span>Démarches :</span> <span class="text-[#FFB700]">Création de compte, Changement dôme</span></div>
+                            <div class="flex justify-between text-[#6F8696]"><span>Délai matricule :</span> <span class="text-[#00B8FF]">Immédiat (Digital)</span></div>
+                            <div class="flex justify-between text-[#6F8696]"><span>Guichet central :</span> <span class="text-[#E6F1F7]">Dôme Administratif</span></div>
+                            <div class="flex justify-between text-[#6F8696]"><span>Démarches :</span> <span class="text-[#FFB347]">Création de compte, Changement dôme</span></div>
                         </div>
                     </div>
                     <button onclick="openAuthModal('register')"
@@ -1010,23 +1180,23 @@
         <section id="annonces" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-cyan-900/40">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
                 <div>
-                    <div class="inline-flex items-center space-x-2 text-xs text-[#00F0FF] uppercase tracking-widest mb-1">
+                    <div class="inline-flex items-center space-x-2 text-xs text-[#00B8FF] uppercase tracking-widest mb-1">
                         <i aria-hidden="true" class="fa-solid fa-scroll"></i>
                         <span>INFORMATIONS OFFICIELLES (EXIGENCE D06 — 250 XP)</span>
                     </div>
-                    <h2 class="text-3xl font-black font-orbitron text-[#00F0FF] uppercase tracking-wider">
+                    <h2 class="text-3xl font-black font-orbitron text-[#00B8FF] uppercase tracking-wider">
                         ANNONCES MUNICIPALES & DÉCRETS DU CONSEIL
                     </h2>
-                    <p class="text-xs text-[#4A607A] mt-1 max-w-2xl">
+                    <p class="text-xs text-[#6F8696] mt-1 max-w-2xl">
                         Le Haut Conseil et la Mairie publient régulièrement les décrets de gestion urbaine, alertes solaires et annonces de travaux d'infrastructures.
                     </p>
                 </div>
                 <!-- Category Filter -->
                 <div class="flex flex-wrap gap-2 text-xs">
-                    <button onclick="filterNews('all')" class="px-3 py-1 border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 news-filter-btn">Toutes</button>
-                    <button onclick="filterNews('decret')" class="px-3 py-1 border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] news-filter-btn">Décrets</button>
-                    <button onclick="filterNews('alerte')" class="px-3 py-1 border border-cyan-900 text-[#4A607A] hover:text-[#FFB700] news-filter-btn">Alertes</button>
-                    <button onclick="filterNews('service')" class="px-3 py-1 border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] news-filter-btn">Services</button>
+                    <button onclick="filterNews('all')" class="px-3 py-1 border border-[#00B8FF] text-[#00B8FF] bg-[#00B8FF]/10 news-filter-btn">Toutes</button>
+                    <button onclick="filterNews('decret')" class="px-3 py-1 border border-cyan-900 text-[#6F8696] hover:text-[#00B8FF] news-filter-btn">Décrets</button>
+                    <button onclick="filterNews('alerte')" class="px-3 py-1 border border-cyan-900 text-[#6F8696] hover:text-[#FFB347] news-filter-btn">Alertes</button>
+                    <button onclick="filterNews('service')" class="px-3 py-1 border border-cyan-900 text-[#6F8696] hover:text-[#00B8FF] news-filter-btn">Services</button>
                 </div>
             </div>
 
@@ -1034,24 +1204,24 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="news-grid">
 
                 <!-- Article 1 : Décret -->
-                <div class="holo-card p-6 flex flex-col justify-between hover:border-[#00F0FF] transition news-card" data-category="decret">
+                <div class="holo-card p-6 flex flex-col justify-between hover:border-[#00B8FF] transition news-card" data-category="decret">
                     <div class="corner-tr"></div>
                     <div class="corner-bl"></div>
                     <div>
                         <div class="flex justify-between items-center mb-3 text-[10px]">
-                            <span class="bg-[#00F0FF]/10 text-[#00F0FF] px-2 py-0.5 border border-[#00F0FF]/30 font-orbitron font-bold">DÉCRET N° 2842-01</span>
-                            <span class="text-[#4A607A] font-mono">CYCLE ST-44</span>
+                            <span class="bg-[#00B8FF]/10 text-[#00B8FF] px-2 py-0.5 border border-[#00B8FF]/30 font-orbitron font-bold">DÉCRET N° 2842-01</span>
+                            <span class="text-[#6F8696] font-mono">CYCLE ST-44</span>
                         </div>
-                        <h3 class="font-orbitron font-bold text-base text-[#E0F4FF] mb-2 hover:text-[#00F0FF] cursor-pointer" onclick="openNewsDetail(0)">
+                        <h3 class="font-orbitron font-bold text-base text-[#E6F1F7] mb-2 hover:text-[#00B8FF] cursor-pointer" onclick="openNewsDetail(0)">
                             Ouverture Officielle du Portail Numérique Citoyen
                         </h3>
-                        <p class="text-xs text-[#E0F4FF]/70 mb-4 leading-relaxed line-clamp-3">
+                        <p class="text-xs text-[#E6F1F7]/70 mb-4 leading-relaxed line-clamp-3">
                             Par décision unanime du Haut Conseil, la plateforme centrale de Terra Nova entre en phase opérationnelle. Chaque colon est invité à enregistrer son matricule d'accès pour utiliser les services municipaux.
                         </p>
                     </div>
                     <div class="border-t border-cyan-900/40 pt-3 flex justify-between items-center text-xs">
-                        <span class="text-[#4A607A] text-[10px]">Mairie de Terra Nova</span>
-                        <button onclick="openNewsDetail(0)" class="text-[#00F0FF] hover:underline font-bold text-xs flex items-center gap-1">
+                        <span class="text-[#6F8696] text-[10px]">Mairie de Terra Nova</span>
+                        <button onclick="openNewsDetail(0)" class="text-[#00B8FF] hover:underline font-bold text-xs flex items-center gap-1">
                             <span>Lire le décret</span>
                             <i aria-hidden="true" class="fa-solid fa-angle-right text-[10px]"></i>
                         </button>
@@ -1059,24 +1229,24 @@
                 </div>
 
                 <!-- Article 2 : Alerte -->
-                <div class="holo-card p-6 flex flex-col justify-between hover:border-[#FFB700] transition news-card" data-category="alerte">
+                <div class="holo-card p-6 flex flex-col justify-between hover:border-[#FFB347] transition news-card" data-category="alerte">
                     <div class="corner-tr"></div>
                     <div class="corner-bl"></div>
                     <div>
                         <div class="flex justify-between items-center mb-3 text-[10px]">
-                            <span class="bg-[#FFB700]/10 text-[#FFB700] px-2 py-0.5 border border-[#FFB700]/30 font-orbitron font-bold">ALERTE MÉTÉO COSMIQUE</span>
-                            <span class="text-[#4A607A] font-mono">CYCLE ST-43</span>
+                            <span class="bg-[#FFB347]/10 text-[#FFB347] px-2 py-0.5 border border-[#FFB347]/30 font-orbitron font-bold">ALERTE MÉTÉO COSMIQUE</span>
+                            <span class="text-[#6F8696] font-mono">CYCLE ST-43</span>
                         </div>
-                        <h3 class="font-orbitron font-bold text-base text-[#E0F4FF] mb-2 hover:text-[#FFB700] cursor-pointer" onclick="openNewsDetail(1)">
+                        <h3 class="font-orbitron font-bold text-base text-[#E6F1F7] mb-2 hover:text-[#FFB347] cursor-pointer" onclick="openNewsDetail(1)">
                             Passage d'Orage Ionique : Renforcement des Boucliers
                         </h3>
-                        <p class="text-xs text-[#E0F4FF]/70 mb-4 leading-relaxed line-clamp-3">
+                        <p class="text-xs text-[#E6F1F7]/70 mb-4 leading-relaxed line-clamp-3">
                             Le Service de Défense informe les colons du Dôme Alpha qu'une fluctuation ionique traversera le secteur orbital. Les communications et transports de surface pourront subir de légères perturbations.
                         </p>
                     </div>
                     <div class="border-t border-cyan-900/40 pt-3 flex justify-between items-center text-xs">
-                        <span class="text-[#4A607A] text-[10px]">Sécurité Civile</span>
-                        <button onclick="openNewsDetail(1)" class="text-[#FFB700] hover:underline font-bold text-xs flex items-center gap-1">
+                        <span class="text-[#6F8696] text-[10px]">Sécurité Civile</span>
+                        <button onclick="openNewsDetail(1)" class="text-[#FFB347] hover:underline font-bold text-xs flex items-center gap-1">
                             <span>Consulter l'alerte</span>
                             <i aria-hidden="true" class="fa-solid fa-angle-right text-[10px]"></i>
                         </button>
@@ -1084,24 +1254,24 @@
                 </div>
 
                 <!-- Article 3 : Service -->
-                <div class="holo-card p-6 flex flex-col justify-between hover:border-[#9D00FF] transition news-card" data-category="service">
+                <div class="holo-card p-6 flex flex-col justify-between hover:border-[#8FE1FF] transition news-card" data-category="service">
                     <div class="corner-tr"></div>
                     <div class="corner-bl"></div>
                     <div>
                         <div class="flex justify-between items-center mb-3 text-[10px]">
-                            <span class="bg-[#9D00FF]/10 text-[#9D00FF] px-2 py-0.5 border border-[#9D00FF]/30 font-orbitron font-bold">INFO TRAVAUX</span>
-                            <span class="text-[#4A607A] font-mono">CYCLE ST-41</span>
+                            <span class="bg-[#8FE1FF]/10 text-[#8FE1FF] px-2 py-0.5 border border-[#8FE1FF]/30 font-orbitron font-bold">INFO TRAVAUX</span>
+                            <span class="text-[#6F8696] font-mono">CYCLE ST-41</span>
                         </div>
-                        <h3 class="font-orbitron font-bold text-base text-[#E0F4FF] mb-2 hover:text-[#9D00FF] cursor-pointer" onclick="openNewsDetail(2)">
+                        <h3 class="font-orbitron font-bold text-base text-[#E6F1F7] mb-2 hover:text-[#8FE1FF] cursor-pointer" onclick="openNewsDetail(2)">
                             Nouvelle Ligne d'Hyper-Tube vers les Serres d'Orion
                         </h3>
-                        <p class="text-xs text-[#E0F4FF]/70 mb-4 leading-relaxed line-clamp-3">
+                        <p class="text-xs text-[#E6F1F7]/70 mb-4 leading-relaxed line-clamp-3">
                             La Direction des Transports annonce la mise en service de la navette magnétique express reliant le secteur résidentiel aux fermes hydroponiques en seulement 3 minutes.
                         </p>
                     </div>
                     <div class="border-t border-cyan-900/40 pt-3 flex justify-between items-center text-xs">
-                        <span class="text-[#4A607A] text-[10px]">Direction Transports</span>
-                        <button onclick="openNewsDetail(2)" class="text-[#9D00FF] hover:underline font-bold text-xs flex items-center gap-1">
+                        <span class="text-[#6F8696] text-[10px]">Direction Transports</span>
+                        <button onclick="openNewsDetail(2)" class="text-[#8FE1FF] hover:underline font-bold text-xs flex items-center gap-1">
                             <span>Voir les détails</span>
                             <i aria-hidden="true" class="fa-solid fa-angle-right text-[10px]"></i>
                         </button>
@@ -1113,19 +1283,19 @@
 
         <!-- SECTION 4 : FORMULAIRE DE CONTACT & DOLÉANCE CITOYENNE (D04 - 250 XP) -->
         <section id="demarches" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-cyan-900/40">
-            <div class="holo-card p-8 border border-cyan-900/80 shadow-[0_0_40px_rgba(0,240,255,0.15)] relative">
+            <div class="holo-card p-8 border border-cyan-900/80 shadow-[0_0_40px_rgba(0,184,255,0.15)] relative">
                 <div class="corner-tr"></div>
                 <div class="corner-bl"></div>
 
                 <div class="text-center mb-8">
-                    <div class="inline-flex items-center space-x-2 text-xs text-[#FFB700] uppercase tracking-widest mb-1">
+                    <div class="inline-flex items-center space-x-2 text-xs text-[#FFB347] uppercase tracking-widest mb-1">
                         <i aria-hidden="true" class="fa-solid fa-envelope-open-text"></i>
                         <span>RELATIONS CITOYENNES (EXIGENCE D04 — 250 XP)</span>
                     </div>
-                    <h2 class="text-2xl sm:text-3xl font-bold font-orbitron text-[#00F0FF] uppercase tracking-wider mb-2">
+                    <h2 class="text-2xl sm:text-3xl font-bold font-orbitron text-[#00B8FF] uppercase tracking-wider mb-2">
                         TRANSMISSION AUX SERVICES MUNICIPAUX
                     </h2>
-                    <p class="text-xs text-[#4A607A] max-w-lg mx-auto">
+                    <p class="text-xs text-[#6F8696] max-w-lg mx-auto">
                         Une question, une difficulté ou un signalement dans votre dôme ? Soumettez votre message directement à l'administration de Terra Nova. Un récépissé horodaté avec ticket de suivi vous est immédiatement attribué.
                     </p>
                 </div>
@@ -1135,17 +1305,17 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Identité Colon -->
                         <div class="flex flex-col space-y-2">
-                            <label for="contact-name" class="text-xs text-[#4A607A] uppercase tracking-wider flex items-center justify-between">
+                            <label for="contact-name" class="text-xs text-[#6F8696] uppercase tracking-wider flex items-center justify-between">
                                 <span>Nom du Citoyen / Matricule</span>
-                                <span class="text-[10px] text-[#00F0FF]" id="contact-user-hint">Anonyme ou Colon</span>
+                                <span class="text-[10px] text-[#00B8FF]" id="contact-user-hint">Anonyme ou Colon</span>
                             </label>
                             <input type="text" id="contact-name" required placeholder="ex: Kaelen Vance (TN-2842-8812)" class="cyber-input py-2 px-2 text-xs">
                         </div>
 
                         <!-- Service Ciblé -->
                         <div class="flex flex-col space-y-2">
-                            <label for="contact-service" class="text-xs text-[#4A607A] uppercase tracking-wider">Service Municipal Destinataire</label>
-                            <select id="contact-service" required class="cyber-input py-2 px-2 text-xs bg-[#03070E] text-[#E0F4FF] cursor-pointer">
+                            <label for="contact-service" class="text-xs text-[#6F8696] uppercase tracking-wider">Service Municipal Destinataire</label>
+                            <select id="contact-service" required class="cyber-input py-2 px-2 text-xs bg-[#05080C] text-[#E6F1F7] cursor-pointer">
                                 <option value="Atmosphère & Biosphère">Atmosphère & Biosphère (Qualité d'air, fluides)</option>
                                 <option value="Transports & Hyper-Tubes">Transports & Hyper-Tubes (Navettes, voirie)</option>
                                 <option value="Énergie Plasma & Réacteur Zéro">Énergie Plasma (Alimentation, quotas)</option>
@@ -1159,8 +1329,8 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Catégorie / Priorité -->
                         <div class="flex flex-col space-y-2">
-                            <label for="contact-category" class="text-xs text-[#4A607A] uppercase tracking-wider">Type de Démarche</label>
-                            <select id="contact-category" class="cyber-input py-2 px-2 text-xs bg-[#03070E] text-[#E0F4FF] cursor-pointer">
+                            <label for="contact-category" class="text-xs text-[#6F8696] uppercase tracking-wider">Type de Démarche</label>
+                            <select id="contact-category" class="cyber-input py-2 px-2 text-xs bg-[#05080C] text-[#E6F1F7] cursor-pointer">
                                 <option value="Question">Demande d'information générale</option>
                                 <option value="Signalement Incident">Signalement d'anomalie ou dysfonctionnement</option>
                                 <option value="Doléance Urbaine">Doléance d'aménagement de quartier</option>
@@ -1170,8 +1340,8 @@
 
                         <!-- Urgence -->
                         <div class="flex flex-col space-y-2">
-                            <label for="contact-priority" class="text-xs text-[#4A607A] uppercase tracking-wider">Niveau d'Urgence Déclaré</label>
-                            <select id="contact-priority" class="cyber-input py-2 px-2 text-xs bg-[#03070E] text-[#E0F4FF] cursor-pointer">
+                            <label for="contact-priority" class="text-xs text-[#6F8696] uppercase tracking-wider">Niveau d'Urgence Déclaré</label>
+                            <select id="contact-priority" class="cyber-input py-2 px-2 text-xs bg-[#05080C] text-[#E6F1F7] cursor-pointer">
                                 <option value="Normal">🟢 Normal (Traitement standard sous 24h)</option>
                                 <option value="Élevé">🟡 Élevé (Priorité technique sous 6h)</option>
                                 <option value="Critique">🔴 Critique (Alerte d'intervention immédiate)</option>
@@ -1181,19 +1351,19 @@
 
                     <!-- Objet & Message -->
                     <div class="flex flex-col space-y-2">
-                        <label for="contact-subject" class="text-xs text-[#4A607A] uppercase tracking-wider">Objet de la Demande</label>
+                        <label for="contact-subject" class="text-xs text-[#6F8696] uppercase tracking-wider">Objet de la Demande</label>
                         <input type="text" id="contact-subject" required placeholder="ex: Baisse de pression dans le conduit secondaire du Dôme B" class="cyber-input py-2 px-2 text-xs">
                     </div>
 
                     <div class="flex flex-col space-y-2">
-                        <label for="contact-message" class="text-xs text-[#4A607A] uppercase tracking-wider">Description Détaillée du Besoin</label>
+                        <label for="contact-message" class="text-xs text-[#6F8696] uppercase tracking-wider">Description Détaillée du Besoin</label>
                         <textarea id="contact-message" rows="4" required placeholder="Expliquez clairement votre problème ou votre requête aux agents municipaux..." class="cyber-input py-2 px-2 text-xs resize-none"></textarea>
                     </div>
 
                     <!-- Submit Button -->
                     <div class="pt-2 flex flex-col sm:flex-row justify-between items-center gap-4">
-                        <span class="text-[10px] text-[#4A607A]">
-                            <i aria-hidden="true" class="fa-solid fa-lock text-[#00F0FF] mr-1"></i> Transmission chiffrée selon le protocole Aethel-Quantum.
+                        <span class="text-[10px] text-[#6F8696]">
+                            <i aria-hidden="true" class="fa-solid fa-lock text-[#00B8FF] mr-1"></i> Transmission chiffrée selon le protocole Aethel-Quantum.
                         </span>
                         <button type="submit" class="btn-cyber btn-amber px-8 py-3 text-xs font-bold tracking-widest uppercase flex items-center space-x-2 w-full sm:w-auto justify-center">
                             <i aria-hidden="true" class="fa-solid fa-paper-plane"></i>
@@ -1203,21 +1373,21 @@
                 </form>
 
                 <!-- Receipt Modal / Box (Generated upon submission) -->
-                <div id="contact-receipt" role="status" tabindex="-1" class="mt-6 p-4 bg-[#00F0FF]/10 border border-[#00F0FF] text-xs hidden">
-                    <div class="flex items-center space-x-2 text-[#00F0FF] font-orbitron font-bold mb-2">
+                <div id="contact-receipt" role="status" tabindex="-1" class="mt-6 p-4 bg-[#00B8FF]/10 border border-[#00B8FF] text-xs hidden">
+                    <div class="flex items-center space-x-2 text-[#00B8FF] font-orbitron font-bold mb-2">
                         <i aria-hidden="true" class="fa-solid fa-circle-check text-base"></i>
                         <span>TRANSMISSION CONFIRMÉE — RÉCÉPISSÉ MUNICIPAL OFFICIEL</span>
                     </div>
-                    <div class="text-[#E0F4FF] mb-2 leading-relaxed" id="receipt-text">
+                    <div class="text-[#E6F1F7] mb-2 leading-relaxed" id="receipt-text">
                         Votre démarche a été enregistrée avec succès auprès du service municipal concerné.
                     </div>
-                    <div class="p-2 bg-[#03070E] border border-cyan-900/60 font-mono text-[11px] flex justify-between items-center">
-                        <span class="text-[#4A607A]">NUMÉRO DE SUIVI :</span>
-                        <span class="text-[#FFB700] font-bold" id="receipt-ticket-id">TK-TN-8492</span>
+                    <div class="p-2 bg-[#05080C] border border-cyan-900/60 font-mono text-[11px] flex justify-between items-center">
+                        <span class="text-[#6F8696]">NUMÉRO DE SUIVI :</span>
+                        <span class="text-[#FFB347] font-bold" id="receipt-ticket-id">TK-TN-8492</span>
                     </div>
-                    <div class="mt-3 text-[10px] text-[#4A607A] flex justify-between">
+                    <div class="mt-3 text-[10px] text-[#6F8696] flex justify-between">
                         <span>Ce ticket est désormais consultable dans votre Espace Citoyen et a été transmis aux Agents.</span>
-                        <a href="#espace-citoyen" class="text-[#00F0FF] hover:underline font-bold">Voir mon espace &rarr;</a>
+                        <a href="#espace-citoyen" class="text-[#00B8FF] hover:underline font-bold">Voir mon espace &rarr;</a>
                     </div>
                 </div>
             </div>
@@ -1227,14 +1397,14 @@
         <section id="espace-citoyen" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-cyan-900/40">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
                 <div>
-                    <div class="inline-flex items-center space-x-2 text-xs text-[#00F0FF] uppercase tracking-widest mb-1">
+                    <div class="inline-flex items-center space-x-2 text-xs text-[#00B8FF] uppercase tracking-widest mb-1">
                         <i aria-hidden="true" class="fa-solid fa-user-astronaut"></i>
                         <span>ESPACE PERSONNEL SÉCURISÉ (EXIGENCES D01 & D03 — 500 XP)</span>
                     </div>
-                    <h2 class="text-3xl font-black font-orbitron text-[#00F0FF] uppercase tracking-wider">
+                    <h2 class="text-3xl font-black font-orbitron text-[#00B8FF] uppercase tracking-wider">
                         PORTAIL CITOYEN DE TERRA NOVA
                     </h2>
-                    <p class="text-xs text-[#4A607A] mt-1 max-w-xl">
+                    <p class="text-xs text-[#6F8696] mt-1 max-w-xl">
                         Retrouvez votre matricule de colon, votre dôme de rattachement, l'historique de vos démarches et le suivi en temps réel de vos requêtes administratives.
                     </p>
                 </div>
@@ -1249,46 +1419,46 @@
 
                 <!-- Left Column : Citizen Identity Card -->
                 <div class="lg:col-span-4">
-                    <div class="holo-card p-6 border border-[#00F0FF]/40 relative">
+                    <div class="holo-card p-6 border border-[#00B8FF]/40 relative">
                         <div class="corner-tr"></div>
                         <div class="corner-bl"></div>
 
                         <!-- Card Header & Badge -->
                         <div class="flex items-center justify-between pb-4 border-b border-cyan-900/60 mb-5">
-                            <span class="text-[10px] uppercase font-orbitron text-[#00F0FF] tracking-wider">PASSEPORT COLONIAL OFFICIEL</span>
+                            <span class="text-[10px] uppercase font-orbitron text-[#00B8FF] tracking-wider">PASSEPORT COLONIAL OFFICIEL</span>
                             <span class="text-[9px] bg-green-500/20 text-green-400 border border-green-500/40 px-2 py-0.5 rounded font-mono">VALIDE</span>
                         </div>
 
                         <!-- Holographic Avatar & Info -->
                         <div class="flex items-center space-x-4 mb-6">
-                            <div class="w-16 h-16 border-2 border-[#00F0FF] bg-[#00F0FF]/10 flex items-center justify-center text-2xl text-[#00F0FF] shadow-[0_0_20px_rgba(0,240,255,0.4)] relative">
+                            <div class="w-16 h-16 border-2 border-[#00B8FF] bg-[#00B8FF]/10 flex items-center justify-center text-2xl text-[#00B8FF] shadow-[0_0_20px_rgba(0,184,255,0.4)] relative">
                                 <i aria-hidden="true" class="fa-solid fa-user-astronaut"></i>
                                 <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border border-black"></span>
                             </div>
                             <div>
-                                <div class="font-orbitron font-bold text-lg text-[#E0F4FF]" id="citizen-display-name">Kaelen Vance</div>
-                                <div class="text-xs text-[#00F0FF] font-mono" id="citizen-display-id">TN-2842-8812</div>
-                                <div class="text-[10px] text-[#4A607A] uppercase mt-0.5" id="citizen-display-role">Spécialiste Biolink & Végétation</div>
+                                <div class="font-orbitron font-bold text-lg text-[#E6F1F7]" id="citizen-display-name">Kaelen Vance</div>
+                                <div class="text-xs text-[#00B8FF] font-mono" id="citizen-display-id">TN-2842-8812</div>
+                                <div class="text-[10px] text-[#6F8696] uppercase mt-0.5" id="citizen-display-role">Spécialiste Biolink & Végétation</div>
                             </div>
                         </div>
 
                         <!-- Details List -->
                         <div class="space-y-2 text-xs border-t border-cyan-900/40 pt-4 mb-6">
                             <div class="flex justify-between">
-                                <span class="text-[#4A607A]">Secteur Domicile :</span>
-                                <span class="text-[#E0F4FF]" id="citizen-display-dome">Dôme Alpha - Bloc 4</span>
+                                <span class="text-[#6F8696]">Secteur Domicile :</span>
+                                <span class="text-[#E6F1F7]" id="citizen-display-dome">Dôme Alpha - Bloc 4</span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-[#4A607A]">Date d'Arrimage :</span>
-                                <span class="text-[#E0F4FF]">Cycle 2842.10.01</span>
+                                <span class="text-[#6F8696]">Date d'Arrimage :</span>
+                                <span class="text-[#E6F1F7]">Cycle 2842.10.01</span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-[#4A607A]">Statut Juridique :</span>
-                                <span class="text-[#00F0FF]">Colon de Plein Droit</span>
+                                <span class="text-[#6F8696]">Statut Juridique :</span>
+                                <span class="text-[#00B8FF]">Colon de Plein Droit</span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-[#4A607A]">Allocation Plasma :</span>
-                                <span class="text-[#9D00FF]">450/450 kW (Nominal)</span>
+                                <span class="text-[#6F8696]">Allocation Plasma :</span>
+                                <span class="text-[#8FE1FF]">450/450 kW (Nominal)</span>
                             </div>
                         </div>
 
@@ -1297,7 +1467,7 @@
                             <button onclick="openAuthModal('switch')" class="btn-cyber py-2 text-xs uppercase font-bold tracking-wider text-center">
                                 Changer de Compte
                             </button>
-                            <button onclick="logoutCitizen()" class="text-xs text-[#4A607A] hover:text-red-400 text-center py-1 transition">
+                            <button onclick="logoutCitizen()" class="text-xs text-[#6F8696] hover:text-red-400 text-center py-1 transition">
                                 <i aria-hidden="true" class="fa-solid fa-power-off mr-1"></i> Déconnexion
                             </button>
                         </div>
@@ -1312,10 +1482,10 @@
 
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-cyan-900/60 mb-6 gap-2">
                             <div>
-                                <h3 class="font-orbitron font-bold text-base text-[#00F0FF] uppercase">
+                                <h3 class="font-orbitron font-bold text-base text-[#00B8FF] uppercase">
                                     MES DÉMARCHES & REQUÊTES EN COURS
                                 </h3>
-                                <p class="text-[11px] text-[#4A607A]">Suivi en direct des tickets envoyés aux services municipaux.</p>
+                                <p class="text-[11px] text-[#6F8696]">Suivi en direct des tickets envoyés aux services municipaux.</p>
                             </div>
                             <a href="#demarches" class="btn-cyber btn-amber px-3 py-1.5 text-xs font-bold uppercase flex items-center gap-1.5">
                                 <i aria-hidden="true" class="fa-solid fa-plus text-[10px]"></i>
@@ -1327,7 +1497,7 @@
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs">
                                 <thead>
-                                    <tr class="border-b border-cyan-900/50 text-[#4A607A] uppercase text-[10px]">
+                                    <tr class="border-b border-cyan-900/50 text-[#6F8696] uppercase text-[10px]">
                                         <th scope="col" class="py-2 px-3">N° Ticket</th>
                                         <th scope="col" class="py-2 px-3">Service</th>
                                         <th scope="col" class="py-2 px-3">Objet</th>
@@ -1343,8 +1513,8 @@
                         </div>
 
                         <!-- Empty state if no tickets -->
-                        <div id="no-tickets-msg" class="py-8 text-center text-xs text-[#4A607A] hidden">
-                            <i aria-hidden="true" class="fa-regular fa-folder-open text-2xl text-[#4A607A] mb-2 block"></i>
+                        <div id="no-tickets-msg" class="py-8 text-center text-xs text-[#6F8696] hidden">
+                            <i aria-hidden="true" class="fa-regular fa-folder-open text-2xl text-[#6F8696] mb-2 block"></i>
                             Aucune démarche active pour le moment. Utilisez le formulaire de signalement pour transmettre votre premier besoin.
                         </div>
                     </div>
@@ -1361,7 +1531,7 @@
                     <i aria-hidden="true" class="fa-solid fa-triangle-exclamation text-xl"></i>
                     <span>ACCÈS RESTREINT — ZONE RÉSERVÉE AUX AGENTS MUNICIPAUX (D09 RBAC)</span>
                 </div>
-                <p class="text-xs text-[#E0F4FF]/80 max-w-xl mx-auto mb-4">
+                <p class="text-xs text-[#E6F1F7]/80 max-w-xl mx-auto mb-4">
                     Votre profil actuel est configuré en mode <strong>Citoyen</strong>. Selon les protocoles de sécurité de Terra Nova (D09), les citoyens ne peuvent pas accéder aux outils techniques internes ni aux fonctions sensibles de gestion des demandes.
                 </p>
                 <button onclick="switchRole('agent')" class="btn-cyber btn-violet px-6 py-2 text-xs font-bold uppercase">
@@ -1373,29 +1543,29 @@
             <div id="agent-workspace-content" class="space-y-12">
 
                 <!-- Header Workspace -->
-                <div class="holo-card p-6 border border-[#9D00FF]/50 relative">
+                <div class="holo-card p-6 border border-[#8FE1FF]/50 relative">
                     <div class="corner-tr"></div>
                     <div class="corner-bl"></div>
 
                     <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 pb-6 border-b border-cyan-900/50">
                         <div>
-                            <div class="inline-flex items-center space-x-2 text-xs text-[#9D00FF] uppercase tracking-widest mb-1">
+                            <div class="inline-flex items-center space-x-2 text-xs text-[#8FE1FF] uppercase tracking-widest mb-1">
                                 <i aria-hidden="true" class="fa-solid fa-shield-halved"></i>
                                 <span>ESPACE DE TRAVAIL DES AGENTS (EXIGENCES D19 & F22 — 1000 XP)</span>
                             </div>
-                            <h2 class="text-2xl sm:text-3xl font-black font-orbitron text-[#E0F4FF] uppercase tracking-wider flex items-center gap-3">
+                            <h2 class="text-2xl sm:text-3xl font-black font-orbitron text-[#E6F1F7] uppercase tracking-wider flex items-center gap-3">
                                 <span>BACKOFFICE DE SUPERVISION MUNICIPALE</span>
-                                <span class="text-xs bg-[#9D00FF]/20 text-[#9D00FF] border border-[#9D00FF]/50 px-2 py-0.5 rounded font-mono">D19 DIFFICILES (750 XP)</span>
+                                <span class="text-xs bg-[#8FE1FF]/20 text-[#8FE1FF] border border-[#8FE1FF]/50 px-2 py-0.5 rounded font-mono">D19 DIFFICILES (750 XP)</span>
                             </h2>
-                            <p class="text-xs text-[#4A607A] mt-1">
+                            <p class="text-xs text-[#6F8696] mt-1">
                                 Supervision en temps réel des flux API de Terra Nova, suivi des vagues du concours Webcup et traitement opérationnel des demandes citoyennes.
                             </p>
                         </div>
 
                         <!-- Live Controls & Refresh -->
                         <div class="flex flex-wrap items-center gap-3">
-                            <div class="text-xs font-mono text-[#00F0FF] bg-[#03070E] px-3 py-2 border border-cyan-900 flex items-center gap-2">
-                                <span class="w-2 h-2 rounded-full bg-[#00F0FF] animate-ping"></span>
+                            <div class="text-xs font-mono text-[#00B8FF] bg-[#05080C] px-3 py-2 border border-cyan-900 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-[#00B8FF] animate-ping"></span>
                                 <span id="agent-poll-timer">Auto-refresh: 30s</span>
                             </div>
                             <button onclick="fetchRequests(true)" class="btn-cyber px-4 py-2 text-xs font-bold uppercase flex items-center gap-2">
@@ -1407,52 +1577,52 @@
 
                     <!-- Metrics Grid (Session API State) -->
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
-                        <div class="bg-[#03070E]/90 border border-cyan-900/60 p-4">
-                            <div class="text-[10px] text-[#4A607A] uppercase font-orbitron">Statut Session API</div>
-                            <div id="sessStatus" class="text-xl font-bold font-orbitron text-[#00F0FF]">ACTIF</div>
+                        <div class="bg-[#05080C]/90 border border-cyan-900/60 p-4">
+                            <div class="text-[10px] text-[#6F8696] uppercase font-orbitron">Statut Session API</div>
+                            <div id="sessStatus" class="text-xl font-bold font-orbitron text-[#00B8FF]">ACTIF</div>
                             <div class="text-[9px] text-green-400 mt-0.5 font-mono">En cours d'exécution</div>
                         </div>
-                        <div class="bg-[#03070E]/90 border border-cyan-900/60 p-4">
-                            <div class="text-[10px] text-[#4A607A] uppercase font-orbitron">Vague Actuelle</div>
-                            <div id="sessWave" class="text-xl font-bold font-orbitron text-[#E0F4FF]">0</div>
-                            <div class="text-[9px] text-[#4A607A] mt-0.5 font-mono" id="sessElapsed">Écoulé: 0 min</div>
+                        <div class="bg-[#05080C]/90 border border-cyan-900/60 p-4">
+                            <div class="text-[10px] text-[#6F8696] uppercase font-orbitron">Vague Actuelle</div>
+                            <div id="sessWave" class="text-xl font-bold font-orbitron text-[#E6F1F7]">0</div>
+                            <div class="text-[9px] text-[#6F8696] mt-0.5 font-mono" id="sessElapsed">Écoulé: 0 min</div>
                         </div>
-                        <div class="bg-[#03070E]/90 border border-cyan-900/60 p-4">
-                            <div class="text-[10px] text-[#4A607A] uppercase font-orbitron">Demandes Accessibles</div>
-                            <div id="sessCount" class="text-xl font-bold font-orbitron text-[#FFB700]">10</div>
-                            <div class="text-[9px] text-[#4A607A] mt-0.5 font-mono" id="sessInitialCount">10 initiales</div>
+                        <div class="bg-[#05080C]/90 border border-cyan-900/60 p-4">
+                            <div class="text-[10px] text-[#6F8696] uppercase font-orbitron">Demandes Accessibles</div>
+                            <div id="sessCount" class="text-xl font-bold font-orbitron text-[#FFB347]">10</div>
+                            <div class="text-[9px] text-[#6F8696] mt-0.5 font-mono" id="sessInitialCount">10 initiales</div>
                         </div>
-                        <div class="bg-[#03070E]/90 border border-cyan-900/60 p-4">
-                            <div class="text-[10px] text-[#4A607A] uppercase font-orbitron">Prochaine Vague</div>
-                            <div id="sessNextWave" class="text-xl font-bold font-orbitron text-[#9D00FF]">Vague 1</div>
-                            <div class="text-[9px] text-[#9D00FF] mt-0.5 font-mono" id="sessNextWaveMinutes">Dans ~75 min</div>
+                        <div class="bg-[#05080C]/90 border border-cyan-900/60 p-4">
+                            <div class="text-[10px] text-[#6F8696] uppercase font-orbitron">Prochaine Vague</div>
+                            <div id="sessNextWave" class="text-xl font-bold font-orbitron text-[#8FE1FF]">Vague 1</div>
+                            <div class="text-[9px] text-[#8FE1FF] mt-0.5 font-mono" id="sessNextWaveMinutes">Dans ~75 min</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- SUB-PART A : MODULE F22 — GESTIONNAIRE DES DEMANDES DES HABITANTS (250 XP) -->
-                <div class="holo-card p-6 border border-[#FFB700]/40 relative">
+                <div class="holo-card p-6 border border-[#FFB347]/40 relative">
                     <div class="corner-tr"></div>
                     <div class="corner-bl"></div>
 
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-cyan-900/60 mb-6 gap-2">
                         <div>
-                            <div class="inline-flex items-center space-x-2 text-xs text-[#FFB700] uppercase tracking-widest mb-0.5">
+                            <div class="inline-flex items-center space-x-2 text-xs text-[#FFB347] uppercase tracking-widest mb-0.5">
                                 <i aria-hidden="true" class="fa-solid fa-list-check"></i>
                                 <span>TRAITEMENT DES REQUÊTES HABITANTS (EXIGENCE F22 — 250 XP)</span>
                             </div>
-                            <h3 class="font-orbitron font-bold text-lg text-[#E0F4FF] uppercase">
+                            <h3 class="font-orbitron font-bold text-lg text-[#E6F1F7] uppercase">
                                 GESTIONNAIRE TECHNIQUE DES DEMANDES CITOYENNES
                             </h3>
-                            <p class="text-xs text-[#4A607A]">
+                            <p class="text-xs text-[#6F8696]">
                                 Traitez les sollicitations reçues des habitants de Terra Nova. Mettez à jour leur état pour informer les citoyens en temps réel.
                             </p>
                         </div>
                         <div class="flex items-center gap-2">
-                            <button onclick="filterAgentTickets('all')" class="px-2.5 py-1 text-xs border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 agent-ticket-filter">Toutes (<span id="count-agent-all">0</span>)</button>
-                            <button onclick="filterAgentTickets('pending')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#FFB700] agent-ticket-filter">En attente (<span id="count-agent-pending">0</span>)</button>
-                            <button onclick="filterAgentTickets('progress')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] agent-ticket-filter">En cours (<span id="count-agent-progress">0</span>)</button>
-                            <button onclick="filterAgentTickets('resolved')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-green-400 agent-ticket-filter">Résolues (<span id="count-agent-resolved">0</span>)</button>
+                            <button onclick="filterAgentTickets('all')" class="px-2.5 py-1 text-xs border border-[#00B8FF] text-[#00B8FF] bg-[#00B8FF]/10 agent-ticket-filter">Toutes (<span id="count-agent-all">0</span>)</button>
+                            <button onclick="filterAgentTickets('pending')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#6F8696] hover:text-[#FFB347] agent-ticket-filter">En attente (<span id="count-agent-pending">0</span>)</button>
+                            <button onclick="filterAgentTickets('progress')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#6F8696] hover:text-[#00B8FF] agent-ticket-filter">En cours (<span id="count-agent-progress">0</span>)</button>
+                            <button onclick="filterAgentTickets('resolved')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#6F8696] hover:text-green-400 agent-ticket-filter">Résolues (<span id="count-agent-resolved">0</span>)</button>
                         </div>
                     </div>
 
@@ -1460,7 +1630,7 @@
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-xs">
                             <thead>
-                                <tr class="border-b border-cyan-900/60 text-[#4A607A] uppercase text-[10px]">
+                                <tr class="border-b border-cyan-900/60 text-[#6F8696] uppercase text-[10px]">
                                     <th scope="col" class="py-2.5 px-3">Ticket</th>
                                     <th scope="col" class="py-2.5 px-3">Citoyen</th>
                                     <th scope="col" class="py-2.5 px-3">Service Concerne</th>
@@ -1481,25 +1651,25 @@
                 <div>
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4">
                         <div>
-                            <div class="inline-flex items-center space-x-2 text-xs text-[#00F0FF] uppercase tracking-widest mb-1">
+                            <div class="inline-flex items-center space-x-2 text-xs text-[#00B8FF] uppercase tracking-widest mb-1">
                                 <i aria-hidden="true" class="fa-solid fa-code-pull-request"></i>
                                 <span>FLUX D'INFRASTRUCTURE (EXIGENCE D19 — 750 XP)</span>
                             </div>
-                            <h3 class="text-xl sm:text-2xl font-black font-orbitron text-[#00F0FF] uppercase tracking-wider">
+                            <h3 class="text-xl sm:text-2xl font-black font-orbitron text-[#00B8FF] uppercase tracking-wider">
                                 DEMANDES TRANSMISES PAR L'API WEBCUP (NOVA TERRA)
                             </h3>
-                            <p class="text-xs text-[#4A607A] mt-1">
+                            <p class="text-xs text-[#6F8696] mt-1">
                                 Flux dynamique consommé via l'API officielle. Utilisez les filtres ci-dessous pour analyser chaque demande, son barème en XP et son niveau de difficulté.
                             </p>
                         </div>
 
                         <!-- Filter buttons for API requests -->
                         <div class="flex flex-wrap items-center gap-2 text-xs">
-                            <span class="text-[#4A607A] text-[11px]">Difficulté:</span>
-                            <button onclick="filterApiRequests('all')" class="px-2.5 py-1 text-xs border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 api-filter-btn">Toutes</button>
-                            <button onclick="filterApiRequests('Facile')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-green-400 api-filter-btn">Facile (250 XP)</button>
-                            <button onclick="filterApiRequests('Moyenne')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] api-filter-btn">Moyenne (500 XP)</button>
-                            <button onclick="filterApiRequests('Difficile')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#FFB700] api-filter-btn">Difficile (750 XP)</button>
+                            <span class="text-[#6F8696] text-[11px]">Difficulté:</span>
+                            <button onclick="filterApiRequests('all')" class="px-2.5 py-1 text-xs border border-[#00B8FF] text-[#00B8FF] bg-[#00B8FF]/10 api-filter-btn">Toutes</button>
+                            <button onclick="filterApiRequests('Facile')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#6F8696] hover:text-green-400 api-filter-btn">Facile (250 XP)</button>
+                            <button onclick="filterApiRequests('Moyenne')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#6F8696] hover:text-[#00B8FF] api-filter-btn">Moyenne (500 XP)</button>
+                            <button onclick="filterApiRequests('Difficile')" class="px-2.5 py-1 text-xs border border-cyan-900 text-[#6F8696] hover:text-[#FFB347] api-filter-btn">Difficile (750 XP)</button>
                         </div>
                     </div>
 
@@ -1517,40 +1687,40 @@
     </div>
 
     <!-- FOOTER OFFICIEL -->
-    <footer class="border-t border-cyan-900/50 bg-[#03070E] py-8 relative z-10 text-xs text-[#4A607A]">
+    <footer class="border-t border-cyan-900/50 bg-[#05080C] py-8 relative z-10 text-xs text-[#6F8696]">
         <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div>
                 © 2026-2842 DIRECTION DU HAUT CONSEIL DE TERRA NOVA — 24H BY WEBCUP.
             </div>
-            <div class="flex space-x-6 text-[#00F0FF]/60 font-mono text-[11px]">
-                <a href="#services-municipaux" class="hover:text-[#00F0FF] transition">SERVICES URBAINS</a>
-                <a href="#annonces" class="hover:text-[#00F0FF] transition">JOURNAL OFFICIEL</a>
-                <a href="#espace-citoyen" class="hover:text-[#00F0FF] transition">PORTAIL HABITANT</a>
-                <a href="#espace-agent" class="hover:text-[#00F0FF] transition">SUPERVISION TECHNIQUE</a>
+            <div class="flex space-x-6 text-[#00B8FF]/60 font-mono text-[11px]">
+                <a href="#services-municipaux" class="hover:text-[#00B8FF] transition">SERVICES URBAINS</a>
+                <a href="#annonces" class="hover:text-[#00B8FF] transition">JOURNAL OFFICIEL</a>
+                <a href="#espace-citoyen" class="hover:text-[#00B8FF] transition">PORTAIL HABITANT</a>
+                <a href="#espace-agent" class="hover:text-[#00B8FF] transition">SUPERVISION TECHNIQUE</a>
             </div>
         </div>
     </footer>
 
     <!-- MODALE 1 : AUTHENTIFICATION CITOYENNE (D01 & D03) -->
     <div id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-        <div class="holo-card max-w-md w-full p-6 border border-[#00F0FF] shadow-[0_0_50px_rgba(0,240,255,0.35)] relative">
+        <div class="holo-card max-w-md w-full p-6 border border-[#00B8FF] shadow-[0_0_50px_rgba(0,184,255,0.35)] relative">
             <div class="corner-tr"></div>
             <div class="corner-bl"></div>
 
             <div class="flex justify-between items-center pb-3 border-b border-cyan-900/60 mb-5">
-                <span class="font-orbitron text-sm font-bold text-[#00F0FF] flex items-center space-x-2">
+                <span class="font-orbitron text-sm font-bold text-[#00B8FF] flex items-center space-x-2">
                     <i aria-hidden="true" class="fa-solid fa-fingerprint"></i>
                     <span id="auth-modal-title">ACCÈS CITOYEN TERRA NOVA</span>
                 </span>
-                <button type="button" onclick="closeAuthModal()" aria-label="Fermer la fenêtre" class="text-[#4A607A] hover:text-[#00F0FF] text-lg font-bold"><span aria-hidden="true">✕</span></button>
+                <button type="button" onclick="closeAuthModal()" aria-label="Fermer la fenêtre" class="text-[#6F8696] hover:text-[#00B8FF] text-lg font-bold"><span aria-hidden="true">✕</span></button>
             </div>
 
             <!-- Tabs : Inscription / Connexion -->
             <div class="flex border-b border-cyan-900/60 mb-6 text-xs">
-                <button type="button" id="tab-login" aria-pressed="true" onclick="setAuthTab('login')" class="flex-1 py-2 font-orbitron font-bold text-[#00F0FF] border-b-2 border-[#00F0FF] text-center">
+                <button type="button" id="tab-login" aria-pressed="true" onclick="setAuthTab('login')" class="flex-1 py-2 font-orbitron font-bold text-[#00B8FF] border-b-2 border-[#00B8FF] text-center">
                     CONNEXION (D03)
                 </button>
-                <button type="button" id="tab-register" aria-pressed="false" onclick="setAuthTab('register')" class="flex-1 py-2 font-orbitron font-bold text-[#4A607A] border-b-2 border-transparent text-center hover:text-[#00F0FF]">
+                <button type="button" id="tab-register" aria-pressed="false" onclick="setAuthTab('register')" class="flex-1 py-2 font-orbitron font-bold text-[#6F8696] border-b-2 border-transparent text-center hover:text-[#00B8FF]">
                     INSCRIPTION NOUVEAU COLON (D01)
                 </button>
             </div>
@@ -1558,11 +1728,11 @@
             <!-- Form Connexion -->
             <form id="form-login" onsubmit="handleLoginSubmit(event)" class="space-y-4">
                 <div class="flex flex-col space-y-1.5">
-                    <label for="login-matricule" class="text-xs text-[#4A607A] uppercase">Matricule Citoyen ou Nom</label>
+                    <label for="login-matricule" class="text-xs text-[#6F8696] uppercase">Matricule Citoyen ou Nom</label>
                     <input type="text" id="login-matricule" required placeholder="ex: TN-2842-8812 ou Kaelen Vance" class="cyber-input py-2 px-2 text-xs">
                 </div>
                 <div class="flex flex-col space-y-1.5">
-                    <label for="login-pwd" class="text-xs text-[#4A607A] uppercase">Empreinte Cryptographique / Code</label>
+                    <label for="login-pwd" class="text-xs text-[#6F8696] uppercase">Empreinte Cryptographique / Code</label>
                     <input type="password" id="login-pwd" required placeholder="••••••••••••" class="cyber-input py-2 px-2 text-xs">
                 </div>
                 <div class="pt-2">
@@ -1570,20 +1740,20 @@
                         S'authentifier sur le Portail
                     </button>
                 </div>
-                <div class="text-[11px] text-[#4A607A] text-center pt-2">
-                    Pas encore de matricule ? <a href="javascript:setAuthTab('register')" class="text-[#00F0FF] hover:underline">Créer un compte colon</a>
+                <div class="text-[11px] text-[#6F8696] text-center pt-2">
+                    Pas encore de matricule ? <a href="javascript:setAuthTab('register')" class="text-[#00B8FF] hover:underline">Créer un compte colon</a>
                 </div>
             </form>
 
             <!-- Form Inscription (D01) -->
             <form id="form-register" onsubmit="handleRegisterSubmit(event)" class="space-y-4 hidden">
                 <div class="flex flex-col space-y-1.5">
-                    <label for="reg-name" class="text-xs text-[#4A607A] uppercase">Nom & Prénom du Colon</label>
+                    <label for="reg-name" class="text-xs text-[#6F8696] uppercase">Nom & Prénom du Colon</label>
                     <input type="text" id="reg-name" required placeholder="ex: Thalia Kren" class="cyber-input py-2 px-2 text-xs">
                 </div>
                 <div class="flex flex-col space-y-1.5">
-                    <label for="reg-role" class="text-xs text-[#4A607A] uppercase">Spécialisation / Profession</label>
-                    <select id="reg-role" class="cyber-input py-2 px-2 text-xs bg-[#03070E] text-[#E0F4FF]">
+                    <label for="reg-role" class="text-xs text-[#6F8696] uppercase">Spécialisation / Profession</label>
+                    <select id="reg-role" class="cyber-input py-2 px-2 text-xs bg-[#05080C] text-[#E6F1F7]">
                         <option value="Ingénieur Systèmes Plasma">Ingénieur Systèmes Plasma</option>
                         <option value="Biologiste / Dôme Atmosphère">Biologiste / Dôme Atmosphère</option>
                         <option value="Pilote Navette Orbitale">Pilote Navette Orbitale</option>
@@ -1593,8 +1763,8 @@
                     </select>
                 </div>
                 <div class="flex flex-col space-y-1.5">
-                    <label for="reg-dome" class="text-xs text-[#4A607A] uppercase">Dôme de Résidence Assigné</label>
-                    <select id="reg-dome" class="cyber-input py-2 px-2 text-xs bg-[#03070E] text-[#E0F4FF]">
+                    <label for="reg-dome" class="text-xs text-[#6F8696] uppercase">Dôme de Résidence Assigné</label>
+                    <select id="reg-dome" class="cyber-input py-2 px-2 text-xs bg-[#05080C] text-[#E6F1F7]">
                         <option value="Dôme Alpha - Anneau 1">Dôme Alpha - Anneau 1 (Bio-Résidence)</option>
                         <option value="Dôme Bêta - Anneau 2">Dôme Bêta - Anneau 2 (Technocité)</option>
                         <option value="Anneau Orbital Zéro">Anneau Orbital Zéro (Spatioport)</option>
@@ -1602,7 +1772,7 @@
                     </select>
                 </div>
                 <div class="flex flex-col space-y-1.5">
-                    <label for="reg-pwd" class="text-xs text-[#4A607A] uppercase">Code de Sécurité d'Accès</label>
+                    <label for="reg-pwd" class="text-xs text-[#6F8696] uppercase">Code de Sécurité d'Accès</label>
                     <input type="password" id="reg-pwd" required placeholder="••••••••••••" class="cyber-input py-2 px-2 text-xs">
                 </div>
                 <div class="pt-2">
@@ -1616,24 +1786,24 @@
 
     <!-- MODALE 2 : LECTURE DÉTAILLÉE D'UNE ANNONCE / DÉCRET (D06) -->
     <div id="news-modal" role="dialog" aria-modal="true" aria-labelledby="news-modal-title" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-        <div class="holo-card max-w-lg w-full p-6 border border-[#00F0FF] shadow-[0_0_50px_rgba(0,240,255,0.35)] relative">
+        <div class="holo-card max-w-lg w-full p-6 border border-[#00B8FF] shadow-[0_0_50px_rgba(0,184,255,0.35)] relative">
             <div class="corner-tr"></div>
             <div class="corner-bl"></div>
 
             <div class="flex justify-between items-center pb-3 border-b border-cyan-900/60 mb-4">
-                <span class="font-orbitron text-xs font-bold text-[#00F0FF] uppercase flex items-center space-x-2">
+                <span class="font-orbitron text-xs font-bold text-[#00B8FF] uppercase flex items-center space-x-2">
                     <i aria-hidden="true" class="fa-solid fa-scroll"></i>
                     <span id="news-modal-badge">DÉCRET OFFICIEL</span>
                 </span>
-                <button type="button" onclick="closeNewsModal()" aria-label="Fermer la fenêtre" class="text-[#4A607A] hover:text-[#00F0FF] text-lg font-bold"><span aria-hidden="true">✕</span></button>
+                <button type="button" onclick="closeNewsModal()" aria-label="Fermer la fenêtre" class="text-[#6F8696] hover:text-[#00B8FF] text-lg font-bold"><span aria-hidden="true">✕</span></button>
             </div>
 
-            <h3 class="font-orbitron font-bold text-xl text-[#E0F4FF] mb-3" id="news-modal-title">Titre de l'annonce</h3>
-            <div class="text-[11px] text-[#4A607A] font-mono mb-4 flex justify-between border-b border-cyan-900/40 pb-2">
+            <h3 class="font-orbitron font-bold text-xl text-[#E6F1F7] mb-3" id="news-modal-title">Titre de l'annonce</h3>
+            <div class="text-[11px] text-[#6F8696] font-mono mb-4 flex justify-between border-b border-cyan-900/40 pb-2">
                 <span id="news-modal-author">Émetteur : Mairie de Terra Nova</span>
                 <span id="news-modal-date">Date : Cycle ST-44</span>
             </div>
-            <div class="text-xs text-[#E0F4FF]/90 space-y-3 leading-relaxed mb-6" id="news-modal-content">
+            <div class="text-xs text-[#E6F1F7]/90 space-y-3 leading-relaxed mb-6" id="news-modal-content">
                 <!-- Injected text -->
             </div>
             <div class="flex justify-end">
@@ -1644,22 +1814,22 @@
 
     <!-- MODALE 3 : CONSOLE TERMINAL DIRECT AETHEL-OS -->
     <div id="modal" role="dialog" aria-modal="true" aria-labelledby="console-modal-title" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-        <div class="holo-card max-w-lg w-full p-6 border border-[#00F0FF] shadow-[0_0_50px_rgba(0,240,255,0.35)]">
+        <div class="holo-card max-w-lg w-full p-6 border border-[#00B8FF] shadow-[0_0_50px_rgba(0,184,255,0.35)]">
             <div class="corner-tr"></div>
             <div class="corner-bl"></div>
 
             <div class="flex justify-between items-center pb-3 border-b border-cyan-900/60 mb-4">
-                <span class="font-orbitron text-sm font-bold text-[#00F0FF] flex items-center space-x-2">
+                <span class="font-orbitron text-sm font-bold text-[#00B8FF] flex items-center space-x-2">
                     <i aria-hidden="true" class="fa-solid fa-terminal"></i>
                     <span id="console-modal-title">CONSOLE DIRECTE AETHEL-OS v2.4</span>
                 </span>
-                <button type="button" onclick="toggleModal()" aria-label="Fermer la fenêtre" class="text-[#4A607A] hover:text-[#00F0FF] text-lg font-bold"><span aria-hidden="true">✕</span></button>
+                <button type="button" onclick="toggleModal()" aria-label="Fermer la fenêtre" class="text-[#6F8696] hover:text-[#00B8FF] text-lg font-bold"><span aria-hidden="true">✕</span></button>
             </div>
 
-            <div class="bg-[#03070E] border border-cyan-900/80 p-4 font-mono text-xs space-y-2 h-52 overflow-y-auto mb-4 text-[#E0F4FF]"
+            <div class="bg-[#05080C] border border-cyan-900/80 p-4 font-mono text-xs space-y-2 h-52 overflow-y-auto mb-4 text-[#E6F1F7]"
                 id="modal-console" role="log" aria-live="polite" aria-label="Sortie de la console">
-                <div class="text-[#4A607A]">> Initialisation de la liaison directe Aethel...</div>
-                <div class="text-[#00F0FF]">> Connexion établie avec le noyau central de Terra Nova.</div>
+                <div class="text-[#6F8696]">> Initialisation de la liaison directe Aethel...</div>
+                <div class="text-[#00B8FF]">> Connexion établie avec le noyau central de Terra Nova.</div>
                 <div>> Tapez 'help' pour afficher les commandes d'administration.</div>
             </div>
 
@@ -1754,23 +1924,23 @@
 
             if (currentRole === 'citizen') {
                 badge.innerText = 'CITOYEN';
-                badge.className = 'font-orbitron font-bold text-[#00F0FF]';
-                icon.className = 'fa-solid fa-user text-[#00F0FF]';
+                badge.className = 'font-orbitron font-bold text-[#00B8FF]';
+                icon.className = 'fa-solid fa-user text-[#00B8FF]';
                 
                 // D09 : Le citoyen ne peut pas accéder aux outils municipaux confidentiels
                 if (restrictedBanner) restrictedBanner.classList.remove('hidden');
                 if (agentWorkspace) agentWorkspace.classList.add('hidden');
             } else if (currentRole === 'agent') {
                 badge.innerText = 'AGENT';
-                badge.className = 'font-orbitron font-bold text-[#9D00FF]';
-                icon.className = 'fa-solid fa-id-badge text-[#9D00FF]';
+                badge.className = 'font-orbitron font-bold text-[#8FE1FF]';
+                icon.className = 'fa-solid fa-id-badge text-[#8FE1FF]';
 
                 if (restrictedBanner) restrictedBanner.classList.add('hidden');
                 if (agentWorkspace) agentWorkspace.classList.remove('hidden');
             } else if (currentRole === 'admin') {
                 badge.innerText = 'ADMIN';
-                badge.className = 'font-orbitron font-bold text-[#FFB700]';
-                icon.className = 'fa-solid fa-crown text-[#FFB700]';
+                badge.className = 'font-orbitron font-bold text-[#FFB347]';
+                icon.className = 'fa-solid fa-crown text-[#FFB347]';
 
                 if (restrictedBanner) restrictedBanner.classList.add('hidden');
                 if (agentWorkspace) agentWorkspace.classList.remove('hidden');
@@ -1906,8 +2076,8 @@
 
             if (!requests || requests.length === 0) {
                 grid.innerHTML = `
-                    <div class="col-span-full holo-card p-8 text-center text-xs text-[#4A607A]">
-                        <i aria-hidden="true" class="fa-solid fa-satellite-dish text-2xl text-[#4A607A] mb-3 block"></i>
+                    <div class="col-span-full holo-card p-8 text-center text-xs text-[#6F8696]">
+                        <i aria-hidden="true" class="fa-solid fa-satellite-dish text-2xl text-[#6F8696] mb-3 block"></i>
                         Aucune demande actuellement accessible dans le flux de la cité.
                     </div>
                 `;
@@ -1919,7 +2089,7 @@
                 const arrivalLabel = req.is_initial ? "Vague Initiale (H+0)" : `Vague ${req.wave_number || req.visible_since_wave} (${req.arrival_time || 'Diffusée'})`;
 
                 return `
-                    <div class="holo-card p-6 flex flex-col justify-between hover:border-[#00F0FF] transition duration-300 group relative">
+                    <div class="holo-card p-6 flex flex-col justify-between hover:border-[#00B8FF] transition duration-300 group relative">
                         <div class="corner-tr"></div>
                         <div class="corner-bl"></div>
 
@@ -1927,34 +2097,34 @@
                             <!-- Header de la demande -->
                             <div class="flex justify-between items-start mb-3">
                                 <div class="flex items-center space-x-2">
-                                    <span class="font-orbitron font-black text-lg text-[#00F0FF] group-hover:text-white transition">
+                                    <span class="font-orbitron font-black text-lg text-[#00B8FF] group-hover:text-white transition">
                                         ${escapeHtml(req.request_code)}
                                     </span>
                                     <span class="diff-badge diff-${diffLevel}">${escapeHtml(req.difficulty || 'Normal')}</span>
                                 </div>
                                 <div class="text-right">
-                                    <span class="font-orbitron font-bold text-sm text-[#FFB700]">${req.xp_total || req.xp_base} XP</span>
-                                    ${req.xp_time_bonus > 0 ? `<div class="text-[9px] text-[#9D00FF] font-mono">+${req.xp_time_bonus} bonus</div>` : ''}
+                                    <span class="font-orbitron font-bold text-sm text-[#FFB347]">${req.xp_total || req.xp_base} XP</span>
+                                    ${req.xp_time_bonus > 0 ? `<div class="text-[9px] text-[#8FE1FF] font-mono">+${req.xp_time_bonus} bonus</div>` : ''}
                                 </div>
                             </div>
 
                             <!-- Demandeur -->
-                            <div class="text-[11px] text-[#4A607A] font-mono mb-3 flex items-center gap-1.5">
-                                <i aria-hidden="true" class="fa-regular fa-building text-[10px] text-[#00F0FF]"></i>
-                                <span class="text-[#E0F4FF] font-semibold">${escapeHtml(req.requester_name || 'Haut Conseil')}</span>
+                            <div class="text-[11px] text-[#6F8696] font-mono mb-3 flex items-center gap-1.5">
+                                <i aria-hidden="true" class="fa-regular fa-building text-[10px] text-[#00B8FF]"></i>
+                                <span class="text-[#E6F1F7] font-semibold">${escapeHtml(req.requester_name || 'Haut Conseil')}</span>
                                 ${req.requester_type ? `<span class="opacity-60">(${escapeHtml(req.requester_type)})</span>` : ''}
                             </div>
 
                             <!-- Message Public / Besoin fonctionnel -->
-                            <p class="text-xs text-[#E0F4FF]/90 leading-relaxed mb-4 bg-[#03070E]/70 p-3 border border-cyan-900/40">
+                            <p class="text-xs text-[#E6F1F7]/90 leading-relaxed mb-4 bg-[#05080C]/70 p-3 border border-cyan-900/40">
                                 "${escapeHtml(req.message_public)}"
                             </p>
                         </div>
 
                         <!-- Footer de la carte -->
-                        <div class="border-t border-cyan-900/40 pt-3 flex justify-between items-center text-[10px] text-[#4A607A] font-mono">
+                        <div class="border-t border-cyan-900/40 pt-3 flex justify-between items-center text-[10px] text-[#6F8696] font-mono">
                             <span><i aria-hidden="true" class="fa-solid fa-clock-rotate-left mr-1"></i>${escapeHtml(arrivalLabel)}</span>
-                            <span class="text-[#00F0FF] font-bold">DISPONIBLE</span>
+                            <span class="text-[#00B8FF] font-bold">DISPONIBLE</span>
                         </div>
                     </div>
                 `;
@@ -1964,9 +2134,9 @@
         function filterApiRequests(diff) {
             // Mise à jour visuelle des boutons
             document.querySelectorAll('.api-filter-btn').forEach(btn => {
-                btn.className = "px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] api-filter-btn";
+                btn.className = "px-2.5 py-1 text-xs border border-cyan-900 text-[#6F8696] hover:text-[#00B8FF] api-filter-btn";
             });
-            event.target.closest('button').className = "px-2.5 py-1 text-xs border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 api-filter-btn";
+            event.target.closest('button').className = "px-2.5 py-1 text-xs border border-[#00B8FF] text-[#00B8FF] bg-[#00B8FF]/10 api-filter-btn";
 
             if (diff === 'all') {
                 renderRequestsGrid(cachedRequests);
@@ -2050,17 +2220,17 @@
                 const statusBadge = t.status === 'Résolu' 
                     ? `<span class="text-green-400 border border-green-500/40 bg-green-500/10 px-2 py-0.5 rounded text-[10px]">Résolu</span>`
                     : t.status === 'En cours'
-                    ? `<span class="text-[#00F0FF] border border-[#00F0FF]/40 bg-[#00F0FF]/10 px-2 py-0.5 rounded text-[10px]">En cours</span>`
-                    : `<span class="text-[#FFB700] border border-[#FFB700]/40 bg-[#FFB700]/10 px-2 py-0.5 rounded text-[10px]">En attente</span>`;
+                    ? `<span class="text-[#00B8FF] border border-[#00B8FF]/40 bg-[#00B8FF]/10 px-2 py-0.5 rounded text-[10px]">En cours</span>`
+                    : `<span class="text-[#FFB347] border border-[#FFB347]/40 bg-[#FFB347]/10 px-2 py-0.5 rounded text-[10px]">En attente</span>`;
 
                 return `
                     <tr class="hover:bg-cyan-950/20 transition">
-                        <td class="py-2.5 px-3 font-mono font-bold text-[#FFB700]">${escapeHtml(t.id)}</td>
-                        <td class="py-2.5 px-3 text-[#E0F4FF]">${escapeHtml(t.service)}</td>
-                        <td class="py-2.5 px-3 text-[#E0F4FF]/90 font-medium">${escapeHtml(t.subject)}</td>
-                        <td class="py-2.5 px-3 text-[#4A607A]">${escapeHtml(t.priority)}</td>
+                        <td class="py-2.5 px-3 font-mono font-bold text-[#FFB347]">${escapeHtml(t.id)}</td>
+                        <td class="py-2.5 px-3 text-[#E6F1F7]">${escapeHtml(t.service)}</td>
+                        <td class="py-2.5 px-3 text-[#E6F1F7]/90 font-medium">${escapeHtml(t.subject)}</td>
+                        <td class="py-2.5 px-3 text-[#6F8696]">${escapeHtml(t.priority)}</td>
                         <td class="py-2.5 px-3">${statusBadge}</td>
-                        <td class="py-2.5 px-3 text-right font-mono text-[#4A607A] text-[10px]">${escapeHtml(t.date)}</td>
+                        <td class="py-2.5 px-3 text-right font-mono text-[#6F8696] text-[10px]">${escapeHtml(t.date)}</td>
                     </tr>
                 `;
             }).join('');
@@ -2098,7 +2268,7 @@
             if (displayedTickets.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="7" class="py-6 text-center text-xs text-[#4A607A]">
+                        <td colspan="7" class="py-6 text-center text-xs text-[#6F8696]">
                             Aucune demande citoyenne dans cette catégorie.
                         </td>
                     </tr>
@@ -2110,23 +2280,23 @@
                 const statusBadge = t.status === 'Résolu' 
                     ? `<span class="text-green-400 border border-green-500/40 bg-green-500/10 px-2 py-0.5 rounded text-[10px]">Résolu</span>`
                     : t.status === 'En cours'
-                    ? `<span class="text-[#00F0FF] border border-[#00F0FF]/40 bg-[#00F0FF]/10 px-2 py-0.5 rounded text-[10px]">En cours</span>`
-                    : `<span class="text-[#FFB700] border border-[#FFB700]/40 bg-[#FFB700]/10 px-2 py-0.5 rounded text-[10px]">En attente</span>`;
+                    ? `<span class="text-[#00B8FF] border border-[#00B8FF]/40 bg-[#00B8FF]/10 px-2 py-0.5 rounded text-[10px]">En cours</span>`
+                    : `<span class="text-[#FFB347] border border-[#FFB347]/40 bg-[#FFB347]/10 px-2 py-0.5 rounded text-[10px]">En attente</span>`;
 
                 return `
                     <tr class="hover:bg-cyan-950/30 transition">
-                        <td class="py-3 px-3 font-mono font-bold text-[#FFB700]">${escapeHtml(t.id)}</td>
-                        <td class="py-3 px-3 text-[#E0F4FF] font-semibold">${escapeHtml(t.citizenName)}</td>
-                        <td class="py-3 px-3 text-[#00F0FF]">${escapeHtml(t.service)}</td>
+                        <td class="py-3 px-3 font-mono font-bold text-[#FFB347]">${escapeHtml(t.id)}</td>
+                        <td class="py-3 px-3 text-[#E6F1F7] font-semibold">${escapeHtml(t.citizenName)}</td>
+                        <td class="py-3 px-3 text-[#00B8FF]">${escapeHtml(t.service)}</td>
                         <td class="py-3 px-3">
-                            <div class="text-[#E0F4FF] font-bold">${escapeHtml(t.subject)}</div>
-                            <div class="text-[11px] text-[#4A607A] line-clamp-1">${escapeHtml(t.message)}</div>
+                            <div class="text-[#E6F1F7] font-bold">${escapeHtml(t.subject)}</div>
+                            <div class="text-[11px] text-[#6F8696] line-clamp-1">${escapeHtml(t.message)}</div>
                         </td>
                         <td class="py-3 px-3 text-[11px]">${escapeHtml(t.priority)}</td>
                         <td class="py-3 px-3">${statusBadge}</td>
                         <td class="py-3 px-3 text-right space-x-1 whitespace-nowrap">
                             ${t.status !== 'En cours' && t.status !== 'Résolu' ? `
-                                <button onclick="updateTicketStatus('${escapeHtml(t.id)}', 'En cours')" class="px-2 py-1 bg-cyan-950 border border-[#00F0FF] text-[#00F0FF] text-[10px] hover:bg-[#00F0FF] hover:text-black transition">
+                                <button onclick="updateTicketStatus('${escapeHtml(t.id)}', 'En cours')" class="px-2 py-1 bg-cyan-950 border border-[#00B8FF] text-[#00B8FF] text-[10px] hover:bg-[#00B8FF] hover:text-black transition">
                                     Prendre en charge
                                 </button>
                             ` : ''}
@@ -2135,7 +2305,7 @@
                                     Clôturer
                                 </button>
                             ` : `
-                                <button onclick="updateTicketStatus('${escapeHtml(t.id)}', 'En attente')" class="px-2 py-1 border border-cyan-900 text-[#4A607A] text-[10px] hover:text-[#FFB700] transition">
+                                <button onclick="updateTicketStatus('${escapeHtml(t.id)}', 'En attente')" class="px-2 py-1 border border-cyan-900 text-[#6F8696] text-[10px] hover:text-[#FFB347] transition">
                                     Rouvrir
                                 </button>
                             `}
@@ -2159,9 +2329,9 @@
 
         function filterAgentTickets(status) {
             document.querySelectorAll('.agent-ticket-filter').forEach(btn => {
-                btn.className = "px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] agent-ticket-filter";
+                btn.className = "px-2.5 py-1 text-xs border border-cyan-900 text-[#6F8696] hover:text-[#00B8FF] agent-ticket-filter";
             });
-            event.target.closest('button').className = "px-2.5 py-1 text-xs border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 agent-ticket-filter";
+            event.target.closest('button').className = "px-2.5 py-1 text-xs border border-[#00B8FF] text-[#00B8FF] bg-[#00B8FF]/10 agent-ticket-filter";
             renderAgentTicketsTable(status);
         }
 
@@ -2302,14 +2472,14 @@
             if (tab === 'login') {
                 formLogin.classList.remove('hidden');
                 formReg.classList.add('hidden');
-                tabLogin.className = "flex-1 py-2 font-orbitron font-bold text-[#00F0FF] border-b-2 border-[#00F0FF] text-center";
-                tabReg.className = "flex-1 py-2 font-orbitron font-bold text-[#4A607A] border-b-2 border-transparent text-center hover:text-[#00F0FF]";
+                tabLogin.className = "flex-1 py-2 font-orbitron font-bold text-[#00B8FF] border-b-2 border-[#00B8FF] text-center";
+                tabReg.className = "flex-1 py-2 font-orbitron font-bold text-[#6F8696] border-b-2 border-transparent text-center hover:text-[#00B8FF]";
                 title.innerText = "ACCÈS CITOYEN TERRA NOVA (D03)";
             } else {
                 formLogin.classList.add('hidden');
                 formReg.classList.remove('hidden');
-                tabLogin.className = "flex-1 py-2 font-orbitron font-bold text-[#4A607A] border-b-2 border-transparent text-center hover:text-[#00F0FF]";
-                tabReg.className = "flex-1 py-2 font-orbitron font-bold text-[#FFB700] border-b-2 border-[#FFB700] text-center";
+                tabLogin.className = "flex-1 py-2 font-orbitron font-bold text-[#6F8696] border-b-2 border-transparent text-center hover:text-[#00B8FF]";
+                tabReg.className = "flex-1 py-2 font-orbitron font-bold text-[#FFB347] border-b-2 border-[#FFB347] text-center";
                 title.innerText = "CRÉATION COMPTE COLON (D01)";
             }
         }
@@ -2388,9 +2558,9 @@
 
         function filterNews(cat) {
             document.querySelectorAll('.news-filter-btn').forEach(btn => {
-                btn.className = "px-3 py-1 border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] news-filter-btn";
+                btn.className = "px-3 py-1 border border-cyan-900 text-[#6F8696] hover:text-[#00B8FF] news-filter-btn";
             });
-            event.target.closest('button').className = "px-3 py-1 border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 news-filter-btn";
+            event.target.closest('button').className = "px-3 py-1 border border-[#00B8FF] text-[#00B8FF] bg-[#00B8FF]/10 news-filter-btn";
 
             document.querySelectorAll('.news-card').forEach(card => {
                 if (cat === 'all' || card.getAttribute('data-category') === cat) {
@@ -2403,9 +2573,9 @@
 
         function filterServices(cat) {
             document.querySelectorAll('.service-filter-btn').forEach(btn => {
-                btn.className = "px-2.5 py-1 text-xs border border-cyan-900 text-[#4A607A] hover:text-[#00F0FF] service-filter-btn";
+                btn.className = "px-2.5 py-1 text-xs border border-cyan-900 text-[#6F8696] hover:text-[#00B8FF] service-filter-btn";
             });
-            event.target.closest('button').className = "px-2.5 py-1 text-xs border border-[#00F0FF] text-[#00F0FF] bg-[#00F0FF]/10 service-filter-btn";
+            event.target.closest('button').className = "px-2.5 py-1 text-xs border border-[#00B8FF] text-[#00B8FF] bg-[#00B8FF]/10 service-filter-btn";
 
             document.querySelectorAll('.service-item').forEach(card => {
                 if (cat === 'all' || card.getAttribute('data-category') === cat) {
@@ -2437,7 +2607,7 @@
             const consoleBox = document.getElementById('modal-console');
 
             const userCmdLine = document.createElement('div');
-            userCmdLine.className = 'text-[#FFB700]';
+            userCmdLine.className = 'text-[#FFB347]';
             userCmdLine.innerText = '> ' + val;
             consoleBox.appendChild(userCmdLine);
 
@@ -2446,13 +2616,13 @@
 
             if (lower === 'status') {
                 resLine.innerText = `[OK] Sous-systèmes nominaux. Rôle actif: ${currentRole.toUpperCase()}. API: ${cachedRequests.length} demandes chargées.`;
-                resLine.className = 'text-[#00F0FF]';
+                resLine.className = 'text-[#00B8FF]';
             } else if (lower === 'shield') {
                 resLine.innerText = '[SHIELD] Boucliers plasma actifs à 100%. Aucune brèche ionique.';
-                resLine.className = 'text-[#00F0FF]';
+                resLine.className = 'text-[#00B8FF]';
             } else if (lower === 'plasma') {
                 resLine.innerText = '[PLASMA] Réacteur Zéro stable à 87.4% de charge utile. Quota colonial opérationnel.';
-                resLine.className = 'text-[#9D00FF]';
+                resLine.className = 'text-[#8FE1FF]';
             } else if (lower.startsWith('role ')) {
                 const r = lower.split(' ')[1];
                 if (['citizen', 'agent', 'admin'].includes(r)) {
@@ -2465,17 +2635,17 @@
                 }
             } else if (lower === 'requests') {
                 resLine.innerText = `[API] Demandes en cache (${cachedRequests.length}): ${cachedRequests.map(r => r.request_code).join(', ')}`;
-                resLine.className = 'text-[#E0F4FF]';
+                resLine.className = 'text-[#E6F1F7]';
             } else if (lower === 'whoami') {
                 resLine.innerText = activeCitizen ? `[CITOYEN] ${activeCitizen.name} (${activeCitizen.matricule}) - ${activeCitizen.role}` : `[VISITEUR] Aucun colon connecté.`;
-                resLine.className = 'text-[#E0F4FF]';
+                resLine.className = 'text-[#E6F1F7]';
             } else if (lower === 'clear') {
                 consoleBox.innerHTML = '';
                 input.value = '';
                 return;
             } else if (lower === 'help') {
                 resLine.innerText = 'Commandes : status, shield, plasma, requests, role [citizen|agent|admin], whoami, clear, help';
-                resLine.className = 'text-[#E0F4FF]';
+                resLine.className = 'text-[#E6F1F7]';
             } else {
                 resLine.innerText = `[ERREUR] Commande inconnue: '${val}'. Tapez 'help'.`;
                 resLine.className = 'text-red-400';
@@ -2553,7 +2723,7 @@
                     vx: (Math.random() - 0.5) * 0.4,
                     vy: (Math.random() - 0.5) * 0.4,
                     size: Math.random() * 2 + 0.5,
-                    color: Math.random() > 0.5 ? 'rgba(0, 240, 255, ' : 'rgba(157, 0, 255, ',
+                    color: Math.random() > 0.5 ? 'rgba(0, 184, 255, ' : 'rgba(143, 225, 255, ',
                     alpha: Math.random() * 0.4 + 0.1
                 });
             }
