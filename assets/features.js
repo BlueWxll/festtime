@@ -158,6 +158,7 @@ function initFeaturedServices() {
         return {
             card, title, flag, pin,
             name: TN_SERVICE_NAMES[title] || title,
+            description: card.querySelector('p') ? card.querySelector('p').textContent.replace(/\s+/g, ' ').trim() : '',
             procedures: proceduresLabel && proceduresLabel.nextElementSibling ? proceduresLabel.nextElementSibling.textContent.trim() : ''
         };
     });

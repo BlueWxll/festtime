@@ -3,3 +3,4 @@ info dev/
 api/key.php
 api/requests.json
 .claude/
+data/

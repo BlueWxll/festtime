@@ -1,7 +1,23 @@
 #!/bin/sh
-# Build Hodifly : enregistre au déploiement un instantané de l'API Webcup dans api/requests.json.
-# Le backoffice agents s'en sert en secours quand le proxy Node (/api/requests) ne répond pas.
-# La clé vient de la variable d'environnement API_KEY. Un échec ne bloque jamais le déploiement.
+# Build Hodifly.
+# 1. Recopie dans .env les variables définies dans Hodifly : server.js les lit au démarrage
+#    (API_KEY, BROADCAST_CODE, OPENROUTER_API_KEY, OPENROUTER_MODEL).
+# 2. Enregistre un instantané de l'API Webcup dans api/requests.json, utilisé en secours par le
+#    backoffice agents quand le proxy Node (/api/requests) ne répond pas.
+# Un échec ne bloque jamais le déploiement.
+
+# Un .env déjà présent (poste de développement) n'est jamais écrasé
+if [ ! -f .env ]; then
+    for name in API_KEY BROADCAST_CODE OPENROUTER_API_KEY OPENROUTER_MODEL; do
+        eval "value=\${$name}"
+        if [ -n "$value" ]; then
+            printf '%s=%s\n' "$name" "$value" >> .env
+        fi
+    done
+    if [ -f .env ]; then
+        echo ".env généré ($(cut -d= -f1 .env | tr '\n' ' '))"
+    fi
+fi
 
 API_URL="https://24h.webcup.fr/wp-json/webcup/v1/requests"
 OUT="api/requests.json"

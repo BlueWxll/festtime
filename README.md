@@ -28,6 +28,11 @@ Plateforme officielle de la première colonie spatiale de l'humanité sur un nou
 * **D17 (270 XP) — Charge de Travail :** Indicateurs en tête du backoffice (demandes en attente, urgentes, en cours, résolues, plus ancienne en attente).
 * **F25 (540 XP) — Signalement :** Formulaire dédié (nature du problème, secteur, repère précis) ; le service compétent est attribué automatiquement.
 * **F28 (270 XP) — Services à la Une :** Démarches les plus courantes en tête du catalogue ; agents et administrateurs choisissent les services mis en avant.
+* **D18 (840 XP) — Diffusion d'un Message Général :** Depuis l'espace agents, le Haut Conseil publie un message (niveau, ce qu'il se passe, ce qu'il faut faire, secteurs, durée). Il s'affiche en tête de la plateforme, dans les notifications et en annonce à l'écran chez tous les habitants en moins de 30 secondes. Publication protégée par un code de diffusion.
+* **F29 (840 XP) — Alerte Ciblée :** Alerte « Montée des eaux dans le Secteur Sud » ; chaque habitant voit si son secteur est concerné, avec des consignes numérotées.
+* **F30 (560 XP) — Notifications :** Centre de notifications avec compteur de non-lus, annonce à l'écran des nouveaux messages et notification du navigateur sur demande ; les changements d'état des demandes y figurent aussi.
+* **F31 (840 XP) — Recommandations Adaptées par IA :** Pour l'alerte canicule, l'habitant coche sa situation (65 ans ou plus, grossesse, maladie chronique…) et reçoit des recommandations générées par IA (OpenRouter, côté serveur), dans sa langue. Recommandations de référence en secours.
+* **F32 (280 XP) — Recherche :** Recherche des services, démarches, annonces, alertes et demandes, insensible aux accents, avec mots courants (« santé », « lampadaire ») ; les éléments à traiter sont listés en premier.
 * **Console Aethel-OS & Particules Quantiques (Bonus Waouh) :** Terminal interactif et effets audio synthétiques via Web Audio API.
 
 ---
@@ -54,7 +59,18 @@ npm start
 L'application est accessible sur [http://localhost:3000](http://localhost:3000).
 
 ### 4. Déploiement (Hodifly)
-`server.js` tourne sur l'hébergement et sert le proxy `/api/requests` : la clé API reste côté serveur. Définissez la variable d'environnement `API_KEY` et la commande de build `sh build.sh`. Le script enregistre aussi un instantané de l'API dans `api/requests.json`, utilisé en secours par le backoffice agents si le proxy ne répond pas.
+`server.js` tourne sur l'hébergement et sert le proxy `/api/requests` : la clé API reste côté serveur. La commande de build est `sh build.sh` : elle recopie les variables d'environnement dans un fichier `.env` lu par le serveur et enregistre un instantané de l'API dans `api/requests.json`, utilisé en secours si le proxy ne répond pas.
+
+Variables d'environnement :
+
+| Variable | Rôle |
+|---|---|
+| `API_KEY` | Clé de l'API Webcup. |
+| `BROADCAST_CODE` | Code demandé pour diffuser ou lever un message auprès de tous les habitants. Sans lui, les messages restent sur l'appareil qui les crée. |
+| `OPENROUTER_API_KEY` | Clé OpenRouter pour les recommandations générées par IA. Sans elle, des recommandations de référence sont affichées. |
+| `OPENROUTER_MODEL` | Facultatif. Modèle OpenRouter, par défaut `openrouter/free`. |
+
+Les messages diffusés et les recommandations déjà générées sont enregistrés dans un dossier `data/` placé à côté des versions déployées, pour survivre aux déploiements.
 
 ---
 

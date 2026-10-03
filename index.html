@@ -1809,9 +1809,12 @@
         </div>
     </div>
 
-    <!-- Vague 2 : traductions (D14, F27) puis fonctionnalités, chargées avant la logique applicative qui les appelle -->
+    <!-- Vagues 2 et 3 : traductions (D14, F27), fonctionnalités, puis alertes, notifications et recherche.
+         Chargées avant la logique applicative qui les appelle. -->
     <script src="assets/i18n.js"></script>
+    <script src="assets/alert-seeds.js"></script>
     <script src="assets/features.js"></script>
+    <script src="assets/alerts.js"></script>
 
     <!-- SCRIPT DE LOGIQUE APPLICATIVE (API, RBAC, LOCALSTORAGE, RENDERING) -->
     <script>
@@ -2234,7 +2237,7 @@
                     : `<span class="text-[#FFB347] border border-[#FFB347]/40 bg-[#FFB347]/10 px-2 py-0.5 rounded text-[10px]">En attente</span>`;
 
                 return `
-                    <tr class="hover:bg-cyan-950/30 transition">
+                    <tr class="hover:bg-cyan-950/30 transition" data-ticket="${escapeHtml(t.id)}">
                         <td class="py-3 px-3 font-mono font-bold text-[#FFB347]">${escapeHtml(t.id)}</td>
                         <td class="py-3 px-3 text-[#E6F1F7] font-semibold">${escapeHtml(t.citizenName)}</td>
                         <td class="py-3 px-3 text-[#00B8FF]">${escapeHtml(t.service)}</td>
@@ -2271,6 +2274,7 @@
             if (ticket) {
                 ticket.status = newStatus;
                 recordTicketStep(ticket, newStatus);
+                recordTicketEvent(ticket, newStatus);
                 localStorage.setItem('tn_tickets', JSON.stringify(citizenTickets));
                 renderAgentTicketsTable();
                 renderCitizenTicketsTable();
@@ -2322,6 +2326,7 @@
                 if (contactField) contactField.value = "";
                 renderCitizenTicketsTable();
                 renderOnboarding();
+                refreshPersonalisedViews();
                 return;
             }
 
@@ -2337,6 +2342,7 @@
 
             renderCitizenTicketsTable();
             renderOnboarding();
+            refreshPersonalisedViews();
         }
 
         function handleRegisterSubmit(e) {
