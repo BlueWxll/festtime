@@ -116,8 +116,7 @@ function w10Reason() {
     try { stored = localStorage.getItem('tn_lite'); } catch (err) { }
     if (!w10IsLite()) return '';
     if (stored === '1') return t('Vous l\'avez activé.');
-    if (net.saveData) return t('Activé automatiquement : votre appareil demande d\'économiser les données.');
-    return t('Activé automatiquement : votre connexion est très lente.');
+    return t('Activé automatiquement : votre appareil demande d\'économiser les données.');
 }
 
 function w10RenderToolbar() {

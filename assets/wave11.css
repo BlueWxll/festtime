@@ -1,0 +1,41 @@
+/* ==========================================================
+   VAGUE 11 — F61 appareils peu puissants, F62 versions simples,
+   F63 interrupteurs de service, F64 état des services visible.
+   ========================================================== */
+/* --- F61 : effets réduits (appareil peu puissant ou choix de l'habitant) --- */
+html.lowfx *, html.lowfx *::before, html.lowfx *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; text-shadow: none !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; box-shadow: none !important; }
+html.lowfx .grid-bg { background-image: none !important; }
+html.lowfx .scanline-overlay { display: none !important; }
+html.lowfx #bg-canvas, html.lite #bg-canvas { display: none !important; }
+html.lowfx section[id] { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+.tn-w11-verdict--good { color: var(--ok) !important; }
+.tn-w11-verdict--ok { color: var(--amber) !important; }
+.tn-w11-verdict--slow { color: var(--err) !important; }
+
+/* --- F62 : versions simples --- */
+.w11-simple-btn { margin: 0 0 0.75rem; }
+.w11-simple-btn[aria-pressed="true"] { border-color: var(--ok); color: var(--ok); }
+section.w11-on > :not(.w11-keep) { display: none !important; }
+.w11-simple { margin: 0.5rem 0 1rem; }
+.w11-simple[hidden] { display: none; }
+.tn-w11-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.5rem; }
+.tn-w11-list li { padding: 0.625rem 0.75rem; border: 1px solid var(--line-subtle); background: var(--void-900); color: var(--text-100); overflow-wrap: anywhere; min-width: 0; }
+.tn-w11-list h3, .tn-w11-list h4 { margin: 1rem 0 0.25rem; }
+
+/* --- F64 / F63 : tableau d'état et interrupteurs --- */
+.tn-w11-board { margin: 0.75rem 0 0; padding: 0; list-style: none; display: grid; gap: 0.5rem; }
+.tn-w11-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem; padding: 0.75rem; border: 1px solid var(--line-subtle); border-left-width: 4px; background: var(--void-900); min-width: 0; }
+.tn-w11-row--available { border-left-color: var(--ok); }
+.tn-w11-row--maintenance { border-left-color: var(--amber); }
+.tn-w11-row--incident, .tn-w11-row--disabled { border-left-color: var(--err); }
+.tn-w11-row-main { flex: 1 1 16rem; min-width: 0; display: grid; gap: 0.25rem; overflow-wrap: anywhere; color: var(--text-100); }
+.tn-w11-row-act { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tn-w11-statusboard { margin-bottom: 1.5rem; }
+.tn-w11-ok { margin: 0.5rem 0 0; font-size: 0.8125rem; color: var(--text-100); overflow-wrap: anywhere; }
+.tn-w11-down { margin: 0.5rem 0 0; padding: 0.75rem; border: 1px solid var(--err); background: rgba(255, 90, 90, 0.08); color: var(--text-100); font-size: 0.8125rem; display: grid; gap: 0.5rem; overflow-wrap: anywhere; }
+.w11-chip { display: inline-block; margin: 0.25rem 0; }
+.tn-w11-undo { position: fixed; left: 50%; bottom: 1rem; transform: translateX(-50%); z-index: 90; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.5rem 1rem; max-width: calc(100vw - 2rem); padding: 0.625rem 1rem; border: 1px solid var(--line-strong); background: var(--void-900); color: var(--text-100); font-size: 0.8125rem; }
+.tn-w11-undo[hidden] { display: none; }
+#w11-disable-form { display: grid; gap: 0.75rem; }
+#w11-disable-form select { width: 100%; max-width: 100%; }
+@media print { .tn-w11-undo, .w11-simple-btn { display: none; } }
