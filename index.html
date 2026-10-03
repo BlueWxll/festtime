@@ -10,41 +10,54 @@
 
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2305080C'/%3E%3Crect x='8' y='8' width='16' height='16' fill='none' stroke='%2300B8FF' stroke-width='2.5' transform='rotate(45 16 16)'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%2300B8FF'/%3E%3C/svg%3E">
 
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- F57-F60 : mode économe, polices et icônes chargées sans bloquer l'affichage, CSS Tailwind pré-compilé (assets/tailwind.css) -->
     <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        void: '#05080C',
-                        cyber: '#00B8FF',
-                        plasma: '#8FE1FF',
-                        amber: '#FFB347',
-                        steel: '#6F8696',
-                        lumina: '#E6F1F7',
-                        cyan: { 300: '#8FE1FF', 400: '#3DCBFF', 500: '#00B8FF', 600: '#0093CC', 700: '#006C99', 800: '#2A4052', 900: '#22323F', 950: '#06303F' }
-                    },
-                    fontFamily: {
-                        orbitron: ['Chakra Petch', 'sans-serif'],
-                        sans: ['IBM Plex Sans', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace']
-                    }
+        (function () {
+            var root = document.documentElement, stored = null;
+            try {
+                var forced = /[?&]lite=([01])/.exec(location.search);
+                if (forced) localStorage.setItem('tn_lite', forced[1]);
+                stored = localStorage.getItem('tn_lite');
+            } catch (e) { }
+            var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection || {};
+            var type = c.effectiveType || '';
+            var slow = !!(c.saveData || /(^|-)2g$/.test(type));
+            var lite = stored === '1' || (stored === null && slow);
+            var FONTS = 'https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap';
+            var ICONS = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css';
+            var ext = {
+                load: function () {
+                    [FONTS, ICONS].forEach(function (href) {
+                        if (document.querySelector('link[data-tn-ext="' + href + '"]')) return;
+                        var link = document.createElement('link');
+                        link.rel = 'stylesheet'; link.href = href; link.media = 'print'; link.setAttribute('data-tn-ext', href);
+                        link.onload = function () { link.media = 'all'; };
+                        document.head.appendChild(link);
+                    });
+                },
+                unload: function () {
+                    Array.prototype.forEach.call(document.querySelectorAll('link[data-tn-ext]'), function (link) { link.remove(); });
                 }
-            }
-        }
+            };
+            window.TN_EXT = ext;
+            window.TN_NET = { lite: lite, auto: stored === null && slow, slow: slow || /3g/.test(type), saveData: !!c.saveData, type: type };
+            if (lite) root.classList.add('lite');
+            // Les rafraîchissements espacés (10 s et plus) s'arrêtent quand l'onglet est caché, et sont deux fois moins fréquents en mode économe
+            var native = window.setInterval;
+            window.setInterval = function (fn, ms) {
+                var extra = Array.prototype.slice.call(arguments, 2);
+                if (typeof fn === 'function' && ms >= 10000) {
+                    return native.call(window, function () { if (!document.hidden) return fn.apply(this, extra); }, root.classList.contains('lite') ? ms * 2 : ms);
+                }
+                return native.apply(window, arguments);
+            };
+            if (!lite) ext.load();
+        })();
     </script>
-
-    <!-- Google Fonts: Chakra Petch, IBM Plex Sans & JetBrains Mono -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
-        rel="stylesheet">
-
-    <!-- FontAwesome icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    </noscript>
 
     <style>
         :root {
@@ -635,6 +648,8 @@
     <link rel="stylesheet" href="assets/wave7.css">
     <link rel="stylesheet" href="assets/wave8.css">
     <link rel="stylesheet" href="assets/wave9.css">
+    <link rel="stylesheet" href="assets/wave10.css">
+    <link rel="stylesheet" href="assets/tailwind.css">
 
     <!-- Préférences d'accessibilité appliquées avant le premier rendu (évite le flash) -->
     <script>
@@ -1843,6 +1858,7 @@
     <script src="assets/wave7-i18n.js"></script>
     <script src="assets/wave8-i18n.js"></script>
     <script src="assets/wave9-i18n.js"></script>
+    <script src="assets/wave10-i18n.js"></script>
     <script src="assets/alert-seeds.js"></script>
     <script src="assets/features.js"></script>
     <script src="assets/alerts.js"></script>
@@ -1852,6 +1868,7 @@
     <script src="assets/wave7.js"></script>
     <script src="assets/wave8.js"></script>
     <script src="assets/wave9.js"></script>
+    <script src="assets/wave10.js"></script>
 
     <!-- SCRIPT DE LOGIQUE APPLICATIVE (API, RBAC, LOCALSTORAGE, RENDERING) -->
     <script>
