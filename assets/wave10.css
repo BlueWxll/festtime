@@ -1,0 +1,31 @@
+/* ==========================================================
+   VAGUE 10 — F57 mesure, F58 sobriété, F59 mode économe, F60 médias légers.
+   ========================================================== */
+.tn-w10-switch { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 1.5rem; padding: 0.75rem; border: 1px solid var(--line-strong); background: var(--void-900); }
+.tn-w10-switch > div { min-width: 0; flex: 1 1 16rem; }
+.tn-w10-kpis { margin: 0.5rem 0 1rem; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr)); gap: 0.75rem; }
+.tn-w10-kpis li { display: grid; gap: 0.125rem; padding: 0.625rem 0.75rem; border: 1px solid var(--line-subtle); background: var(--void-900); min-width: 0; }
+.tn-w10-kpis strong { font: 700 1.25rem/1.2 'JetBrains Mono', monospace; color: var(--text-100); overflow-wrap: anywhere; }
+.tn-w10-label { font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-300); }
+.tn-w10-grade { font-size: 2rem !important; }
+.tn-w10-grade--A, .tn-w10-grade--B { color: var(--ok) !important; }
+.tn-w10-grade--C { color: var(--amber) !important; }
+.tn-w10-grade--D, .tn-w10-grade--E { color: var(--err) !important; }
+.tn-w10-slow { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem; padding: 0.625rem 1rem; border-bottom: 1px solid var(--amber); background: rgba(255, 179, 71, 0.08); color: var(--text-100); font-size: 0.8125rem; }
+.tn-w10-slow[hidden] { display: none; }
+.tn-w10-slow p { margin: 0; min-width: 0; flex: 1 1 18rem; overflow-wrap: anywhere; }
+.tn-w10-slow i { color: var(--amber); margin-right: 0.25rem; }
+.tn-w10-slow-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+#w10-lite-btn[aria-pressed="true"] { border-color: var(--ok); color: var(--ok); }
+
+/* --- Mode économe : tout ce qui est décoratif disparaît, les textes et les actions restent --- */
+html.lite *, html.lite *::before, html.lite *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; text-shadow: none !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+html.lite .grid-bg { background-image: none !important; }
+html.lite .scanline-overlay { display: none !important; }
+html.lite i[class*="fa-"] { display: none !important; }
+html.lite [data-lite-label]::after { content: attr(data-lite-label); font-size: 0.75rem; }
+html.lite section[id] { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+html.lite body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+html.lite .font-orbitron, html.lite h1, html.lite h2, html.lite h3 { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+html.lite .font-mono, html.lite code { font-family: ui-monospace, Consolas, 'Courier New', monospace; }
+@media print { .tn-w10-slow { display: none; } }

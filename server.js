@@ -3,6 +3,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const zlib = require('zlib');
 const crypto = require('crypto');
 
 // 1. Chargement sécurisé du fichier .env
@@ -436,6 +437,38 @@ async function handleAdvice(req, res) {
     }
 }
 
+// F57/F58 : fichiers texte compressés (brotli ou gzip), mis en mémoire, avec ETag pour que le navigateur
+// revalide au lieu de retélécharger (réponse 304 de quelques octets).
+const COMPRESSIBLE = /^(text\/|application\/(javascript|json|xml)|image\/svg)/;
+const staticCache = new Map();
+
+function sendStatic(req, res, contentType, content, mtime, filePath) {
+    const key = `${filePath}|${mtime}|${content.length}`;
+    let entry = staticCache.get(key);
+    if (!entry) {
+        entry = { etag: '"' + crypto.createHash('sha1').update(content).digest('base64').slice(0, 22) + '"', raw: content };
+        if (COMPRESSIBLE.test(contentType) && content.length > 512) {
+            entry.br = zlib.brotliCompressSync(content, { params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 6 } });
+            entry.gzip = zlib.gzipSync(content, { level: 9 });
+        }
+        if (staticCache.size > 200) staticCache.clear();
+        staticCache.set(key, entry);
+    }
+    const headers = { 'Content-Type': contentType, 'ETag': entry.etag, 'Cache-Control': 'public, max-age=0, must-revalidate', 'Vary': 'Accept-Encoding' };
+    if (req.headers['if-none-match'] === entry.etag) {
+        res.writeHead(304, headers);
+        res.end();
+        return;
+    }
+    const accept = String(req.headers['accept-encoding'] || '');
+    let body = entry.raw;
+    if (entry.br && /\bbr\b/.test(accept)) { body = entry.br; headers['Content-Encoding'] = 'br'; }
+    else if (entry.gzip && /\bgzip\b/.test(accept)) { body = entry.gzip; headers['Content-Encoding'] = 'gzip'; }
+    headers['Content-Length'] = body.length;
+    res.writeHead(200, headers);
+    res.end(req.method === 'HEAD' ? undefined : body);
+}
+
 // Création du serveur HTTP
 const server = http.createServer((req, res) => {
     // CORS Headers
@@ -569,8 +602,7 @@ const server = http.createServer((req, res) => {
                 res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
                 res.end('500 Erreur interne du serveur');
             } else {
-                res.writeHead(200, { 'Content-Type': contentType });
-                res.end(content);
+                sendStatic(req, res, contentType, content, stats && stats.isFile() ? stats.mtimeMs : 0, filePath);
             }
         });
     });

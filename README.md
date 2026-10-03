@@ -104,3 +104,12 @@ Les messages diffusés et les recommandations déjà générées sont enregistr�
 - **F50 Tableau de bord des agents** : en tête de l'espace agents, indicateurs (à prendre en charge, en cours, résolues, délais), demandes à traiter en premier, points d'attention, charge par service, activité sur 7 jours.
 - **F51 Mes données et mes inquiétudes** : section « Participation » (quelles données, pourquoi, qui, combien de temps, ce que la plateforme ne fait pas), export JSON, suppression du compte, formulaire d'inquiétude avec numéro de suivi, état et réponse des agents.
 - **F52 Soutenir une demande** : liste des demandes autorisées au soutien, un soutien par habitant, retrait possible, trace « Mes soutiens », notification des changements d'état, soutien visible des agents (prioritaire dès 5).
+- **D02 Connexion sans mot de passe** : clé d'accès (WebAuthn, empreinte/visage/code de l'appareil), ajout et retrait dans « Mon compte », signature vérifiée localement avec WebCrypto, repli sur le code d'accès.
+- **F53 Vérification en plus** : code à 6 chiffres (TOTP RFC 6238) + 8 codes de secours à usage unique, blocage après 5 essais, application de démonstration à l'écran.
+- **F54 Alerte nouvel appareil** : liste des appareils, bandeau + cloche + panneau, « C'était moi » / « Ce n'était pas moi » (retrait de l'appareil, changement du code d'accès), simulation pour la démonstration.
+- **F55 Mes informations personnelles** : dossier lisible (résumé en phrases, tableaux) après confirmation d'identité, téléchargeable en HTML, JSON ou impression.
+- **F56 Récapitulatif de mes demandes** : résumé clair, filtres, téléchargement CSV (tableur) ou HTML/impression.
+- **F57 Mesurer et alléger** : section « Sobriété numérique » avec mesure en direct (données reçues, requêtes, temps de chargement, note A–E, estimation CO₂e), fichiers les plus lourds, diagnostic .json.
+- **F58 Choix de conception sobres** : CSS Tailwind pré-compilé (`assets/tailwind.css`) au lieu du CDN, compression brotli/gzip + ETag côté `server.js`, polices et icônes non bloquantes, rafraîchissements suspendus onglet caché.
+- **F59 Connexion lente** : bandeau qui propose le mode économe (connexion 2G/3G, économiseur de données ou chargement long), bouton « Mode économe » dans la barre, `?lite=1` pour le forcer. Aucune requête externe en mode économe.
+- **F60 Images et médias légers** : audit des médias de la page (aucune image/vidéo/son à télécharger), chargement différé automatique de toute image ou cadre ajouté, pas de lecture automatique.
