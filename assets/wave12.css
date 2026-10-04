@@ -1,0 +1,48 @@
+/* ==========================================================
+   VAGUE 12 — F65 trace de la prise en compte, F66 consultations,
+   F67 projets en cours, F68 boîte à idées.
+   ========================================================== */
+.tn-w12-how { margin: 0 0 1rem; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr)); gap: 0.5rem; }
+.tn-w12-how li { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; border: 1px solid var(--line-subtle); background: var(--void-900); color: var(--text-100); font-size: 0.8125rem; min-width: 0; }
+.tn-w12-how strong { flex: none; display: grid; place-items: center; width: 1.5rem; height: 1.5rem; border: 1px solid var(--cyber-500); color: var(--cyber-500); font-size: 0.75rem; }
+.tn-w12-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+.tn-w12-tabs .tn-tab[aria-selected="true"] { border-color: var(--cyber-500); color: var(--cyber-500); }
+.tn-w12-cards { margin: 0.5rem 0 1rem; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(22rem, 100%), 1fr)); gap: 0.75rem; align-items: start; }
+.tn-w12-card { display: grid; gap: 0.5rem; padding: 0.875rem; border: 1px solid var(--line-subtle); background: var(--void-900); color: var(--text-100); min-width: 0; overflow-wrap: anywhere; font-size: 0.8125rem; }
+.tn-w12-card p { margin: 0; }
+.tn-w12-card-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 0.25rem 0.75rem; }
+.tn-w12-card-head h4 { margin: 0; flex: 1 1 12rem; min-width: 0; font-size: 0.9375rem; color: var(--text-100); }
+.tn-w12-facts { margin: 0; display: grid; gap: 0.25rem; }
+.tn-w12-facts div { display: flex; flex-wrap: wrap; gap: 0 0.5rem; }
+.tn-w12-facts dt { color: var(--text-300); font-size: 0.6875rem; letter-spacing: 0.06em; text-transform: uppercase; min-width: 7.5rem; }
+.tn-w12-facts dd { margin: 0; min-width: 0; flex: 1 1 8rem; }
+.tn-w12-progress { display: flex; align-items: center; gap: 0.5rem; }
+.tn-w12-bar { flex: 1; height: 0.5rem; background: var(--void-700, #11202c); border: 1px solid var(--line-subtle); }
+.tn-w12-bar span { display: block; height: 100%; background: var(--cyber-500); }
+.tn-w12-bars { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.5rem; }
+.tn-w12-bar-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 0.5rem; margin-bottom: 0.125rem; }
+.tn-w12-bars .tn-w12-bar { display: block; flex: none; }
+.tn-w12-filters { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.5rem; }
+.tn-w12-filters > div { flex: 1 1 11rem; min-width: 0; }
+.tn-w12-nonofficial { color: var(--amber); }
+.tn-w12-receipt, .tn-w12-outcome { padding: 0.625rem 0.75rem; border-left: 3px solid var(--ok); background: rgba(80, 220, 160, 0.06); display: grid; gap: 0.25rem; }
+.tn-w12-outcome { border-left-color: var(--cyber-500); background: rgba(0, 184, 255, 0.06); }
+.tn-w12-outcome h5, .tn-w12-sub { margin: 0.5rem 0 0.25rem; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-300); }
+.tn-w12-steps { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.25rem; }
+.tn-w12-steps li { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0.5rem; }
+.tn-w12-step-date { color: var(--text-300); font-size: 0.75rem; }
+.tn-w12-step-note { flex-basis: 100%; color: var(--text-100); }
+.tn-w12-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.tn-w12-count { font-weight: 700; color: var(--cyber-500); }
+.tn-w12-meaning { color: var(--text-300); }
+.tn-w12-split { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(21rem, 100%), 1fr)); gap: 1.25rem; align-items: start; }
+.tn-w12-form { display: grid; gap: 0.75rem; padding: 0.875rem; border: 1px solid var(--line-strong); background: var(--void-900); min-width: 0; }
+.tn-w12-form h4 { margin: 0; color: var(--text-100); }
+.tn-w12-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(10rem, 100%), 1fr)); gap: 0.75rem; }
+.tn-w12-two select, .tn-w12-form input, .tn-w12-form textarea, .tn-w12-form select { width: 100%; max-width: 100%; }
+.tn-w12-fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+.tn-w12-radio { display: flex; align-items: flex-start; gap: 0.5rem; padding: 0.5rem 0.625rem; border: 1px solid var(--line-subtle); cursor: pointer; }
+.tn-w12-error { margin: 0; color: var(--err); font-size: 0.8125rem; }
+.tn-w12-error[hidden] { display: none; }
+.tn-w12-quote { margin: 0.25rem 0; padding: 0.5rem 0.75rem; border-left: 3px solid var(--line-strong); font-size: 0.8125rem; }
+#w12-agent { margin-top: 1.5rem; }
