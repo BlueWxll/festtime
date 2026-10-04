@@ -1,0 +1,43 @@
+/* ==========================================================
+   VAGUE 14 — F75 groupes de demandes, F80 urgence, F84 réponse agent, F86 urgence médicale,
+   F79 tri/filtre citoyen, F83 accusé de réception, F76 avis après un service.
+   ========================================================== */
+.w14-agent-tools { display: grid; gap: 0.75rem; margin-bottom: 1rem; padding: 0.875rem; border: 1px solid var(--line-subtle); background: var(--void-900); color: var(--text-100); }
+.w14-toolbar { display: flex; flex-wrap: wrap; align-items: end; gap: 0.75rem; }
+.w14-toolbar select { min-width: 14rem; }
+.w14-levels { display: flex; flex-wrap: wrap; gap: 0.375rem; }
+.w14-details > summary { cursor: pointer; font-weight: 700; font-size: 0.8125rem; }
+.w14-group-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr)); gap: 0.75rem; margin: 0.5rem 0 0; padding: 0; list-style: none; }
+.w14-group { display: grid; gap: 0.375rem; padding: 0.75rem; border: 1px solid var(--cyber-500); background: var(--cyber-900); min-width: 0; }
+.w14-group-title { margin: 0; font-size: 0.875rem; }
+.w14-ids { display: flex; flex-wrap: wrap; gap: 0.375rem; margin: 0; }
+.w14-chip { padding: 0.125rem 0.5rem; border: 1px solid var(--line-strong); background: none; color: var(--cyber-300); font-size: 0.6875rem; cursor: pointer; }
+.w14-chip:hover { border-color: var(--cyber-500); color: var(--text-100); }
+.w14-badges { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem; margin-top: 0.25rem; }
+.w14-why { margin-top: 0.125rem; font-size: 0.6875rem; color: var(--text-300); }
+.w14-panel { margin-top: 1rem; padding: 0.875rem; border: 1px solid var(--line-subtle); background: var(--void-900); color: var(--text-100); }
+.w14-fb-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.75rem; }
+.w14-quote { margin: 0.25rem 0; padding: 0.5rem 0.75rem; border-left: 3px solid var(--cyber-500); background: var(--void-900); font-size: 0.8125rem; overflow-wrap: anywhere; }
+.w14-quick { display: flex; flex-wrap: wrap; gap: 0.375rem; }
+
+.w14-urgent { margin-top: 0.75rem; padding: 0.875rem; border: 2px solid var(--err); background: rgba(255, 84, 112, 0.1); color: var(--text-100); }
+.w14-urgent[hidden] { display: none; }
+.w14-urgent-body { display: grid; gap: 0.375rem; }
+.w14-urgent-body strong { color: var(--err); font-size: 1rem; }
+.w14-urgent-body p { margin: 0; font-size: 0.875rem; }
+.w14-medical { margin-bottom: 1rem; padding: 1rem; border: 2px solid var(--err); background: rgba(255, 84, 112, 0.1); color: var(--text-100); }
+.w14-medical[hidden] { display: none; }
+.w14-medical h4 { margin: 0 0 0.5rem; color: var(--err); font-weight: 700; }
+.w14-protocol { margin: 0 0 0.75rem 1.25rem; padding: 0; font-size: 0.8125rem; }
+.w14-medical-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.5rem; }
+.w14-medical-list li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.5rem; border: 1px solid var(--err); font-size: 0.8125rem; }
+
+.w14-receipt, .w14-replies, .w14-feedback { margin-top: 0.75rem; padding: 0.75rem; border: 1px solid var(--line-subtle); background: var(--void-900); color: var(--text-100); }
+.w14-reply-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.5rem; }
+.w14-reply-list p { margin: 0 0 0.125rem; font-size: 0.8125rem; overflow-wrap: anywhere; }
+.w14-mono { font-family: 'JetBrains Mono', ui-monospace, monospace; word-break: break-all; }
+.w14-stars { color: var(--warn, #FFB347); letter-spacing: 0.125em; }
+.w14-ok { margin: 0.5rem 0; padding: 0.625rem 0.75rem; border: 1px solid var(--ok, #38d9a9); color: var(--ok, #38d9a9); font-size: 0.875rem; }
+.w14-filters { grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr)); align-items: end; }
+.w14-filter-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+html.hc .w14-group, html.hc .w14-panel, html.hc .w14-receipt, html.hc .w14-chip, html.hc .w14-agent-tools { border-color: #FFFFFF; }

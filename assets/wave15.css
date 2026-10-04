@@ -1,0 +1,29 @@
+/* ==========================================================
+   VAGUE 15 — F69 centre de sécurité, F70 données réservées, F81 robots, F82 doublons, F85 activité inhabituelle.
+   ========================================================== */
+.w15-panel { margin-bottom: 1.5rem; padding: 1rem; border: 1px solid var(--cyber-500); background: var(--void-800, #0b1620); color: var(--text-100); }
+.w15-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr)); gap: 1rem; margin-top: 0.75rem; }
+.w15-card { display: grid; gap: 0.5rem; align-content: start; padding: 0.875rem; border: 1px solid var(--line-subtle); background: var(--void-900); min-width: 0; }
+.w15-lock, .w15-ok { margin: 0; font-size: 0.8125rem; }
+.w15-ok { color: var(--ok, #38d9a9); }
+.w15-login { display: grid; gap: 0.5rem; }
+.w15-login input { width: 100%; }
+.w15-table-wrap { overflow-x: auto; }
+.w15-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+.w15-table th, .w15-table td { padding: 0.375rem 0.5rem; border-bottom: 1px solid var(--line-subtle); text-align: left; }
+.w15-table th { color: var(--text-300); font-weight: 600; text-transform: uppercase; font-size: 0.6875rem; letter-spacing: 0.06em; }
+.w15-checks { margin: 0.5rem 0 0; padding: 0; list-style: none; display: grid; gap: 0.375rem; font-size: 0.8125rem; }
+.w15-checks li { display: grid; grid-template-columns: 1.25rem 1fr; gap: 0.5rem; padding: 0.375rem 0.5rem; border: 1px solid var(--line-subtle); }
+.w15-checks li.is-ok > span:first-child { color: var(--ok, #38d9a9); }
+.w15-checks li.is-ko { border-color: var(--err); }
+.w15-checks li.is-ko > span:first-child { color: var(--err); }
+.w15-alerts { margin: 0.5rem 0 0; padding: 0; list-style: none; display: grid; gap: 0.5rem; }
+.w15-alert { padding: 0.5rem 0.75rem; border: 1px solid var(--line-strong); font-size: 0.8125rem; overflow-wrap: anywhere; }
+.w15-alert--critical { border-color: var(--err); background: rgba(255, 84, 112, 0.1); }
+.w15-alert--high { border-color: var(--warn, #FFB347); }
+.w15-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 0.375rem; font-size: 0.75rem; }
+.w15-chip { padding: 0.125rem 0.5rem; border: 1px solid var(--line-strong); font-size: 0.6875rem; }
+.w15-events { margin: 0.375rem 0 0; padding: 0; list-style: none; font-size: 0.6875rem; display: grid; gap: 0.125rem; font-family: 'JetBrains Mono', ui-monospace, monospace; overflow-wrap: anywhere; }
+.w15-hp { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+.w15-guard-msg { margin: 0.5rem 0; padding: 0.5rem 0.75rem; border: 1px solid var(--err); background: rgba(255, 84, 112, 0.1); color: var(--text-100); font-size: 0.8125rem; }
+html.hc .w15-panel, html.hc .w15-card, html.hc .w15-alert { border-color: #FFFFFF; }

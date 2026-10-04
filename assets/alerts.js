@@ -679,6 +679,10 @@ function initBroadcastAdmin() {
             </div>
             <p class="tn-hint tn-wide" id="bc-mode"></p>
             <label class="tn-check tn-wide">
+                <input type="checkbox" id="bc-official">
+                <span>Message officiel : épinglé en tête du site et poussé en temps réel à tous les habitants connectés</span>
+            </label>
+            <label class="tn-check tn-wide">
                 <input type="checkbox" id="bc-advice">
                 <span>Proposer des recommandations adaptées aux personnes vulnérables</span>
             </label>
@@ -740,6 +744,7 @@ async function publishBroadcast(event) {
         sectors: Array.from(document.querySelectorAll('input[name="bc-sector"]:checked')).map(input => input.value),
         durationHours: hours,
         advice: document.getElementById('bc-advice').checked,
+        official: Boolean(document.getElementById('bc-official') && document.getElementById('bc-official').checked),
         source: currentRole === 'admin' ? 'Haut Conseil de la Ville' : 'Services municipaux'
     };
 
@@ -777,6 +782,7 @@ async function publishBroadcast(event) {
     document.getElementById('bc-template').selectedIndex = 0;
     document.querySelectorAll('input[name="bc-sector"]').forEach(input => { input.checked = false; });
     document.getElementById('bc-advice').checked = false;
+    if (document.getElementById('bc-official')) document.getElementById('bc-official').checked = false;
     status.textContent = message;
     await refreshBroadcasts();
 }
