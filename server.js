@@ -237,6 +237,8 @@ async function handleBroadcasts(req, res, pathname) {
             publishing: Boolean(BROADCAST_CODE && DATA_DIR),
             broadcasts: store.broadcasts,
             retired: store.retired,
+            platform: systemState().state,
+            transport: activeDisruptions(),
             serverTime: new Date().toISOString()
         });
         return;
@@ -735,6 +737,176 @@ async function handleSecurity(req, res, pathname) {
     return sendJson(res, 404, { error: 'Introuvable' });
 }
 
+
+// ==========================================
+// VAGUE 18 — Transports (F97), usage des services (F98), partenaires (F99), événements (F100), essentiel (F93/F94)
+// ==========================================
+const TRANSPORT_LINES = ['HT1', 'HT2', 'NO', 'NS'];
+function activeDisruptions() {
+    const now = Date.now();
+    const list = readStore('transport.json', []).filter(item => !item.until || Date.parse(item.until) > now);
+    return list;
+}
+
+function usageDay() { return new Date().toISOString().slice(0, 10); }
+const USAGE_KINDS = ['view', 'request', 'appointment', 'search'];
+function recordUsage(service, kind) {
+    const data = readStore('usage.json', { days: {} });
+    const day = usageDay();
+    const bucket = data.days[day] || (data.days[day] = {});
+    if (!bucket[service] && Object.keys(bucket).length >= 60) return false;
+    const entry = bucket[service] || (bucket[service] = { view: 0, request: 0, appointment: 0, search: 0 });
+    entry[kind] += 1;
+    const keep = Object.keys(data.days).sort().slice(-35);
+    Object.keys(data.days).forEach(key => { if (!keep.includes(key)) delete data.days[key]; });
+    writeStore('usage.json', data);
+    return true;
+}
+function usageSummary(days) {
+    const data = readStore('usage.json', { days: {} });
+    const cutoff = new Date(Date.now() - (days - 1) * 86400000).toISOString().slice(0, 10);
+    const previousCut = new Date(Date.now() - (2 * days - 1) * 86400000).toISOString().slice(0, 10);
+    const totals = {};
+    const previous = {};
+    Object.keys(data.days).forEach(day => {
+        const target = day >= cutoff ? totals : (day >= previousCut ? previous : null);
+        if (!target) return;
+        Object.entries(data.days[day]).forEach(([service, entry]) => {
+            const row = target[service] || (target[service] = { view: 0, request: 0, appointment: 0, search: 0 });
+            USAGE_KINDS.forEach(kind => { row[kind] += entry[kind] || 0; });
+        });
+    });
+    const services = Object.keys(totals).map(service => {
+        const row = totals[service];
+        const total = USAGE_KINDS.reduce((sum, kind) => sum + row[kind], 0);
+        const before = previous[service] ? USAGE_KINDS.reduce((sum, kind) => sum + previous[service][kind], 0) : 0;
+        return Object.assign({ service, total, before }, row);
+    }).sort((a, b) => b.total - a.total);
+    return { days, from: cutoff, to: usageDay(), grandTotal: services.reduce((sum, row) => sum + row.total, 0), services };
+}
+
+const PARTNER_SEED = [
+    { id: 'P-SEED-1', partner: 'Aéro-Livraison Orion', service: 'Livraison de colis entre dômes', description: 'Colis jusqu\'à 20 kg livrés en moins de 24 h entre les quatre secteurs.', status: 'available', next: 'Commander une livraison', contact: 'Poste 0-8-21', until: null, approved: true, seed: true },
+    { id: 'P-SEED-2', partner: 'Clinique mobile Soléa', service: 'Consultations à domicile', description: 'Un infirmier se déplace chez vous pour les soins courants. Sur rendez-vous.', status: 'limited', next: 'Prendre rendez-vous (créneaux limités cette semaine)', contact: 'Poste 0-8-22', until: null, approved: true, seed: true },
+    { id: 'P-SEED-3', partner: 'Fermes Hydro Delta', service: 'Paniers de légumes frais', description: 'Paniers hebdomadaires de fermes hydroponiques du Secteur Sud.', status: 'unavailable', next: 'Réessayer à la prochaine ouverture des commandes', contact: 'Poste 0-8-23', until: null, approved: true, seed: true },
+    { id: 'P-SEED-4', partner: 'Atelier Plasma Pro', service: 'Dépannage d\'appareils électriques', description: 'Diagnostic et réparation d\'appareils domestiques à l\'Anneau Zéro.', status: 'available', next: 'Déposer l\'appareil à l\'atelier', contact: 'Poste 0-8-24', until: null, approved: true, seed: true }
+];
+const PARTNER_STATUS = ['available', 'limited', 'unavailable'];
+function loadPartners() {
+    const stored = readStore('partners.json', null);
+    if (stored && Array.isArray(stored)) return stored;
+    return PARTNER_SEED.map(item => Object.assign({}, item, { createdAt: new Date().toISOString() }));
+}
+function publicPartner(item) {
+    return { id: item.id, partner: item.partner, service: item.service, description: item.description, status: item.status, next: item.next, contact: item.contact, until: item.until || null, updatedAt: item.updatedAt || item.createdAt };
+}
+
+async function handleWave18(req, res, pathname, parsedUrl) {
+    // --- Transports : état des lignes partagé par tous les habitants ---
+    if (pathname === '/api/transport') {
+        if (req.method === 'GET') return sendJson(res, 200, { disruptions: activeDisruptions(), serverTime: new Date().toISOString() });
+        if (req.method !== 'POST') return sendJson(res, 405, { error: 'Méthode non autorisée' });
+        const session = readSession(req);
+        if (!session) { securityEvent(req, 'unauthorized', pathname); return sendJson(res, 401, { error: 'Accès réservé aux agents autorisés' }); }
+        const body = await readJsonBody(req, 2000);
+        const lineId = TRANSPORT_LINES.includes(body.lineId) ? body.lineId : null;
+        if (!lineId) return sendJson(res, 400, { error: 'Ligne inconnue' });
+        let list = readStore('transport.json', []).filter(item => item.lineId !== lineId);
+        if (body.action === 'set') {
+            const minutes = Math.min(Math.max(Number(body.backMinutes) || 60, 5), 1440);
+            list.push({ lineId, cause: cleanText(body.cause, 120) || 'Incident technique', since: new Date().toISOString(), until: new Date(Date.now() + minutes * 60000).toISOString(), by: session.role });
+        } else if (body.action !== 'clear') return sendJson(res, 400, { error: 'Action inconnue' });
+        writeStore('transport.json', list);
+        pushEvent('transport', { lineId, action: body.action });
+        return sendJson(res, 200, { disruptions: activeDisruptions() });
+    }
+
+    // --- Usage des services : compteurs anonymes (aucune adresse, aucun compte) ---
+    if (pathname === '/api/usage') {
+        if (req.method !== 'POST') return sendJson(res, 405, { error: 'Méthode non autorisée' });
+        if (rateLimited(req, 'usage', 120, 60000)) return sendJson(res, 429, { error: 'Trop de mesures' });
+        const body = await readJsonBody(req, 3000);
+        const list = (Array.isArray(body.events) ? body.events : [body]).slice(0, 20);
+        let accepted = 0;
+        list.forEach(entry => {
+            const service = cleanText(entry && entry.service, 60);
+            const kind = entry && USAGE_KINDS.includes(entry.kind) ? entry.kind : null;
+            if (service && kind) { recordUsage(service, kind); accepted += 1; }
+        });
+        if (!accepted) return sendJson(res, 400, { error: 'Mesure invalide' });
+        return sendJson(res, 200, { ok: true, accepted });
+    }
+    if (pathname === '/api/agent/usage') {
+        const session = readSession(req);
+        if (!session) { securityEvent(req, 'unauthorized', pathname); return sendJson(res, 401, { error: 'Accès réservé aux agents autorisés' }); }
+        const days = [7, 30].includes(Number(parsedUrl.searchParams.get('days'))) ? Number(parsedUrl.searchParams.get('days')) : 7;
+        return sendJson(res, 200, usageSummary(days));
+    }
+
+    // --- Partenaires : catalogue public, propositions, validation par un agent ---
+    if (pathname === '/api/partners') {
+        if (req.method === 'GET') return sendJson(res, 200, { partners: loadPartners().filter(item => item.approved).map(publicPartner), serverTime: new Date().toISOString() });
+        if (req.method !== 'POST') return sendJson(res, 405, { error: 'Méthode non autorisée' });
+        if (rateLimited(req, 'partner', 5, 10 * 60000)) return sendJson(res, 429, { error: 'Trop de propositions, réessayez dans quelques minutes' });
+        const body = await readJsonBody(req, 3000);
+        const item = {
+            id: `P-${Date.now().toString(36).toUpperCase()}`, partner: cleanText(body.partner, 80), service: cleanText(body.service, 100), description: cleanText(body.description, 400),
+            status: PARTNER_STATUS.includes(body.status) ? body.status : 'available', next: cleanText(body.next, 140), contact: cleanText(body.contact, 80), until: null,
+            approved: false, createdAt: new Date().toISOString()
+        };
+        if (!item.partner || !item.service || !item.description || !item.contact) return sendJson(res, 400, { error: 'Partenaire, service, description et contact sont obligatoires' });
+        const list = loadPartners();
+        if (list.filter(entry => !entry.approved).length >= 40) return sendJson(res, 429, { error: 'File de validation pleine, réessayez plus tard' });
+        list.push(item);
+        writeStore('partners.json', list);
+        securityEvent(req, 'partner_proposal', item.partner);
+        return sendJson(res, 201, { id: item.id, pending: true });
+    }
+    if (pathname === '/api/agent/partners') {
+        const session = readSession(req);
+        if (!session) { securityEvent(req, 'unauthorized', pathname); return sendJson(res, 401, { error: 'Accès réservé aux agents autorisés' }); }
+        if (req.method === 'GET') return sendJson(res, 200, { partners: loadPartners() });
+        if (req.method !== 'POST') return sendJson(res, 405, { error: 'Méthode non autorisée' });
+        const body = await readJsonBody(req, 1500);
+        const list = loadPartners();
+        const index = list.findIndex(entry => entry.id === body.id);
+        if (index === -1) return sendJson(res, 404, { error: 'Proposition introuvable' });
+        if (body.action === 'reject') list.splice(index, 1);
+        else if (body.action === 'approve') list[index].approved = true;
+        else if (body.action === 'status' && PARTNER_STATUS.includes(body.status)) {
+            list[index].status = body.status;
+            list[index].next = cleanText(body.next, 140) || list[index].next;
+            list[index].until = body.until ? cleanText(body.until, 30) : null;
+        } else return sendJson(res, 400, { error: 'Action inconnue' });
+        if (list[index]) list[index].updatedAt = new Date().toISOString();
+        writeStore('partners.json', list);
+        return sendJson(res, 200, { partners: list });
+    }
+
+    // --- Événements de sécurité détaillés pour l'espace agent (F100) ---
+    if (pathname === '/api/agent/events') {
+        const session = readSession(req);
+        if (!session) { securityEvent(req, 'unauthorized', pathname); return sendJson(res, 401, { error: 'Accès réservé aux agents autorisés' }); }
+        const type = cleanText(parsedUrl.searchParams.get('type'), 30);
+        const limit = Math.min(Math.max(Number(parsedUrl.searchParams.get('limit')) || 50, 1), 200);
+        const events = readStore('security-log.json', []).filter(event => !type || event.type === type).slice(-limit).reverse();
+        const analysis = securityAnalysis();
+        return sendJson(res, 200, { events, alerts: analysis.alerts, totals: analysis.totals, generatedAt: analysis.generatedAt });
+    }
+
+    // --- Essentiel : instantané compact, mis en cache par le navigateur pour fonctionner hors ligne (F93/F94) ---
+    if (pathname === '/api/essential') {
+        const store = loadBroadcasts();
+        const retired = new Set(store.retired);
+        const now = Date.now();
+        const alerts = SEED_BROADCASTS.concat(store.broadcasts).filter(item => !retired.has(item.id) && (!item.expiresAt || Date.parse(item.expiresAt) > now))
+            .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt))).slice(0, 10)
+            .map(item => ({ id: item.id, level: item.level, title: item.title, body: item.body, action: item.action || '', official: Boolean(item.official), createdAt: item.createdAt }));
+        return sendJson(res, 200, { generatedAt: new Date().toISOString(), alerts, transport: activeDisruptions(), state: systemState().state });
+    }
+    return sendJson(res, 404, { error: 'Introuvable' });
+}
+
 // En-têtes de sécurité sur toutes les réponses
 function applySecurityHeaders(req, res) {
     res.setHeader('Content-Security-Policy', [
@@ -1088,7 +1260,10 @@ function sendStatic(req, res, contentType, content, mtime, filePath) {
         if (staticCache.size > 200) staticCache.clear();
         staticCache.set(key, entry);
     }
-    const headers = { 'Content-Type': contentType, 'ETag': entry.etag, 'Cache-Control': 'public, max-age=0, must-revalidate', 'Vary': 'Accept-Encoding' };
+    // F95 : les scripts et styles sont réutilisés une minute sans nouvelle requête ; la page d'accueil, le service worker et le reste se revalident toujours
+    const reusable = /^\/assets\/.+\.(js|css)$/.test(String(req.url).split('?')[0]);
+    const headers = { 'Content-Type': contentType, 'ETag': entry.etag, 'Cache-Control': reusable ? 'public, max-age=60, stale-while-revalidate=600' : 'public, max-age=0, must-revalidate', 'Vary': 'Accept-Encoding' };
+    if (String(req.url).split('?')[0] === '/sw.js') headers['Service-Worker-Allowed'] = '/';
     if (req.headers['if-none-match'] === entry.etag) {
         res.writeHead(304, headers);
         res.end();
@@ -1185,6 +1360,10 @@ const server = http.createServer((req, res) => {
     }
     if (pathname === '/api/advice') {
         handleAdvice(req, res).catch(err => sendJson(res, 500, { error: err.message }));
+        return;
+    }
+    if (['/api/transport', '/api/usage', '/api/partners', '/api/essential'].includes(pathname) || /^\/api\/agent\/(usage|partners|events)$/.test(pathname)) {
+        handleWave18(req, res, pathname, parsedUrl).catch(err => sendJson(res, 400, { error: err.message }));
         return;
     }
     if (pathname === '/api/export/quality') { handleQualityExport(req, res, parsedUrl); return; }

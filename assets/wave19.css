@@ -1,0 +1,32 @@
+/* VAGUE 19 — F97 transports de remplacement, F98 usage des services, F99 partenaires, F100 événements de sécurité. */
+.w19-replace { margin: 1rem 0; }
+.w19-incident { margin: 0.75rem 0; padding: 0.75rem 1rem; border: 1px solid var(--warn, #FFB347); background: rgba(255, 179, 71, 0.08); }
+.w19-incident-title { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin: 0; font-size: 1rem; }
+.w19-solutions { margin: 0.5rem 0 0; padding-left: 1.25rem; display: grid; gap: 0.25rem; font-size: 0.875rem; }
+.w19-control { display: grid; gap: 0.375rem; max-width: 26rem; margin-top: 1rem; padding: 0.75rem; border: 1px dashed var(--line-strong); }
+.w19-actions, .w19-toolbar { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin: 0.5rem 0; }
+.w19-privacy { margin-top: 0.75rem; }
+.w19-privacy .tn-link, .w19-done .tn-link { text-decoration: underline; color: var(--cyber-500); }
+.w19-summary { margin: 0.5rem 0; padding: 0.5rem 0.75rem; border-left: 3px solid var(--cyber-500); font-size: 0.875rem; }
+.w19-demo { margin: 0.5rem 0; padding: 0.375rem 0.75rem; border: 1px dashed var(--warn, #FFB347); font-size: 0.8125rem; }
+.w19-table-wrap { overflow-x: auto; }
+.w19-table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+.w19-table th, .w19-table td { padding: 0.375rem 0.5rem; text-align: left; border-bottom: 1px solid var(--line-subtle); vertical-align: top; }
+.w19-table thead th { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-300); }
+.w19-table tbody th { font-weight: 600; position: relative; }
+.w19-bar { display: block; height: 3px; margin-top: 3px; background: var(--cyber-500); }
+.w19-partners { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 1rem; }
+.w19-partner { padding: 1rem; border: 1px solid var(--line-subtle); background: rgba(5, 8, 12, 0.5); display: grid; gap: 0.375rem; align-content: start; }
+.w19-partner-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; justify-content: space-between; }
+.w19-partner-service { margin: 0; font-weight: 600; }
+.w19-partner p { margin: 0; }
+.w19-done { color: var(--ok); font-size: 0.8125rem; }
+.w19-news { margin: 0 0 1rem; padding: 0.5rem 0.75rem; border: 1px solid var(--ok); background: rgba(0, 200, 120, 0.1); }
+.w19-news[hidden] { display: none; }
+.w19-form { display: grid; gap: 0.375rem; max-width: 30rem; margin-top: 0.75rem; }
+.w19-agent-list { list-style: none; margin: 0.5rem 0; padding: 0; display: grid; gap: 0.75rem; font-size: 0.875rem; }
+.w19-agent-list li { display: grid; gap: 0.375rem; padding: 0.5rem; border: 1px solid var(--line-subtle); }
+.w19-alerts { list-style: none; margin: 0.5rem 0; padding: 0; display: grid; gap: 0.375rem; }
+.w19-alert { padding: 0.5rem 0.75rem; border: 1px solid var(--warn, #FFB347); font-size: 0.8125rem; }
+.w19-alert--high, .w19-alert--critical { border-color: var(--err); background: rgba(255, 84, 112, 0.1); }
+html.w18-ess #partenaires { display: none; }

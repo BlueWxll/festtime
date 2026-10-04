@@ -335,7 +335,15 @@ document.addEventListener('DOMContentLoaded', () => {
     w15Restore();
     w15RenderPanel();
     // L'état du serveur (mode démonstration ou non) arrive ensuite et complète l'aide à la connexion
-    w15Api('/api/agent/status').then(status => { if (status.ok) { w15.status = status.data; if (!w15Unlocked()) w15LoadRecords(); } }).catch(() => { });
+    // F95 : seuls les agents ont besoin de cet état ; un habitant ne déclenche plus cette requête
+    let w15Booted = false;
+    const w15Boot = () => {
+        if (w15Booted || !(currentRole === 'agent' || currentRole === 'admin')) return;
+        w15Booted = true;
+        w15Api('/api/agent/status').then(status => { if (status.ok) { w15.status = status.data; if (!w15Unlocked()) w15LoadRecords(); } }).catch(() => { });
+    };
+    w15Boot();
+    if (typeof applyRolePermissions === 'function') { const baseRole = applyRolePermissions; applyRolePermissions = function () { baseRole.apply(this, arguments); w15Boot(); }; }
 
     document.querySelectorAll('form').forEach(w15AddHoneypot);
     new MutationObserver(mutations => {

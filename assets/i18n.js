@@ -727,6 +727,8 @@ function tnTranslateTree(root) {
 
 function setLanguage(lang) {
     if (!TN_LANGS[lang]) return;
+    // F95 : les dictionnaires ne sont chargés qu'à la première langue étrangère demandée
+    if (lang !== 'fr' && window.tnLoadDicts && !window.tnDictsLoaded) { window.tnLoadDicts().then(function () { setLanguage(lang); }); return; }
     tnLang = lang;
     try { localStorage.setItem('tn_lang', lang); } catch (e) { }
     document.documentElement.lang = lang;

@@ -73,6 +73,7 @@ function w17ConnectStream() {
         await refreshBroadcasts();
         if (data.action === 'publish' && data.official) announce(t('Message officiel : {title}', { title: data.title || '' }));
     });
+    source.addEventListener('transport', () => { refreshBroadcasts(); });
     source.onerror = () => { w17.live = false; document.documentElement.dataset.w17Live = '0'; };
 }
 

@@ -160,6 +160,9 @@ async function refreshBroadcasts() {
         }
     } catch (err) { }
     tnBroadcastServer = { online: Boolean(server), publishing: Boolean(server && server.publishing) };
+    window.tnPlatform = server && server.platform ? { state: server.platform, at: Date.now() } : window.tnPlatform;
+    window.tnTransport = server && Array.isArray(server.transport) ? server.transport : (window.tnTransport || []);
+    document.dispatchEvent(new CustomEvent('tn:server', { detail: { online: Boolean(server) } }));
 
     const retired = new Set([...(server ? server.retired : []), ...tnLoad('tn_local_retired', [])]);
     const now = Date.now();

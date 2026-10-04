@@ -1,0 +1,29 @@
+/* VAGUE 18 — Essentiel hors ligne (F93), bandeau d'incident (F94), vue essentielle (F96). */
+.w18-incident { position: sticky; top: 0; z-index: 96; padding: 0.5rem 1rem; font-size: 0.8125rem; text-align: center; color: var(--text-100); background: #3b0f1a; border-bottom: 2px solid var(--err); }
+.w18-incident[hidden], .w18-suggest[hidden] { display: none; }
+.w18-incident-link { margin-left: 0.5rem; color: var(--cyber-500); text-decoration: underline; font-weight: 700; }
+.w18-suggest { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; justify-content: center; padding: 0.5rem 1rem; font-size: 0.8125rem; background: #0b2a3a; border-bottom: 1px solid var(--cyber-500); }
+.w18-status { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin: 0 0 0.75rem; }
+.w18-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.5rem 0; }
+.w18-offline { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.5rem 0 1rem; }
+.w18-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 1rem; }
+.w18-card { padding: 1rem; border: 1px solid var(--line-subtle); background: rgba(5, 8, 12, 0.5); }
+.w18-card--emerg { border-color: var(--err); }
+.w18-card--wide { grid-column: 1 / -1; }
+.w18-112 { margin: 0; font-size: 2.75rem; font-weight: 800; line-height: 1; color: var(--err); }
+.w18-list { list-style: none; margin: 0.5rem 0; padding: 0; display: grid; gap: 0.5rem; font-size: 0.875rem; overflow-wrap: anywhere; }
+.w18-steps { margin: 0.5rem 0; padding-left: 1.25rem; display: grid; gap: 0.375rem; font-size: 0.875rem; }
+.w18-card .tn-link { text-decoration: underline; color: var(--cyber-500); }
+/* Vue essentielle : on ne garde que l'essentiel, sans décor */
+html.w18-ess #contenu-principal > section:not(#essentiel):not(#transports):not(#demarches):not(#espace-citoyen) { display: none; }
+html.w18-ess #site-nav a:not([href="#essentiel"]):not([href="#transports"]):not([href="#demarches"]):not([href="#espace-citoyen"]) { display: none; }
+html.w18-ess footer .w18-hide-ess, html.w18-ess .tn-hero-art { display: none; }
+html.w18-ess .w18-grid { grid-template-columns: 1fr; }
+@media print {
+    .w18-incident, .w18-suggest, .w18-actions, .w18-offline { display: none; }
+    html:not(.w18-printing) body > *:not(main) { display: none; }
+    main > section:not(#essentiel) { display: none; }
+    #essentiel { padding: 0; border: 0; }
+    .w18-card { break-inside: avoid; border-color: #000; background: #fff; color: #000; }
+    .w18-card * { color: #000 !important; }
+}

@@ -662,6 +662,8 @@
     <link rel="stylesheet" href="assets/wave15.css">
     <link rel="stylesheet" href="assets/wave16.css">
     <link rel="stylesheet" href="assets/wave17.css">
+    <link rel="stylesheet" href="assets/wave18.css">
+    <link rel="stylesheet" href="assets/wave19.css">
     <link rel="stylesheet" href="assets/tailwind.css">
 
     <!-- Préférences d'accessibilité appliquées avant le premier rendu (évite le flash) -->
@@ -1865,15 +1867,19 @@
     <!-- Vagues 2 et 3 : traductions (D14, F27), fonctionnalités, puis alertes, notifications et recherche.
          Chargées avant la logique applicative qui les appelle. -->
     <script src="assets/i18n.js"></script>
-    <script src="assets/wave4-i18n.js"></script>
-    <script src="assets/wave5-i18n.js"></script>
-    <script src="assets/wave6-i18n.js"></script>
-    <script src="assets/wave7-i18n.js"></script>
-    <script src="assets/wave8-i18n.js"></script>
-    <script src="assets/wave9-i18n.js"></script>
-    <script src="assets/wave10-i18n.js"></script>
-    <script src="assets/wave11-i18n.js"></script>
-    <script src="assets/wave12-i18n.js"></script>
+    <script>
+        /* F95 : les dictionnaires anglais et espagnol (environ 190 Ko) ne sont téléchargés que si la langue choisie n'est pas le français */
+        window.TN_DICT_FILES = ['wave4', 'wave5', 'wave6', 'wave7', 'wave8', 'wave9', 'wave10', 'wave11', 'wave12'].map(function (n) { return 'assets/' + n + '-i18n.js'; });
+        window.tnDictsLoaded = false;
+        if (tnLang !== 'fr') { window.tnDictsLoaded = true; window.TN_DICT_FILES.forEach(function (f) { document.write('<script src="' + f + '"><\/script>'); }); }
+        window.tnLoadDicts = function () {
+            if (window.tnDictsLoaded) return Promise.resolve();
+            window.tnDictsLoaded = true;
+            return window.TN_DICT_FILES.reduce(function (chain, f) {
+                return chain.then(function () { return new Promise(function (resolve) { var el = document.createElement('script'); el.src = f; el.onload = el.onerror = resolve; document.head.appendChild(el); }); });
+            }, Promise.resolve());
+        };
+    </script>
     <script src="assets/alert-seeds.js"></script>
     <script src="assets/features.js"></script>
     <script src="assets/alerts.js"></script>
@@ -1892,6 +1898,8 @@
     <script src="assets/wave15.js"></script>
     <script src="assets/wave16.js"></script>
     <script src="assets/wave17.js"></script>
+    <script src="assets/wave18.js"></script>
+    <script src="assets/wave19.js"></script>
 
     <!-- SCRIPT DE LOGIQUE APPLICATIVE (API, RBAC, LOCALSTORAGE, RENDERING) -->
     <script>

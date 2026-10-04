@@ -23,9 +23,17 @@ async function w16Health() {
     const banner = document.getElementById('w16-banner');
     let delay = 30000;
     try {
-        const response = await fetch('/api/health', { cache: 'no-store' });
-        if (!response.ok) throw new Error('status ' + response.status);
-        const data = await response.json();
+        let data;
+        if (document.hidden) { clearTimeout(w16.timers.health); w16.timers.health = setTimeout(w16Health, 30000); return; }
+        // F95 : l'état est déjà fourni par la dernière actualisation des messages (moins de 40 s) : pas de requête de plus
+        if (window.tnPlatform && Date.now() - window.tnPlatform.at < 40000) {
+            data = { state: window.tnPlatform.state };
+        } else {
+            const response = await fetch('/api/health', { cache: 'no-store' });
+            if (!response.ok) throw new Error('status ' + response.status);
+            data = await response.json();
+        }
+        document.dispatchEvent(new CustomEvent('tn:health', { detail: { ok: true, state: data.state } }));
         w16.healthDelay = 30000;
         if (banner) {
             const degraded = data.state !== 'nominal';
@@ -42,6 +50,7 @@ async function w16Health() {
         // Le serveur ne répond pas bien : on espace les vérifications au lieu de l'harceler
         w16.healthDelay = Math.min(w16.healthDelay * 2, 300000);
         delay = w16.healthDelay;
+        document.dispatchEvent(new CustomEvent('tn:health', { detail: { ok: false } }));
     }
     clearTimeout(w16.timers.health);
     w16.timers.health = setTimeout(w16Health, delay);
@@ -430,7 +439,7 @@ document.addEventListener('DOMContentLoaded', () => {
     banner.setAttribute('role', 'status');
     banner.hidden = true;
     document.body.prepend(banner);
-    w16Health();
+    setTimeout(w16Health, 2500);
     w16RenderPanel();
     document.addEventListener('tn:agent-session', () => { w16Refresh(); });
     document.addEventListener('tn:langchange', () => { const panel = document.getElementById('w16-ops'); if (panel) { panel.remove(); w16RenderPanel(); } w16Health(); });
