@@ -239,6 +239,7 @@ async function handleBroadcasts(req, res, pathname) {
             retired: store.retired,
             platform: systemState().state,
             transport: activeDisruptions(),
+            outage: publicOutage(),
             serverTime: new Date().toISOString()
         });
         return;
@@ -741,6 +742,39 @@ async function handleSecurity(req, res, pathname) {
 // ==========================================
 // VAGUE 18 — Transports (F97), usage des services (F98), partenaires (F99), événements (F100), essentiel (F93/F94)
 // ==========================================
+// ==========================================
+// PANNE ÉLECTRIQUE PAR SECTEUR (F101)
+// ==========================================
+const OUTAGE_SECTORS = ['Dôme Alpha - Anneau 1', 'Dôme Bêta - Anneau 2', 'Anneau Orbital Zéro', 'Secteur Sud Extérieur'];
+const OUTAGE_STEPS_TEXT = "1. Restez calme et ne sortez pas dans les coursives sans lampe. 2. Éclairez-vous à la lampe torche, jamais avec une flamme. 3. Appareil médical branché : appelez le 112 tout de suite. 4. Évitez ascenseurs et portes automatiques : prenez les escaliers. 5. Gardez le réfrigérateur fermé et débranchez les appareils sensibles. 6. Économisez la batterie de votre téléphone.";
+function publicOutage() {
+    const o = readStore('outage.json', null);
+    if (!o || !o.id) return null;
+    const now = Date.now();
+    if (o.active && now - Date.parse(o.since) > 24 * 3600000) return null;
+    if (!o.active && (!o.clearedAt || now - Date.parse(o.clearedAt) > 2 * 3600000)) return null;
+    return o;
+}
+function outageBroadcast(outage) {
+    const label = outage.sectors.join(', ');
+    const eta = outage.backAt ? ` Retour prévu vers ${new Date(outage.backAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', timeZone: 'Indian/Mauritius' })} (estimation).` : '';
+    return {
+        id: `OUT-${outage.id}`, level: 'alerte',
+        title: `${outage.exercise ? 'EXERCICE — ' : ''}Panne électrique : ${label}`,
+        body: `Une panne d'électricité touche ${label}.${eta} Les équipes de l'Énergie Plasma sont mobilisées.`,
+        action: OUTAGE_STEPS_TEXT, sectors: outage.sectors.slice(), source: 'Énergie Plasma & Réacteur Zéro', advice: false, official: true,
+        createdAt: outage.since, expiresAt: new Date(Date.parse(outage.since) + 24 * 3600000).toISOString()
+    };
+}
+function retireOutageBroadcast(outageId) {
+    const store = loadBroadcasts();
+    const id = `OUT-${outageId}`;
+    if (!store.retired.includes(id)) store.retired.push(id);
+    store.retired = store.retired.slice(-200);
+    store.broadcasts = store.broadcasts.filter(entry => entry.id !== id);
+    writeStore('broadcasts.json', store);
+}
+
 const TRANSPORT_LINES = ['HT1', 'HT2', 'NO', 'NS'];
 function activeDisruptions() {
     const now = Date.now();
@@ -819,6 +853,63 @@ async function handleWave18(req, res, pathname, parsedUrl) {
         writeStore('transport.json', list);
         pushEvent('transport', { lineId, action: body.action });
         return sendJson(res, 200, { disruptions: activeDisruptions() });
+    }
+
+    // --- Panne électrique par secteur (F101) ---
+    if (pathname === '/api/outage') {
+        if (req.method !== 'GET') return sendJson(res, 405, { error: 'Méthode non autorisée' });
+        return sendJson(res, 200, { outage: publicOutage(), serverTime: new Date().toISOString() });
+    }
+    if (pathname === '/api/agent/outage') {
+        if (req.method !== 'POST') return sendJson(res, 405, { error: 'Méthode non autorisée' });
+        const session = readSession(req);
+        if (!session) { securityEvent(req, 'unauthorized', pathname); return sendJson(res, 401, { error: 'Accès réservé aux agents autorisés' }); }
+        if (rateLimited(req, 'outage', 20, 10 * 60000)) return sendJson(res, 429, { error: 'Trop d\'opérations, réessayez dans quelques minutes' });
+        const body = await readJsonBody(req, 3000);
+        const current = readStore('outage.json', null);
+        const minutes = Math.min(Math.max(Number(body.backMinutes) || 0, 0), 1440);
+        if (body.action === 'set') {
+            const sectors = (Array.isArray(body.sectors) ? body.sectors : []).filter(name => OUTAGE_SECTORS.includes(name));
+            if (!sectors.length) return sendJson(res, 400, { error: 'Choisissez au moins un secteur touché' });
+            if (current && current.active) retireOutageBroadcast(current.id);
+            const now = new Date();
+            const outage = { id: now.getTime().toString(36).toUpperCase(), active: true, sectors: Array.from(new Set(sectors)), exercise: Boolean(body.exercise), since: now.toISOString(), backAt: minutes ? new Date(now.getTime() + minutes * 60000).toISOString() : null, updates: [], by: session.role };
+            const first = cleanText(body.text, 240);
+            if (first) outage.updates.push({ at: now.toISOString(), text: first });
+            writeStore('outage.json', outage);
+            const store = loadBroadcasts();
+            store.broadcasts = store.broadcasts.concat(outageBroadcast(outage)).slice(-50);
+            writeStore('broadcasts.json', store);
+            securityEvent(req, 'outage', `${outage.exercise ? 'exercice' : 'alerte'} panne électrique : ${outage.sectors.length} secteur(s)`);
+            pushEvent('broadcast', { action: 'publish', id: `OUT-${outage.id}`, level: 'alerte', official: true, title: 'Panne électrique' });
+            return sendJson(res, 201, { outage });
+        }
+        if (!current || !current.active) return sendJson(res, 409, { error: 'Aucune panne en cours' });
+        if (body.action === 'update') {
+            const text = cleanText(body.text, 240);
+            if (!text && !minutes) return sendJson(res, 400, { error: 'Écrivez la mise à jour ou changez le retour prévu' });
+            if (text) current.updates = (current.updates || []).concat({ at: new Date().toISOString(), text }).slice(-20);
+            if (minutes) current.backAt = new Date(Date.now() + minutes * 60000).toISOString();
+            writeStore('outage.json', current);
+            const store = loadBroadcasts();
+            const index = store.broadcasts.findIndex(entry => entry.id === `OUT-${current.id}`);
+            if (index !== -1) { store.broadcasts[index] = Object.assign(outageBroadcast(current), { createdAt: store.broadcasts[index].createdAt }); writeStore('broadcasts.json', store); }
+            securityEvent(req, 'outage', 'mise à jour panne électrique');
+            pushEvent('broadcast', { action: 'update', id: `OUT-${current.id}`, level: 'alerte', official: true, title: 'Panne électrique : mise à jour' });
+            return sendJson(res, 200, { outage: current });
+        }
+        if (body.action === 'clear') {
+            current.active = false;
+            current.clearedAt = new Date().toISOString();
+            const text = cleanText(body.text, 240);
+            if (text) current.updates = (current.updates || []).concat({ at: current.clearedAt, text }).slice(-20);
+            writeStore('outage.json', current);
+            retireOutageBroadcast(current.id);
+            securityEvent(req, 'outage', 'courant rétabli');
+            pushEvent('broadcast', { action: 'retire', id: `OUT-${current.id}` });
+            return sendJson(res, 200, { outage: current });
+        }
+        return sendJson(res, 400, { error: 'Action inconnue' });
     }
 
     // --- Usage des services : compteurs anonymes (aucune adresse, aucun compte) ---
@@ -902,7 +993,7 @@ async function handleWave18(req, res, pathname, parsedUrl) {
         const alerts = SEED_BROADCASTS.concat(store.broadcasts).filter(item => !retired.has(item.id) && (!item.expiresAt || Date.parse(item.expiresAt) > now))
             .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt))).slice(0, 10)
             .map(item => ({ id: item.id, level: item.level, title: item.title, body: item.body, action: item.action || '', official: Boolean(item.official), createdAt: item.createdAt }));
-        return sendJson(res, 200, { generatedAt: new Date().toISOString(), alerts, transport: activeDisruptions(), state: systemState().state });
+        return sendJson(res, 200, { generatedAt: new Date().toISOString(), alerts, transport: activeDisruptions(), outage: publicOutage(), state: systemState().state });
     }
     return sendJson(res, 404, { error: 'Introuvable' });
 }
@@ -1362,7 +1453,7 @@ const server = http.createServer((req, res) => {
         handleAdvice(req, res).catch(err => sendJson(res, 500, { error: err.message }));
         return;
     }
-    if (['/api/transport', '/api/usage', '/api/partners', '/api/essential'].includes(pathname) || /^\/api\/agent\/(usage|partners|events)$/.test(pathname)) {
+    if (['/api/transport', '/api/usage', '/api/partners', '/api/essential', '/api/outage'].includes(pathname) || /^\/api\/agent\/(usage|partners|events|outage)$/.test(pathname)) {
         handleWave18(req, res, pathname, parsedUrl).catch(err => sendJson(res, 400, { error: err.message }));
         return;
     }

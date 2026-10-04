@@ -94,6 +94,18 @@ function w18PoiList(list) {
     return `<ul class="w18-list">${list.map(poi => { const r = w18PoiRow(poi); return `<li><strong data-no-i18n>${escapeHtml(r.name)}</strong> <span class="tn-badge tn-badge--${r.open ? 'resolved' : 'pending'}">${W18T(r.open ? 'Ouvert' : 'Fermé')}</span><br><span class="tn-hint" data-no-i18n>${escapeHtml(r.sector)} · ${escapeHtml(r.hours)}${r.contact ? ' · ' + escapeHtml(r.contact) : ''}</span></li>`; }).join('')}</ul>`;
 }
 
+
+function w18OutageCard(data) {
+    const outage = data && data.outage;
+    if (!outage || !outage.id || !outage.active) return '';
+    const label = typeof w20Label === 'function' ? w20Label(outage.sectors) : outage.sectors.join(', ');
+    const steps = typeof W20_STEPS !== 'undefined' ? W20_STEPS : [];
+    return `<article class="w18-card w18-card--emerg w18-outage" id="w18-outage"><h3 class="tn-w12-sub"><i aria-hidden="true" class="fa-solid fa-bolt-lightning"></i> ${W18T('Panne électrique')} — <span data-no-i18n>${escapeHtml(label)}</span>${outage.exercise ? ' <span class="tn-badge tn-badge--pending">' + W18T('EXERCICE') + '</span>' : ''}</h3>
+        <p class="tn-hint" data-no-i18n>${escapeHtml(t('En cours depuis'))} ${escapeHtml(w18Time(outage.since))}${outage.backAt ? ' · ' + escapeHtml(t('retour prévu vers {time}', { time: w18Time(outage.backAt) })) : ''}</p>
+        <ol class="w18-steps">${steps.map(step => `<li>${W18T(step[1])}</li>`).join('')}</ol>
+        ${(outage.updates || []).length ? `<ul class="w18-list" data-no-i18n>${outage.updates.slice(-3).reverse().map(item => `<li><strong>${escapeHtml(w18Time(item.at))}</strong> ${escapeHtml(item.text)}</li>`).join('')}</ul>` : ''}</article>`;
+}
+
 function w18RenderEssential() {
     const box = document.getElementById('w18-body');
     if (!box) return;
@@ -105,6 +117,7 @@ function w18RenderEssential() {
     const lead = document.getElementById('w18-status');
     if (lead) lead.innerHTML = w18StatusLine();
     box.innerHTML = `
+        ${w18OutageCard(data)}
         <div class="w18-grid">
             <article class="w18-card w18-card--emerg" id="w18-emerg">
                 <h3 class="tn-w12-sub">${W18T('Urgences')}</h3>
@@ -157,6 +170,15 @@ async function w18Refresh() {
 }
 
 // Fiche à emporter : un seul fichier HTML, lisible sans site ni connexion
+
+function w18OutageSheet(data) {
+    const outage = data && data.outage;
+    if (!outage || !outage.active) return '';
+    const label = typeof w20Label === 'function' ? w20Label(outage.sectors) : outage.sectors.join(', ');
+    const steps = typeof W20_STEPS !== 'undefined' ? W20_STEPS : [];
+    return `<h2>Panne électrique — ${escapeHtml(label)}${outage.exercise ? ' (EXERCICE)' : ''}</h2><p>Depuis ${escapeHtml(w18Time(outage.since))}${outage.backAt ? ', retour prévu vers ' + escapeHtml(w18Time(outage.backAt)) : ''}.</p><ol>${steps.map(step => `<li>${escapeHtml(t(step[1]))}</li>`).join('')}</ol>`;
+}
+
 function w18BuildSheet() {
     const data = w18.data || { alerts: [], transport: [] };
     const pois = w18Pois();
@@ -166,7 +188,7 @@ function w18BuildSheet() {
 <style>body{font:16px/1.5 system-ui,sans-serif;max-width:46rem;margin:0 auto;padding:1rem;color:#111;background:#fff}h1{font-size:1.4rem}h2{font-size:1.1rem;border-bottom:2px solid #0a6;padding-bottom:.2rem;margin-top:1.5rem}.n112{font-size:2.4rem;font-weight:800;color:#b00020;margin:.2rem 0}li{margin:.4rem 0}small{color:#444}@media print{body{font-size:12pt}}</style></head><body>
 <h1>Terra Nova — fiche essentielle</h1>
 <p>Établie le ${esc(w18Time(new Date().toISOString()))} · informations du ${esc(w18Time(w18.savedAt))}. Cette fiche fonctionne sans connexion ; vérifiez la date avant de vous y fier.</p>
-<h2>Urgences</h2><p class="n112">112</p><p>Balise d'urgence : police, secours, santé, à toute heure.</p><ul>${poiRows(pois.emergency)}</ul>
+${w18OutageSheet(data)}<h2>Urgences</h2><p class="n112">112</p><p>Balise d'urgence : police, secours, santé, à toute heure.</p><ul>${poiRows(pois.emergency)}</ul>
 <h2>Hôpitaux et soins</h2><ul>${poiRows(pois.hospitals)}</ul>
 <h2>Pharmacies</h2><ul>${poiRows(pois.pharmacies)}</ul>
 <h2>Alertes au moment de l'établissement</h2>${data.alerts.length ? `<ul>${data.alerts.slice(0, 8).map(item => `<li><strong>${esc(item.title)}</strong> (${esc(w18LevelLabel(item.level))})<br><small>${esc(String(item.body || '').slice(0, 220))}</small></li>`).join('')}</ul>` : '<p>Aucune alerte.</p>'}
@@ -331,6 +353,7 @@ function w18Init() {
     document.addEventListener('tn:server', event => { if (event.detail && event.detail.online === false) { w18.health = { ok: false, state: 'down' }; } else if (w18.health.state === 'down') w18.health = { ok: true, state: 'nominal' }; w18Incident(); });
     document.addEventListener('tn:langchange', () => { const s = document.getElementById('essentiel'); if (s) { s.remove(); w18Build(); w18RenderEssential(); } w18Incident(); });
     document.addEventListener('tn:agent-session', () => w18RenderEssential());
+    document.addEventListener('tn:outage', event => { if (!w18.data) return; w18.data.outage = event.detail || null; if (!w18.simulated) w18Save(W18_SNAP, { at: w18.savedAt || new Date().toISOString(), data: w18.data }); w18RenderEssential(); });
     document.addEventListener('tn:citizen', () => w18RenderEssential());
     w18Incident();
 
