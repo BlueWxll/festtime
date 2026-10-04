@@ -222,6 +222,8 @@ function pushEvent(type, data) {
 function handleStream(req, res) {
     if (SSE_CLIENTS.size >= SSE_MAX) { sendJson(res, 503, { error: 'Flux saturé, utilisez l\'actualisation automatique' }); return; }
     res.writeHead(200, { 'Content-Type': 'text/event-stream; charset=utf-8', 'Cache-Control': 'no-cache, no-transform', 'Connection': 'keep-alive', 'X-Accel-Buffering': 'no' });
+    if (res.flushHeaders) res.flushHeaders();
+    res.write(':' + ' '.repeat(2048) + '\n\n'); // force les relais intermédiaires à vider leur tampon
     res.write('retry: 5000\nevent: hello\ndata: {"clients":' + (SSE_CLIENTS.size + 1) + '}\n\n');
     SSE_CLIENTS.add(res);
     req.on('close', () => SSE_CLIENTS.delete(res));

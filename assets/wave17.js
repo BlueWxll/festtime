@@ -61,6 +61,11 @@ function w17ConnectStream() {
     try { source = new EventSource('/api/stream'); } catch (err) { return; }
     w17.source = source;
     source.addEventListener('hello', () => { w17.live = true; document.documentElement.dataset.w17Live = '1'; });
+    // Si un relais retient le flux, on interroge toutes les 5 s au lieu de 30 s
+    setTimeout(() => {
+        if (w17.live || w17.fast) return;
+        w17.fast = setInterval(() => { if (w17.live) { clearInterval(w17.fast); w17.fast = null; } else if (!document.hidden) refreshBroadcasts(); }, 5000);
+    }, 4000);
     source.addEventListener('broadcast', async event => {
         let data = {};
         try { data = JSON.parse(event.data); } catch (err) { }
