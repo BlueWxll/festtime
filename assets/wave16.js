@@ -99,7 +99,7 @@ async function w16LoadTest() {
     if (!box) return;
     const total = 60;
     const targets = ['/api/health', '/assets/wave13.css', '/api/broadcasts', '/api/health'];
-    box.innerHTML = `<p class="tn-hint">${W16T('Test en cours : {n} requêtes, 15 en même temps…', { n: total })}</p>`;
+    box.innerHTML = `<p class="tn-hint">${W16T('Test en cours : {n} requêtes, 8 en même temps…', { n: total })}</p>`;
     const times = [];
     let ok = 0;
     let limited = 0;
@@ -113,13 +113,13 @@ async function w16LoadTest() {
             try {
                 const response = await fetch(url, { cache: 'no-store' });
                 times.push(performance.now() - start);
-                if (response.ok) ok += 1; else if (response.status === 429 || response.status === 503) limited += 1; else failed += 1;
+                if (response.ok) ok += 1; else if (response.status === 429 || response.status === 503 || response.status === 508) limited += 1; else failed += 1;
                 await response.arrayBuffer();
             } catch (err) { failed += 1; }
         }
     };
     const begin = performance.now();
-    await Promise.all(Array.from({ length: 15 }, worker));
+    await Promise.all(Array.from({ length: 8 }, worker));
     const duration = performance.now() - begin;
     const sorted = times.slice().sort((a, b) => a - b);
     const q = fraction => Math.round(sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * fraction))] || 0);
