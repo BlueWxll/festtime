@@ -432,7 +432,7 @@ async function w19PartnerAdmin(body, okText) {
 // ------------------------------------------
 // F100 — Événements de sécurité détaillés (espace agent)
 // ------------------------------------------
-const W19_EVENT_LABELS = { login_failed: 'Connexion refusée', login_ok: 'Connexion agent', unauthorized: 'Accès refusé', probe: 'Fichier sensible demandé', bot: 'Robot bloqué', duplicate: 'Envoi en double', rate_limited: 'Débit excessif', records_read: 'Dossiers consultés', partner_proposal: 'Proposition de partenaire' };
+const W19_EVENT_LABELS = { login_failed: 'Connexion refusée', login_ok: 'Connexion agent', unauthorized: 'Accès refusé', probe: 'Fichier sensible demandé', bot: 'Robot bloqué', duplicate: 'Envoi en double', rate_limited: 'Débit excessif', records_read: 'Dossiers consultés', partner_proposal: 'Proposition de partenaire', outage: 'Alerte panne électrique', solar: 'Alerte tempête solaire' };
 function w19EventLabel(type) { return t(W19_EVENT_LABELS[type] || type); }
 
 async function w19LoadEvents() {

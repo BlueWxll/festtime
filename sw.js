@@ -2,8 +2,8 @@
 // - Pages et fichiers du site : réseau d'abord (3 s), puis la dernière copie gardée sur l'appareil.
 // - Informations essentielles (alertes, transports, partenaires) : même règle, la dernière version reçue est conservée.
 // - Jamais mis en cache : envois (POST), espace agent (/api/agent/), flux en direct (/api/stream), assistant IA.
-const CACHE = 'terra-nova-v20';
-const API_KEEP = /^\/api\/(essential|broadcasts|transport|partners|outage)$/;
+const CACHE = 'terra-nova-v21';
+const API_KEEP = /^\/api\/(essential|broadcasts|transport|partners|outage|solar)$/;
 
 self.addEventListener('install', event => {
     event.waitUntil((async () => {

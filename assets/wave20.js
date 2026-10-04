@@ -87,7 +87,7 @@ function w20Render(force) {
     let bar = document.getElementById('w20-outage');
     if (!outage) {
         if (bar) bar.remove();
-        document.title = w20.baseTitle;
+        if (document.title.startsWith('⚠')) document.title = w20.baseTitle;
         return;
     }
     const sig = w20Sig(outage);
@@ -106,7 +106,7 @@ function w20Render(force) {
     bar.setAttribute('aria-labelledby', 'w20-title');
     const seen = w20Seen() === sig;
     if (!outage.active) {
-        document.title = w20.baseTitle;
+        if (document.title.startsWith('⚠')) document.title = w20.baseTitle;
         if (seen) { bar.remove(); return; }
         bar.setAttribute('role', 'status');
         bar.innerHTML = `<div class="w20-head"><i aria-hidden="true" class="fa-solid fa-plug-circle-check"></i><h2 id="w20-title" data-no-i18n>${escapeHtml(t('Courant rétabli'))} — ${escapeHtml(label)}</h2>${w20Exercise(outage)}</div>

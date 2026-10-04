@@ -106,6 +106,24 @@ function w18OutageCard(data) {
         ${(outage.updates || []).length ? `<ul class="w18-list" data-no-i18n>${outage.updates.slice(-3).reverse().map(item => `<li><strong>${escapeHtml(w18Time(item.at))}</strong> ${escapeHtml(item.text)}</li>`).join('')}</ul>` : ''}</article>`;
 }
 
+function w18SolarCard(data) {
+    const solar = data && data.solar;
+    if (!solar || !solar.id || !solar.active) return '';
+    const steps = typeof W21_BEFORE !== 'undefined' ? W21_BEFORE : [];
+    return `<article class="w18-card w18-card--emerg w18-outage" id="w18-solar"><h3 class="tn-w12-sub"><i aria-hidden="true" class="fa-solid fa-sun"></i> ${W18T('Tempête solaire')}${solar.exercise ? ' <span class="tn-badge tn-badge--pending">' + W18T('EXERCICE') + '</span>' : ''}</h3>
+        <p class="tn-hint" data-no-i18n>${escapeHtml(t('Impact attendu vers {time}', { time: w18Time(solar.startsAt) }))} · ${escapeHtml(t('fin estimée vers {time}', { time: w18Time(solar.endsAt) }))}</p>
+        <p>${W18T('Les communications peuvent être brouillées ou coupées.')}</p>
+        <ol class="w18-steps">${steps.map(step => `<li>${W18T(step[1])}</li>`).join('')}</ol>
+        ${(solar.updates || []).length ? `<ul class="w18-list" data-no-i18n>${solar.updates.slice(-3).reverse().map(item => `<li><strong>${escapeHtml(w18Time(item.at))}</strong> ${escapeHtml(item.text)}</li>`).join('')}</ul>` : ''}</article>`;
+}
+
+function w18SolarSheet(data) {
+    const solar = data && data.solar;
+    if (!solar || !solar.active) return '';
+    const steps = typeof W21_BEFORE !== 'undefined' ? W21_BEFORE : [];
+    return `<h2>Tempête solaire${solar.exercise ? ' (EXERCICE)' : ''}</h2><p>Impact attendu vers ${escapeHtml(w18Time(solar.startsAt))}, fin estimée vers ${escapeHtml(w18Time(solar.endsAt))}. Les communications peuvent être coupées.</p><ol>${steps.map(step => `<li>${escapeHtml(t(step[1]))}</li>`).join('')}</ol>`;
+}
+
 function w18RenderEssential() {
     const box = document.getElementById('w18-body');
     if (!box) return;
@@ -117,7 +135,7 @@ function w18RenderEssential() {
     const lead = document.getElementById('w18-status');
     if (lead) lead.innerHTML = w18StatusLine();
     box.innerHTML = `
-        ${w18OutageCard(data)}
+        ${w18OutageCard(data)}${w18SolarCard(data)}
         <div class="w18-grid">
             <article class="w18-card w18-card--emerg" id="w18-emerg">
                 <h3 class="tn-w12-sub">${W18T('Urgences')}</h3>
@@ -188,7 +206,7 @@ function w18BuildSheet() {
 <style>body{font:16px/1.5 system-ui,sans-serif;max-width:46rem;margin:0 auto;padding:1rem;color:#111;background:#fff}h1{font-size:1.4rem}h2{font-size:1.1rem;border-bottom:2px solid #0a6;padding-bottom:.2rem;margin-top:1.5rem}.n112{font-size:2.4rem;font-weight:800;color:#b00020;margin:.2rem 0}li{margin:.4rem 0}small{color:#444}@media print{body{font-size:12pt}}</style></head><body>
 <h1>Terra Nova — fiche essentielle</h1>
 <p>Établie le ${esc(w18Time(new Date().toISOString()))} · informations du ${esc(w18Time(w18.savedAt))}. Cette fiche fonctionne sans connexion ; vérifiez la date avant de vous y fier.</p>
-${w18OutageSheet(data)}<h2>Urgences</h2><p class="n112">112</p><p>Balise d'urgence : police, secours, santé, à toute heure.</p><ul>${poiRows(pois.emergency)}</ul>
+${w18OutageSheet(data)}${w18SolarSheet(data)}<h2>Urgences</h2><p class="n112">112</p><p>Balise d'urgence : police, secours, santé, à toute heure.</p><ul>${poiRows(pois.emergency)}</ul>
 <h2>Hôpitaux et soins</h2><ul>${poiRows(pois.hospitals)}</ul>
 <h2>Pharmacies</h2><ul>${poiRows(pois.pharmacies)}</ul>
 <h2>Alertes au moment de l'établissement</h2>${data.alerts.length ? `<ul>${data.alerts.slice(0, 8).map(item => `<li><strong>${esc(item.title)}</strong> (${esc(w18LevelLabel(item.level))})<br><small>${esc(String(item.body || '').slice(0, 220))}</small></li>`).join('')}</ul>` : '<p>Aucune alerte.</p>'}
@@ -353,6 +371,7 @@ function w18Init() {
     document.addEventListener('tn:server', event => { if (event.detail && event.detail.online === false) { w18.health = { ok: false, state: 'down' }; } else if (w18.health.state === 'down') w18.health = { ok: true, state: 'nominal' }; w18Incident(); });
     document.addEventListener('tn:langchange', () => { const s = document.getElementById('essentiel'); if (s) { s.remove(); w18Build(); w18RenderEssential(); } w18Incident(); });
     document.addEventListener('tn:agent-session', () => w18RenderEssential());
+    document.addEventListener('tn:solar', event => { if (!w18.data) return; w18.data.solar = event.detail || null; if (!w18.simulated) w18Save(W18_SNAP, { at: w18.savedAt || new Date().toISOString(), data: w18.data }); w18RenderEssential(); });
     document.addEventListener('tn:outage', event => { if (!w18.data) return; w18.data.outage = event.detail || null; if (!w18.simulated) w18Save(W18_SNAP, { at: w18.savedAt || new Date().toISOString(), data: w18.data }); w18RenderEssential(); });
     document.addEventListener('tn:citizen', () => w18RenderEssential());
     w18Incident();

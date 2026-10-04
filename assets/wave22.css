@@ -1,0 +1,31 @@
+/* VAGUE 22 — F103 rapport d'activité. */
+.w22-report { padding: 1rem; border: 1px solid var(--line-subtle); background: rgba(5, 8, 12, 0.5); }
+.w22-title { margin: 0; font-size: 1.25rem; font-weight: 800; }
+.w22-sub { margin: 0.125rem 0 0.75rem; font-size: 0.8125rem; color: var(--text-300); }
+.w22-block { margin-top: 1rem; }
+.w22-h { margin: 0 0 0.375rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--cyber-500); }
+.w22-summary, .w22-prios, .w22-incidents { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.375rem; font-size: 0.9375rem; }
+.w22-prio { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: baseline; padding: 0.375rem 0.625rem; border-left: 4px solid var(--line-strong); }
+.w22-prio--high { border-left-color: var(--err); background: rgba(255, 84, 112, 0.08); }
+.w22-prio--medium { border-left-color: var(--warn, #FFB347); }
+.w22-prio--ok { border-left-color: var(--ok); }
+.w22-prio-tag { font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.w22-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(11.5rem, 1fr)); gap: 0.5rem; }
+.w22-tile { padding: 0.5rem 0.75rem; border: 1px solid var(--line-subtle); }
+.w22-tile--pending { border-color: var(--warn, #FFB347); }
+.w22-tile--resolved { border-color: rgba(0, 200, 120, 0.5); }
+.w22-tile-label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-300); }
+.w22-tile-value { font-size: 1.5rem; font-weight: 800; line-height: 1.2; }
+.w22-tile-note { font-size: 0.75rem; color: var(--text-300); }
+.w22-wrap { overflow-x: auto; }
+.w22-table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+.w22-table th, .w22-table td { padding: 0.375rem 0.5rem; text-align: left; border-bottom: 1px solid var(--line-subtle); }
+.w22-table thead th { font-size: 0.6875rem; text-transform: uppercase; color: var(--text-300); }
+.w22-notes ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.25rem; }
+#w22-print-root { display: none; }
+@media print {
+    html.w22-printing body > *:not(#w22-print-root) { display: none !important; }
+    html.w22-printing #w22-print-root { display: block; padding: 0; color: #000; background: #fff; }
+    html.w22-printing #w22-print-root * { color: #000 !important; background: transparent !important; border-color: #666 !important; }
+    html.w22-printing .w22-tile, html.w22-printing .w22-prio { break-inside: avoid; }
+}

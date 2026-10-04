@@ -28,3 +28,13 @@
 .w20-state { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin: 0 0 0.5rem; }
 @media (max-width: 640px) { .w20 { max-height: 75vh; } .w20-head h2 { font-size: 1.05rem; } }
 @media print { .w20 { position: static; max-height: none; border: 2px solid #000; background: #fff; color: #000; } }
+
+/* F104 — tempête solaire */
+.w21 { background: #2d1a05; border-bottom-color: #ffb020; }
+.w21--during { background: #3a1405; border-bottom-color: #ff6a1a; }
+.w21--over { background: #0d2a1d; border-bottom-color: var(--ok); }
+.w21-level { padding: 0.125rem 0.5rem; border: 2px solid #ffcf5a; color: #ffcf5a; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; }
+.w21-level--forte { border-color: #ff8a3d; color: #ff8a3d; }
+.w21-level--extreme { border-color: #ff5470; color: #ff5470; background: rgba(255, 84, 112, 0.12); }
+.w21-when { font-size: 1.125rem; font-weight: 700; }
+.w21-concern { color: #ffe29a; }

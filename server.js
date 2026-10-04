@@ -240,6 +240,7 @@ async function handleBroadcasts(req, res, pathname) {
             platform: systemState().state,
             transport: activeDisruptions(),
             outage: publicOutage(),
+            solar: publicSolar(),
             serverTime: new Date().toISOString()
         });
         return;
@@ -639,7 +640,7 @@ const SECURITY_RULES = {
 function securityAnalysis() {
     const events = readStore('security-log.json', []);
     const now = Date.now();
-    const recent = events.filter(event => now - Date.parse(event.at) < 15 * 60000 && event.type !== 'login_ok' && event.type !== 'records_read');
+    const recent = events.filter(event => now - Date.parse(event.at) < 15 * 60000 && event.type !== 'login_ok' && event.type !== 'records_read' && event.type !== 'outage' && event.type !== 'solar');
     const byIp = new Map();
     recent.forEach(event => { if (!byIp.has(event.ip)) byIp.set(event.ip, []); byIp.get(event.ip).push(event); });
     const alerts = [];
@@ -775,6 +776,44 @@ function retireOutageBroadcast(outageId) {
     writeStore('broadcasts.json', store);
 }
 
+// ==========================================
+// HISTORIQUE DES INCIDENTS (F103) ET TEMPÊTE SOLAIRE (F104)
+// ==========================================
+function logIncident(kind, action, detail) {
+    const list = readStore('incidents.json', []);
+    list.push({ at: new Date().toISOString(), kind, action, detail: cleanText(detail, 140) });
+    writeStore('incidents.json', list.slice(-200));
+}
+const SOLAR_LEVELS = { moderee: 'modérée', forte: 'forte', extreme: 'extrême' };
+const SOLAR_STEPS_TEXT = "1. Prévenez vos proches et dites-leur où vous serez : les messages peuvent être coupés. 2. Mettez-vous à l'abri dans un dôme ou un bâtiment couvert, évitez le Secteur Sud Extérieur et les sorties orbitales. 3. Rechargez téléphone et lampe, débranchez les appareils sensibles. 4. Repérez le point d'aide le plus proche : si les communications coupent, rendez-vous-y. 5. Reportez les trajets non essentiels. 6. Gardez la page Essentiel ouverte : elle fonctionne sans réseau.";
+function publicSolar() {
+    const o = readStore('solar.json', null);
+    if (!o || !o.id) return null;
+    const now = Date.now();
+    if (o.active && now - Date.parse(o.since) > 24 * 3600000) return null;
+    if (!o.active && (!o.clearedAt || now - Date.parse(o.clearedAt) > 2 * 3600000)) return null;
+    return o;
+}
+function solarBroadcast(solar) {
+    const at = time => new Date(time).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', timeZone: 'Indian/Mauritius' });
+    const start = Date.parse(solar.startsAt);
+    const when = start > Date.now() ? `Impact attendu vers ${at(solar.startsAt)}.` : 'Impact en cours.';
+    return {
+        id: `SOL-${solar.id}`, level: 'alerte',
+        title: `${solar.exercise ? 'EXERCICE — ' : ''}Tempête solaire (${SOLAR_LEVELS[solar.severity] || 'modérée'}) : communications perturbées`,
+        body: `Une tempête solaire peut brouiller ou couper les communications. ${when} Fin estimée vers ${at(solar.endsAt)}.`,
+        action: SOLAR_STEPS_TEXT, sectors: [], source: 'Veille Atmosphère & Biosphère', advice: false, official: true,
+        createdAt: solar.since, expiresAt: new Date(Date.parse(solar.since) + 24 * 3600000).toISOString()
+    };
+}
+function retireBroadcastById(id) {
+    const store = loadBroadcasts();
+    if (!store.retired.includes(id)) store.retired.push(id);
+    store.retired = store.retired.slice(-200);
+    store.broadcasts = store.broadcasts.filter(entry => entry.id !== id);
+    writeStore('broadcasts.json', store);
+}
+
 const TRANSPORT_LINES = ['HT1', 'HT2', 'NO', 'NS'];
 function activeDisruptions() {
     const now = Date.now();
@@ -851,6 +890,7 @@ async function handleWave18(req, res, pathname, parsedUrl) {
             list.push({ lineId, cause: cleanText(body.cause, 120) || 'Incident technique', since: new Date().toISOString(), until: new Date(Date.now() + minutes * 60000).toISOString(), by: session.role });
         } else if (body.action !== 'clear') return sendJson(res, 400, { error: 'Action inconnue' });
         writeStore('transport.json', list);
+        logIncident('transport', body.action === 'set' ? 'interruption' : 'rétablie', `ligne ${lineId}${body.action === 'set' ? ' : ' + cleanText(body.cause, 80) : ''}`);
         pushEvent('transport', { lineId, action: body.action });
         return sendJson(res, 200, { disruptions: activeDisruptions() });
     }
@@ -881,6 +921,7 @@ async function handleWave18(req, res, pathname, parsedUrl) {
             store.broadcasts = store.broadcasts.concat(outageBroadcast(outage)).slice(-50);
             writeStore('broadcasts.json', store);
             securityEvent(req, 'outage', `${outage.exercise ? 'exercice' : 'alerte'} panne électrique : ${outage.sectors.length} secteur(s)`);
+            logIncident('power', outage.exercise ? 'exercice' : 'alerte', `panne électrique : ${outage.sectors.join(', ')}`);
             pushEvent('broadcast', { action: 'publish', id: `OUT-${outage.id}`, level: 'alerte', official: true, title: 'Panne électrique' });
             return sendJson(res, 201, { outage });
         }
@@ -906,10 +947,97 @@ async function handleWave18(req, res, pathname, parsedUrl) {
             writeStore('outage.json', current);
             retireOutageBroadcast(current.id);
             securityEvent(req, 'outage', 'courant rétabli');
+            logIncident('power', 'fin', 'courant rétabli');
             pushEvent('broadcast', { action: 'retire', id: `OUT-${current.id}` });
             return sendJson(res, 200, { outage: current });
         }
         return sendJson(res, 400, { error: 'Action inconnue' });
+    }
+
+    // --- Tempête solaire (F104) ---
+    if (pathname === '/api/solar') {
+        if (req.method !== 'GET') return sendJson(res, 405, { error: 'Méthode non autorisée' });
+        return sendJson(res, 200, { solar: publicSolar(), serverTime: new Date().toISOString() });
+    }
+    if (pathname === '/api/agent/solar') {
+        if (req.method !== 'POST') return sendJson(res, 405, { error: 'Méthode non autorisée' });
+        const session = readSession(req);
+        if (!session) { securityEvent(req, 'unauthorized', pathname); return sendJson(res, 401, { error: 'Accès réservé aux agents autorisés' }); }
+        if (rateLimited(req, 'solar', 20, 10 * 60000)) return sendJson(res, 429, { error: 'Trop d\'opérations, réessayez dans quelques minutes' });
+        const body = await readJsonBody(req, 3000);
+        const current = readStore('solar.json', null);
+        const startIn = Math.min(Math.max(Number(body.startInMinutes) || 0, 0), 240);
+        const duration = Math.min(Math.max(Number(body.durationMinutes) || 60, 15), 720);
+        if (body.action === 'set') {
+            if (current && current.active) retireBroadcastById(`SOL-${current.id}`);
+            const now = new Date();
+            const solar = { id: now.getTime().toString(36).toUpperCase(), active: true, severity: SOLAR_LEVELS[body.severity] ? body.severity : 'moderee', exercise: Boolean(body.exercise), since: now.toISOString(), startsAt: new Date(now.getTime() + startIn * 60000).toISOString(), endsAt: new Date(now.getTime() + (startIn + duration) * 60000).toISOString(), updates: [], by: session.role };
+            const first = cleanText(body.text, 240);
+            if (first) solar.updates.push({ at: now.toISOString(), text: first });
+            writeStore('solar.json', solar);
+            const store = loadBroadcasts();
+            store.broadcasts = store.broadcasts.concat(solarBroadcast(solar)).slice(-50);
+            writeStore('broadcasts.json', store);
+            securityEvent(req, 'solar', `${solar.exercise ? 'exercice' : 'alerte'} tempête solaire ${solar.severity}`);
+            logIncident('solar', solar.exercise ? 'exercice' : 'alerte', `tempête solaire ${SOLAR_LEVELS[solar.severity]}, impact dans ${startIn} min`);
+            pushEvent('broadcast', { action: 'publish', id: `SOL-${solar.id}`, level: 'alerte', official: true, title: 'Tempête solaire' });
+            return sendJson(res, 201, { solar });
+        }
+        if (!current || !current.active) return sendJson(res, 409, { error: 'Aucune tempête solaire en cours' });
+        if (body.action === 'update') {
+            const text = cleanText(body.text, 240);
+            const changeDuration = Number(body.durationMinutes) > 0;
+            if (!text && !changeDuration) return sendJson(res, 400, { error: 'Écrivez la mise à jour ou changez la fin estimée' });
+            if (text) current.updates = (current.updates || []).concat({ at: new Date().toISOString(), text }).slice(-20);
+            if (changeDuration) current.endsAt = new Date(Math.max(Date.now(), Date.parse(current.startsAt)) + duration * 60000).toISOString();
+            writeStore('solar.json', current);
+            const store = loadBroadcasts();
+            const index = store.broadcasts.findIndex(entry => entry.id === `SOL-${current.id}`);
+            if (index !== -1) { store.broadcasts[index] = Object.assign(solarBroadcast(current), { createdAt: store.broadcasts[index].createdAt }); writeStore('broadcasts.json', store); }
+            logIncident('solar', 'mise à jour', text || 'fin estimée modifiée');
+            pushEvent('broadcast', { action: 'update', id: `SOL-${current.id}`, level: 'alerte', official: true, title: 'Tempête solaire : mise à jour' });
+            return sendJson(res, 200, { solar: current });
+        }
+        if (body.action === 'clear') {
+            current.active = false;
+            current.clearedAt = new Date().toISOString();
+            const text = cleanText(body.text, 240);
+            if (text) current.updates = (current.updates || []).concat({ at: current.clearedAt, text }).slice(-20);
+            writeStore('solar.json', current);
+            retireBroadcastById(`SOL-${current.id}`);
+            securityEvent(req, 'solar', 'fin de la tempête solaire');
+            logIncident('solar', 'fin', 'tempête solaire terminée');
+            pushEvent('broadcast', { action: 'retire', id: `SOL-${current.id}` });
+            return sendJson(res, 200, { solar: current });
+        }
+        return sendJson(res, 400, { error: 'Action inconnue' });
+    }
+
+    // --- Rapport d'activité de la plateforme (F103) ---
+    if (pathname === '/api/agent/report') {
+        const session = readSession(req);
+        if (!session) { securityEvent(req, 'unauthorized', pathname); return sendJson(res, 401, { error: 'Accès réservé aux agents autorisés' }); }
+        const days = [1, 7, 30].includes(Number(parsedUrl.searchParams.get('days'))) ? Number(parsedUrl.searchParams.get('days')) : 7;
+        const since = Date.now() - days * 86400000;
+        const snap = systemSnapshot();
+        const events = readStore('security-log.json', []).filter(event => Date.parse(event.at) >= since);
+        const securityTotals = {};
+        events.forEach(event => { securityTotals[event.type] = (securityTotals[event.type] || 0) + 1; });
+        const store = loadBroadcasts();
+        const published = store.broadcasts.filter(entry => Date.parse(entry.createdAt) >= since);
+        const incidents = readStore('incidents.json', []).filter(item => Date.parse(item.at) >= since);
+        const partners = loadPartners();
+        const logSpanDays = events.length ? Math.round(((Date.now() - Date.parse(events[0].at)) / 86400000) * 10) / 10 : 0;
+        return sendJson(res, 200, {
+            generatedAt: new Date().toISOString(), days,
+            platform: { state: snap.state, reasons: snap.reasons, uptimeSeconds: snap.uptimeSeconds, requests: snap.requests, latency: snap.latency },
+            usage: usageSummary(days),
+            security: { totals: securityTotals, events: events.length, coveredDays: logSpanDays, alertsNow: securityAnalysis().alerts.length },
+            broadcasts: { published: published.length, official: published.filter(entry => entry.official).length, byLevel: published.reduce((acc, entry) => { acc[entry.level] = (acc[entry.level] || 0) + 1; return acc; }, {}) },
+            incidents: { total: incidents.length, byKind: incidents.reduce((acc, item) => { acc[item.kind] = (acc[item.kind] || 0) + 1; return acc; }, {}), recent: incidents.slice(-8).reverse() },
+            partners: { approved: partners.filter(item => item.approved).length, pending: partners.filter(item => !item.approved).length, unavailable: partners.filter(item => item.approved && item.status === 'unavailable').length },
+            current: { outage: publicOutage() && publicOutage().active ? true : false, solar: publicSolar() && publicSolar().active ? true : false, transport: activeDisruptions().length }
+        });
     }
 
     // --- Usage des services : compteurs anonymes (aucune adresse, aucun compte) ---
@@ -993,7 +1121,7 @@ async function handleWave18(req, res, pathname, parsedUrl) {
         const alerts = SEED_BROADCASTS.concat(store.broadcasts).filter(item => !retired.has(item.id) && (!item.expiresAt || Date.parse(item.expiresAt) > now))
             .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt))).slice(0, 10)
             .map(item => ({ id: item.id, level: item.level, title: item.title, body: item.body, action: item.action || '', official: Boolean(item.official), createdAt: item.createdAt }));
-        return sendJson(res, 200, { generatedAt: new Date().toISOString(), alerts, transport: activeDisruptions(), outage: publicOutage(), state: systemState().state });
+        return sendJson(res, 200, { generatedAt: new Date().toISOString(), alerts, transport: activeDisruptions(), outage: publicOutage(), solar: publicSolar(), state: systemState().state });
     }
     return sendJson(res, 404, { error: 'Introuvable' });
 }
@@ -1453,7 +1581,7 @@ const server = http.createServer((req, res) => {
         handleAdvice(req, res).catch(err => sendJson(res, 500, { error: err.message }));
         return;
     }
-    if (['/api/transport', '/api/usage', '/api/partners', '/api/essential', '/api/outage'].includes(pathname) || /^\/api\/agent\/(usage|partners|events|outage)$/.test(pathname)) {
+    if (['/api/transport', '/api/usage', '/api/partners', '/api/essential', '/api/outage', '/api/solar'].includes(pathname) || /^\/api\/agent\/(usage|partners|events|outage|solar|report)$/.test(pathname)) {
         handleWave18(req, res, pathname, parsedUrl).catch(err => sendJson(res, 400, { error: err.message }));
         return;
     }
