@@ -18,7 +18,7 @@ function w15Restore() {
     } catch (err) { }
 }
 function w15Store() { try { sessionStorage.setItem(W15_TOKEN_KEY, JSON.stringify({ token: w15.token, role: w15.role, expiresAt: w15.expiresAt })); } catch (err) { } }
-function w15Clear() { w15.token = null; w15.role = null; w15.expiresAt = null; w15.alerts = null; try { sessionStorage.removeItem(W15_TOKEN_KEY); } catch (err) { } }
+function w15Clear() { w15.token = null; w15.role = null; w15.expiresAt = null; w15.alerts = null; try { sessionStorage.removeItem(W15_TOKEN_KEY); } catch (err) { } document.dispatchEvent(new CustomEvent('tn:agent-session')); }
 function w15Unlocked() { return Boolean(w15.token) && Date.parse(w15.expiresAt) > Date.now(); }
 
 async function w15Api(path, options = {}, extraHeaders = {}) {
@@ -38,6 +38,7 @@ async function w15Login(code, role) {
     if (result.ok && result.data && result.data.token) {
         Object.assign(w15, { token: result.data.token, role: result.data.role, expiresAt: result.data.expiresAt });
         w15Store();
+        document.dispatchEvent(new CustomEvent('tn:agent-session'));
         return { ok: true };
     }
     return { ok: false, status: result.status, message: result.status === 429 ? 'Trop de tentatives. Patientez quelques minutes.' : 'Code refusé.' };
@@ -330,10 +331,11 @@ document.addEventListener('submit', async event => {
 let w15AlertTimer = null;
 function w15LoadAlertsSoon() { clearTimeout(w15AlertTimer); w15AlertTimer = setTimeout(() => { if (w15Unlocked()) w15LoadAlerts(); }, 500); }
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     w15Restore();
-    try { const status = await w15Api('/api/agent/status'); if (status.ok) w15.status = status.data; } catch (err) { }
     w15RenderPanel();
+    // L'état du serveur (mode démonstration ou non) arrive ensuite et complète l'aide à la connexion
+    w15Api('/api/agent/status').then(status => { if (status.ok) { w15.status = status.data; if (!w15Unlocked()) w15LoadRecords(); } }).catch(() => { });
 
     document.querySelectorAll('form').forEach(w15AddHoneypot);
     new MutationObserver(mutations => {
